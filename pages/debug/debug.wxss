@@ -1,1 +1,4 @@
 /* pages/debug/debug.wxss */
+.getToken {
+  margin-top: 20rpx;
+}

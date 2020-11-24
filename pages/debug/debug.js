@@ -1,18 +1,20 @@
 // pages/debug/debug.js
-Page({
+const app = getApp()
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
-
+    currResCode: "复制res.code",
+    currToken: "获取Token"
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+  
   },
 
   /**
@@ -62,5 +64,51 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  getResCode: function() {
+    wx.login({
+      success: res => {
+        if (res.code){
+          console.log('[getResCode] res.code=' + res.code);
+          this.setData({
+            currResCode:res.code
+          })
+          wx.setClipboardData({
+            data: res.code
+          })
+        }
+      }
+    })
+  },
+
+  getToken: function(){
+    // getResCode
+    wx.login({
+      success: res => {
+        if (res.code){
+          console.log('[getResCode] res.code=' + res.code);
+          wx.request({
+            url: 'http://10.128.188.7:2333/api/login',
+            data:{
+              'code': res.code
+            },
+            success: resToken =>{
+              if(typeof(resToken) != undefined && resToken){
+                this.setData({
+                  currToken:resToken.token
+                })
+                app.globalData.userToken = resToken.token
+              }
+            },
+            fail: e => {
+              this.setData({
+                currToken:'获取Token失败'
+              })
+              console.log("[getToken] 获取Token失败" + e)
+            }
+          })
+        }
+      }
+    })
   }
 })

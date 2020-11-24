@@ -1,2 +1,8 @@
-<!--pages/debug/debug.wxml-->
-<text>pages/debug/debug.wxml</text>
+<view class="container">
+  <view class="getResCode">
+    <button bindtap="getResCode">{{currResCode}}</button>
+  </view>
+  <view class="getToken">
+    <button bindtap="getToken">{{currToken}}</button>
+  </view>
+</view>
