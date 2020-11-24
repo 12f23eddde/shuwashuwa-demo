@@ -1,4 +1,4 @@
-// pages/order/order.js
+// pages/order-add/order-add.js
 Page({
 
   /**
@@ -12,7 +12,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    wx.setNavigationBarTitle({
+      title: '新维修单'
+    })
+    wx.setNavigationBarColor({
+      backgroundColor: '#66ccff',
+      frontColor: '#000000',
+    })
   },
 
   /**
@@ -62,10 +68,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-  btnNewOrder: function (){
-    wx.navigateTo({
-      url: '/pages/order-add/order-add',
-    })
   }
 })

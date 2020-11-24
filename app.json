@@ -1,11 +1,15 @@
 {
+  "useExtendedLib": {
+    "weui": true
+  },
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
     "pages/user/user",
     "pages/activity/activity",
     "pages/order/order",
-    "pages/debug/debug"
+    "pages/debug/debug",
+    "pages/order-add/order-add"
   ],
   "window": {
     "backgroundTextStyle": "light",

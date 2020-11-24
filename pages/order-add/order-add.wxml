@@ -1,0 +1,111 @@
+<view class="page" data-weui-theme="{{theme}}">
+	<view class="page__bd" style="height: 100%;">
+    <view class="weui-form">
+		<view class="weui-form__text-area">
+			<h2 class="weui-form__title">新维修单</h2>
+
+    </view>
+    
+		<view class="weui-form__control-area">
+
+			<view class="weui-cells__group weui-cells__group_form">
+        <view class="weui-cells__title">电脑信息</view>
+				<view class="weui-cells weui-cells_form">
+          <view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd"><label class="weui-label">品牌</label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" placeholder="您这都不知道" placeholder-class="weui-input__placeholder" />
+						</view>
+          </view>
+          
+					<view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd">							
+              <label class="weui-label">型号</label>
+            </view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" placeholder="不会吧不会吧" placeholder-class="weui-input__placeholder" />
+						</view>
+          </view>
+          
+					<view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd">							
+                <label class="weui-label">序列号</label>
+            </view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" placeholder="建议翻到电脑背面看看" type="number" placeholder-class="weui-input__placeholder" />
+						</view>
+          </view>
+				</view>
+      </view>
+
+      <view class="weui-cells__group weui-cells__group_form">
+				<view class="weui-cells weui-cells_form">
+          <view class="weui-cells__title">个性化选项</view>
+          <view class="weui-cell weui-cell_active weui-cell_switch">
+              <view class="weui-cell__bd">我要茨菇小哥哥上门</view>
+              <view class="weui-cell__ft">
+                  <label class="weui-switch-cp">
+                      <checkbox class="weui-switch-cp__input" checked="true" />
+                      <view class="weui-switch-cp__box"></view>
+                  </label>
+              </view>
+          </view>
+				</view>
+      </view>
+      
+			<view class="weui-cells__group weui-cells__group_form">
+				<view class="weui-cells__title">问题描述</view>
+				<view class="weui-cells weui-cells_form">
+					<view class="weui-cell ">
+						<view class="weui-cell__bd">
+							<textarea class="weui-textarea" placeholder="请描述你所发生的问题" rows="3"></textarea>
+							<view class="weui-textarea-counter"><text>0</text>/200</view>
+						</view>
+					</view>
+				</view>
+			</view>
+      
+    </view>
+
+		<view class="weui-form__tips-area">
+			<view class="weui-form__tips">
+            啊这
+			</view>
+    </view>
+    
+		<view class="weui-form__opr-area">
+			<a class="weui-btn weui-btn_primary">确定</a>
+		</view>
+    
+    </view>
+  
+		<view class="weui-tab">
+			<view class="weui-tab__panel">
+			</view>
+			<view class="weui-tabbar">
+				<view class="weui-tabbar__item weui-bar__item_on">
+					<view style="display: inline-block; position: relative;">
+						<image src="/res/icons/dashboard-8x.png" alt class="weui-tabbar__icon"></image>
+						<text class="weui-badge" style="position: absolute; top: -2px; right: -13px;">8</text>
+					</view>
+					<view class="weui-tabbar__label">首页</view>
+				</view>
+				<view class="weui-tabbar__item">
+					<image src="/res/icons/document-8x.png" alt class="weui-tabbar__icon"></image>
+					<view class="weui-tabbar__label">维修单</view>
+				</view>
+				<view class="weui-tabbar__item">
+					<view style="display: inline-block; position: relative;">
+						<image src="/res/icons/badge-8x.png" alt class="weui-tabbar__icon"></image>
+						<text class="weui-badge weui-badge_dot" style="position: absolute; top: 0; right: -6px;"></text>
+					</view>
+					<view class="weui-tabbar__label">活动</view>
+				</view>
+				<view class="weui-tabbar__item">
+					<image src="/res/icons/person-8x.png" alt class="weui-tabbar__icon"></image>
+					<view class="weui-tabbar__label">我</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>

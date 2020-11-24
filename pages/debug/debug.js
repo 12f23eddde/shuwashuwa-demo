@@ -88,16 +88,19 @@ Page({
         if (res.code){
           console.log('[getResCode] res.code=' + res.code);
           wx.request({
-            url: 'http://10.128.188.7:2333/api/login',
+            url: 'http://10.128.188.7:2333/api/user/login',
             data:{
               'code': res.code
             },
             success: resToken =>{
-              if(typeof(resToken) != undefined && resToken){
+              if(typeof(resToken) != undefined && resToken && resToken.code == 200){
                 this.setData({
-                  currToken:resToken.token
+                  currToken:resToken.data.token
                 })
                 app.globalData.userToken = resToken.token
+              }
+              else{
+                console.log('[getToken]', resToken)
               }
             },
             fail: e => {
