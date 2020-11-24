@@ -60,5 +60,11 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  gotoUrl: function(url) {
+    console.log('[gotoUrl]' + url)
+    wx.navigateTo({
+      url: '../user/user'
+    })
   }
 })

@@ -1,14 +1,46 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/user/user",
+    "pages/activity/activity",
+    "pages/order/order"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "修哇修哇",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "iconPath": "",
+        "text": "维修单"
+      },
+      {
+        "pagePath": "pages/activity/activity",
+        "iconPath": "",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/logs/logs",
+        "iconPath": "",
+        "text": "日志"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "res/icons/person-lines-fill.svg",
+        "text": "个人信息"
+      }
+    ]
+  }
 }
