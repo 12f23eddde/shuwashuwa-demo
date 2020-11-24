@@ -4,7 +4,8 @@
     "pages/logs/logs",
     "pages/user/user",
     "pages/activity/activity",
-    "pages/order/order"
+    "pages/order/order",
+    "pages/debug/debug"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -18,27 +19,26 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "",
+        "iconPath": "res/icons/dashboard-8x.png",
+        "selectedIconPath": "res/icons/dashboard-8x.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/order/order",
-        "iconPath": "",
+        "iconPath": "res/icons/document-8x.png",
+        "selectedIconPath": "res/icons/document-8x.png",
         "text": "维修单"
       },
       {
         "pagePath": "pages/activity/activity",
-        "iconPath": "",
+        "iconPath": "res/icons/badge-8x.png",
+        "selectedIconPath": "res/icons/badge-8x.png",
         "text": "活动"
       },
       {
-        "pagePath": "pages/logs/logs",
-        "iconPath": "",
-        "text": "日志"
-      },
-      {
         "pagePath": "pages/user/user",
-        "iconPath": "res/icons/person-lines-fill.svg",
+        "iconPath": "res/icons/person-8x.png",
+        "selectedIconPath": "res/icons/person-8x.png",
         "text": "个人信息"
       }
     ]

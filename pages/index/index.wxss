@@ -17,9 +17,13 @@
 }
 
 .usermotto {
-  margin-top: 200px;
+  margin-top: 50rpx;
 }
 
-.gotoUser {
-  margin-top: 130px;
+.gotoLog {
+  margin-top: 200rpx;
+}
+
+.gotoDebug {
+  margin-top: 50rpx;
 }

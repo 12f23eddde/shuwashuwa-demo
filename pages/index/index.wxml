@@ -10,7 +10,10 @@
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
-  <view class="gotoUser">
-    <button bindtap="gotoUrl">用户信息</button>
+  <view class="gotoLog">
+    <button bindtap="gotoLog">查看日志</button>
+  </view>
+  <view class="gotoDebug">
+    <button bindtap="gotoDebug">进入调试页</button>
   </view>
 </view>
