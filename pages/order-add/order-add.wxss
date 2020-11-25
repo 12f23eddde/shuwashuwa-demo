@@ -1,0 +1,7 @@
+/* pages/order-add/order-add.wxss */
+.weui-tabbar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+}

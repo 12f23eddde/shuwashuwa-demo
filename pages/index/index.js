@@ -4,15 +4,24 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'しゅわりん☆どり~みん',
+    motto: '点击头像，将res.code复制到剪贴板',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
-  //事件处理函数
   bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
+    wx.login({
+      success: res => {
+        if (res.code){
+          console.log(res.code);
+          this.setData({
+            motto:res.code
+          })
+          wx.setClipboardData({
+            data: res.code
+          })
+        }
+      }
     })
   },
   onLoad: function () {
@@ -42,16 +51,6 @@ Page({
         }
       })
     }
-    wx.login({
-      success: res => {
-        if (res.code){
-          console.log(res.code);
-          this.setData({
-            motto:res.code
-          })
-        }
-      }
-    })
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -59,6 +58,16 @@ Page({
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
+    })
+  },
+  gotoLog: function() {
+    wx.navigateTo({
+      url: '../logs/logs',
+    })
+  },
+  gotoDebug: function(){
+    wx.navigateTo({
+      url: '../debug/debug',
     })
   }
 })

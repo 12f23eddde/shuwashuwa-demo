@@ -10,8 +10,31 @@ App({
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        // [12f23eddde] 可能需要修改URL
+        wx.request({
+          url: 'http://10.128.188.7:2333/api/user/login',
+          data:{
+            'code': res.code
+          },
+          success: resToken =>{
+             // [12f23eddde] 加点校验，以防万一
+            if(typeof(resToken) != undefined && resToken && resToken.data.code == 200){
+              this.globalData.userToken = resToken.data.data.token
+            }
+            else{
+              console.log('[getToken] ErrorCode=', resToken.data.code, resToken)
+            }
+          },
+          fail: e => {
+            this.setData({
+              currToken:'获取Token失败'
+            })
+            console.log("[getToken] 获取Token失败", e)
+          }
+        })
       }
     })
+
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -34,6 +57,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userToken: null,
+    userInfo: null,
   }
 })

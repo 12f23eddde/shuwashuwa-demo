@@ -1,0 +1,2 @@
+<!--pages/order/order.wxml-->
+<button bindtap="btnNewOrder">新维修单</button>
