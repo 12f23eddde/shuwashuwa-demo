@@ -1,0 +1,9 @@
+<view class="topbar">
+  <image class="projLogo" src="{{projLogo}}"></image>
+  <text class="title"> {{title}} </text>
+</view>
+<view class="myBody">
+  <button class="ownBut"> 提交申请 </button>
+  <button class="ownBut"> 活动现场 </button>
+  <button class="ownBut"> 个人信息 </button>
+</view>

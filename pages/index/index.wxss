@@ -17,13 +17,5 @@
 }
 
 .usermotto {
-  margin-top: 50rpx;
-}
-
-.gotoLog {
-  margin-top: 200rpx;
-}
-
-.gotoDebug {
-  margin-top: 50rpx;
+  margin-top: 200px;
 }
