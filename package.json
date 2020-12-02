@@ -1,0 +1,24 @@
+{
+  "name": "shuwashuwa-wxapp",
+  "version": "0.0.1",
+  "description": "Shuwarin~Dreaming!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/team-combinatorics/shuwashuwa-wxapp.git"
+  },
+  "author": "12f23eddde",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/team-combinatorics/shuwashuwa-wxapp/issues"
+  },
+  "homepage": "https://github.com/team-combinatorics/shuwashuwa-wxapp#readme",
+  "dependencies": {
+    "@vant/weapp": "^1.6.2",
+    "base64-utf8": "^0.1.8",
+    "miniprogram-api-promise": "^1.0.4"
+  }
+}

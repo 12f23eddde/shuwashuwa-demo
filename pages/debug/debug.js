@@ -1,4 +1,7 @@
 // pages/debug/debug.js
+var login = require('../../api/user').login
+var parseToken = require('../../utils/util').parseToken
+
 const app = getApp()
 
 Page({
@@ -81,41 +84,18 @@ Page({
     })
   },
 
-  getToken: function(){
-    // getResCode
-    wx.login({
-      success: res => {
-        if (res.code){
-          console.log('[getResCode] res.code=' + res.code);
-          wx.request({
-            url: 'http://10.128.188.7:2333/api/user/login',
-            data:{
-              'code': res.code
-            },
-            success: resToken =>{
-              if(typeof(resToken) != undefined && resToken && resToken.data.code == 200){
-                this.setData({
-                  currToken:resToken.data.data.token
-                })
-                wx.setClipboardData({
-                  data: resToken.data.data.token
-                })
-                app.globalData.userToken = resToken.data.data.token
-                console.log('[getToken] currToken=', resToken.data.data.token)
-              }
-              else{
-                console.log('[getToken] ErrorCode=', resToken.data.code, resToken)
-              }
-            },
-            fail: e => {
-              this.setData({
-                currToken:'获取Token失败'
-              })
-              console.log("[getToken] 获取Token失败", e)
-            }
-          })
-        }
-      }
-    })
+  getToken: async function(){
+    let resToken = await login();
+    console.log(resToken)
+    if (resToken) {
+      this.setData({
+        currToken: resToken
+      })
+      let resObj = parseToken(resToken)
+      console.log(resObj)
+      wx.setClipboardData({
+        data: resToken
+      })
+    }
   }
 })

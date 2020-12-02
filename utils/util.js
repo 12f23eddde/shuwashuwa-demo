@@ -1,3 +1,5 @@
+var base64 = require('../utils/base64.js');
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -14,6 +16,15 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+// eval() is disabled by tencent... wtf
+const parseToken = (token) => {
+  token = String(token);
+  var splitString = token.split('.')[1]
+  var encodedString = base64.decode(splitString)
+  return JSON.parse(encodedString)
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  parseToken: parseToken
 }

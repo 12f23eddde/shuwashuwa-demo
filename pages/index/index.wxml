@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="container">
   <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <van-button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </van-button>
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
@@ -11,9 +11,10 @@
     <text class="user-motto">{{motto}}</text>
   </view>
   <view class="gotoLog">
-    <button bindtap="gotoLog">查看日志</button>
+    <van-button bindtap="gotoLog">查看日志</van-button>
   </view>
   <view class="gotoDebug">
-    <button bindtap="gotoDebug">进入调试页</button>
+    <van-button bindtap="gotoDebug">进入调试页</van-button>
   </view>
+  <tab-bar></tab-bar>
 </view>

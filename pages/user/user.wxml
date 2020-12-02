@@ -23,4 +23,5 @@
   </view>
   <text wx:if="{{error}}" class="error">{{error}}</text>
   <button class="submit" type="primary" disabled="{{!(username || password)}}" bindtap="save">更新</button>
+  <tab-bar></tab-bar>
 </view>
