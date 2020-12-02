@@ -1,8 +1,9 @@
 <view class="container">
   <view class="getResCode">
-    <button bindtap="getResCode">{{currResCode}}</button>
+    <van-button type="default" bindtap="getResCode">{{currResCode}}</van-button>
   </view>
   <view class="getToken">
-    <button bindtap="getToken">{{currToken}}</button>
+    <van-button type="default" bindtap="getToken">{{currToken}}</van-button>
   </view>
+  <tab-bar></tab-bar>
 </view>

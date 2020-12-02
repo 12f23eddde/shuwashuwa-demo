@@ -1,7 +1,4 @@
 {
-  "useExtendedLib": {
-    "weui": true
-  },
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
@@ -17,9 +14,12 @@
     "navigationBarTitleText": "修哇修哇",
     "navigationBarTextStyle": "black"
   },
-  "style": "v2",
   "sitemapLocation": "sitemap.json",
+  "useExtendedLib": {
+    "weui": true
+  },
   "tabBar": {
+    "custom": true,
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -46,5 +46,9 @@
         "text": "个人信息"
       }
     ]
+  },
+  "usingComponents": {
+    "tab-bar":"/components/tab-bar/tab-bar",
+    "van-button": "@vant/weapp/button/index"
   }
 }

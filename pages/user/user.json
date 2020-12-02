@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "账户登录设置",
-  "enablePullDownRefresh": false
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "tab-bar":"/components/tab-bar/tab-bar"
+  }
 }
