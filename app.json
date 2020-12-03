@@ -15,9 +15,6 @@
     "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",
-  "useExtendedLib": {
-    "weui": true
-  },
   "tabBar": {
     "custom": true,
     "list": [
@@ -48,11 +45,14 @@
     ]
   },
   "usingComponents": {
-    "tab-bar":"/components/tab-bar/tab-bar",
+    "van-notify": "@vant/weapp/notify/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-dialog": "@vant/weapp/dialog/index",
     "van-field": "@vant/weapp/field/index",
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
     "van-picker": "@vant/weapp/picker/index",
-    "van-button": "@vant/weapp/button/index"
+    "van-button": "@vant/weapp/button/index",
+    "tab-bar": "/components/tab-bar/tab-bar"
   }
 }

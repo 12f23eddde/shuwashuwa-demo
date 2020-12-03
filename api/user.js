@@ -40,7 +40,6 @@ export const login = async function(){
     let date = new Date();
     date.setTime(resObj.exp * 1000);
     console.log('[login] Success uid =', resObj.userid, ', token expires at', util.formatTime(date));
-    console.log(resObj)
     // 设置全局变量的值
     app.globalData.userToken = requestRes.data.data.token
     return requestRes.data.data.token
@@ -118,5 +117,13 @@ export const updateUserInfo = async function(userinfo){
   let app = getApp()
   let baseURL = app.globalData.baseURL
   let requestRes = await requestWithToken(baseURL + '/api/user/info','PUT', userinfo)
+  return requestRes
+}
+
+// 删除当前用户
+export const deleteCurrentUser = async function(){
+  let app = getApp()
+  let baseURL = app.globalData.baseURL
+  let requestRes = await requestWithToken(baseURL + '/api/user/deleteOneUser','DELETE')
   return requestRes
 }

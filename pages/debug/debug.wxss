@@ -1,4 +1,5 @@
 /* pages/debug/debug.wxss */
-.van-botton {
+.van-button {
   margin-top: 20rpx;
+  width:350rpx;
 }

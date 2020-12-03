@@ -1,7 +1,9 @@
 // pages/debug/debug.js
 
-import {login, getUserInfo} from '../../api/user'
+import {login, deleteCurrentUser} from '../../api/user'
 import {parseToken} from '../../utils/util'
+import Dialog from '@vant/weapp/dialog/dialog'
+import Toast from '@vant/weapp/toast/toast'
 
 const app = getApp()
 
@@ -103,7 +105,35 @@ Page({
     }
   },
 
+  deleteUser: function(){
+    console.log(this.selectComponent('.van-dialog'))
+    Dialog.confirm({
+      title: "注销确认",
+      message:"您确定要注销当前用户吗？此操作不可逆。"
+    })
+    .then(()=>{  // confirmed
+      deleteCurrentUser()
+      .then(()=>{
+        Toast.success('用户已删除')
+        wx.clearStorage()
+      })
+      .catch((err)=>{
+        Toast.fail(err.errMsg)
+        throw err
+      })
+    })
+    .catch(()=>{  // canceled
+    })
+  },
+
   onChange: function(){
     app.globalData.baseURL = this.data.currURL
+  },
+
+  clearStorage: async function(){
+    await wx.clearStorage({})
+    wx.reLaunch({
+      url: '../index/index'
+    })
   }
 })
