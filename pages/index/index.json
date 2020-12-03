@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "tab-bar":"/components/tab-bar/tab-bar"
+    "tab-bar" : "/components/tab-bar/tab-bar",
+    "van-image": "@vant/weapp/image/index"
   }
 }

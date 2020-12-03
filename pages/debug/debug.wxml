@@ -5,5 +5,8 @@
   <view class="getToken">
     <van-button type="default" bindtap="getToken">{{currToken}}</van-button>
   </view>
-  <tab-bar></tab-bar>
+  <view class="getUserInfo">
+    <van-button type="default" bindtap="getUserInfo">获取用户信息</van-button>
+  </view>
+  <tab-bar active='1'></tab-bar>
 </view>

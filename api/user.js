@@ -1,8 +1,19 @@
 const util = require('../utils/util')
 import {wxp} from '../utils/wxp';
 
-// 登录
-const login = async function(baseURL='http://shuwashuwa.kinami.cc:8848'){
+// 您不能直接在这里声明app
+// app的生命周期还没有开始
+// 您可以选择在函数里调用getApp(简单低效但是我懒)
+// 或者在应用生命周期开始时手动为每一个模块的app赋值
+// Credit: https://developers.weixin.qq.com/community/develop/doc/000ca80e3e89887e16a70b1c55bc04
+
+// let app = getApp();
+
+// 登录并从后台获取token
+// 考虑到res.code有效期很短,建议您们更新token时调用login,获取res.code
+export const login = async function(){
+  let app = getApp()
+  let baseURL = app.globalData.baseURL
   // 前端获取微信res.code
   let loginRes = await wx.login()
   
@@ -24,12 +35,14 @@ const login = async function(baseURL='http://shuwashuwa.kinami.cc:8848'){
   })
   
   // 检验是否得到了token
-  if(requestRes && requestRes.data.code == 200){
+  if(requestRes && requestRes.data.code === 200){
     let resObj = util.parseToken(requestRes.data.data.token)
     let date = new Date();
     date.setTime(resObj.exp * 1000);
     console.log('[login] Success uid =', resObj.userid, ', token expires at', util.formatTime(date));
     console.log(resObj)
+    // 设置全局变量的值
+    app.globalData.userToken = requestRes.data.data.token
     return requestRes.data.data.token
   }
   else{
@@ -42,14 +55,51 @@ const login = async function(baseURL='http://shuwashuwa.kinami.cc:8848'){
   }
 }
 
-const getWechatUserInfo = async function(){
+// 获取微信用户信息(用户头像,昵称)
+export const getWechatUserInfo = async function(){
   let userinfoRes = await wx.getSetting({
     withSubscriptions: true,
-  }).catch((err)=>{console.log(err)})
+  })
+  .catch((err)=>{
+    console.log('[getWechatUserInfo]', err.errMsg)
+    throw err
+  })
   return userinfoRes
 }
 
-module.exports = {
-  login: login, 
-  getWechatUserInfo: getWechatUserInfo
+export const getUserInfo = async function(){
+  let app = getApp()
+  let baseURL = app.globalData.baseURL
+
+  // 不存在token, 重新生成token
+  if(!app.globalData.userToken){
+    console.log('userToken does not exist')
+    login()
+  }
+
+  // 获取用户信息
+  let requestRes = await wxp.request({
+    url: baseURL + '/api/user/info',
+    header: {
+      'token': app.globalData.userToken
+    }
+  })
+
+  // 如果发现token失效, 那就登录后再请求一次
+  if(requestRes.data.code != 200){
+    login()
+    requestRes = await wxp.request({
+      url: baseURL + '/api/user/info',
+      header: {
+        'token': app.globalData.userToken
+      }
+    })
+  }
+
+  console.log(requestRes)
 }
+
+// module.exports = {
+//   login: login, 
+//   getWechatUserInfo: getWechatUserInfo
+// }

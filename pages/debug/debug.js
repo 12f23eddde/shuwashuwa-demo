@@ -1,6 +1,7 @@
 // pages/debug/debug.js
-var login = require('../../api/user').login
-var parseToken = require('../../utils/util').parseToken
+
+import {login, getUserInfo} from '../../api/user'
+import {parseToken} from '../../utils/util'
 
 const app = getApp()
 
@@ -97,5 +98,9 @@ Page({
         data: resToken
       })
     }
+  },
+
+  getUserInfo: async function(){
+    let userInfo = await getUserInfo();
   }
 })

@@ -16,5 +16,5 @@
   <view class="gotoDebug">
     <van-button bindtap="gotoDebug">进入调试页</van-button>
   </view>
-  <tab-bar></tab-bar>
+  <tab-bar active='0'></tab-bar>
 </view>
