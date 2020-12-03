@@ -1,19 +1,28 @@
 // pages/user/user.js
+import {getUserInfo, updateUserInfo} from '../../api/user'
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    username: "",
-    error:undefined
+    userName: '',
+    studentId: '',
+    phoneNumber: '',
+    nickName: '',
+    identity: '',
+    grade: '',
+    email: '',
+    department: '',
+    comment: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+
   },
 
   /**
@@ -27,7 +36,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.loadUserInfo()
   },
 
   /**
@@ -63,5 +72,40 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  loadUserInfo: async function(){
+    let userinfo = await getUserInfo()
+    this.setData({
+      currUserInfo: userinfo
+    })
+    console.log(userinfo)
+  },
+
+  onSubmit: async function(){
+    await updateUserInfo({
+      "comment": "string",
+      "department": "string",
+      "email": "string",
+      "grade": "string",
+      "identity": "string",
+      "nickName": "string",
+      "phoneNumber": "string",
+      "studentId": "string",
+      "userName": "string"
+    })
+    .then(
+      wx.showToast({
+        title: '用户信息更新成功',
+        icon: 'none'
+      })
+    )
+    .catch((err)=>{
+      wx.showToast({
+        title: '用户信息提交失败',
+        icon: 'none'
+      })
+      throw(err)
+    })
   }
 })

@@ -44,8 +44,7 @@ export const login = async function(){
     // 设置全局变量的值
     app.globalData.userToken = requestRes.data.data.token
     return requestRes.data.data.token
-  }
-  else{
+  }else{
     console.log('[getToken] ErrorCode=', requestRes.data.code, requestRes.data.data, requestRes)
     wx.showToast({
       title: '获取Token失败:' + requestRes.data.data,
@@ -67,38 +66,61 @@ export const getWechatUserInfo = async function(){
   return userinfoRes
 }
 
+// 在所有请求需要在header里放token的都可用
+// 包装了wxp.request, 在token失效时会自动更新token
+export const requestWithToken = async function(url, method, data){
+  console.log(url, method, data)
+  let app = getApp()
+  // 不存在token, 重新生成token
+  if(!app.globalData.userToken){
+    console.log('userToken does not exist')
+    await login()
+  }
+  // 获取用户信息
+  let requestRes = await wxp.request({
+    url: url,
+    header: {
+      'token': app.globalData.userToken
+    },
+    method: method,
+    data: data
+  })
+  // 如果发现token失效, 那就登录后再请求一次
+  if(requestRes.data.code == 401){
+    await login()
+    requestRes = await wxp.request({
+      url: url,
+      header: {
+        'token': app.globalData.userToken
+      },
+      data: data
+    })
+  }
+  if(requestRes.data.code == 200){
+    return requestRes.data.data
+  }else{
+    throw {"errCode":requestRes.data.code, "errMsg":requestRes.data.data}
+  }
+}
+
+// 获取用户信息
 export const getUserInfo = async function(){
   let app = getApp()
   let baseURL = app.globalData.baseURL
 
-  // 不存在token, 重新生成token
-  if(!app.globalData.userToken){
-    console.log('userToken does not exist')
-    login()
-  }
-
-  // 获取用户信息
-  let requestRes = await wxp.request({
-    url: baseURL + '/api/user/info',
-    header: {
-      'token': app.globalData.userToken
-    }
-  })
-
-  // 如果发现token失效, 那就登录后再请求一次
-  if(requestRes.data.code != 200){
-    login()
-    requestRes = await wxp.request({
-      url: baseURL + '/api/user/info',
-      header: {
-        'token': app.globalData.userToken
-      }
-    })
-  }
-
-  console.log(requestRes)
+  let userinfo = await requestWithToken(baseURL + '/api/user/info')
+  // 设置全局变量的值
+  app.globalData.userInfo = userinfo
+  return userinfo
 }
 
+// 更新用户信息
+export const updateUserInfo = async function(userinfo){
+  let app = getApp()
+  let baseURL = app.globalData.baseURL
+  let requestRes = await requestWithToken(baseURL + '/api/user/info','PUT',userinfo)
+  console.log('update', requestRes)
+}
 // module.exports = {
 //   login: login, 
 //   getWechatUserInfo: getWechatUserInfo

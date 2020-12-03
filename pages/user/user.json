@@ -2,6 +2,11 @@
   "navigationBarTitleText": "账户登录设置",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "tab-bar":"/components/tab-bar/tab-bar"
+    "tab-bar":"/components/tab-bar/tab-bar",
+    "van-field": "@vant/weapp/field/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-button": "@vant/weapp/button/index"
   }
 }
