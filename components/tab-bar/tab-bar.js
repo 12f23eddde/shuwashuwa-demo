@@ -27,7 +27,7 @@ Component({
       text: "活动"
     }, {
       pagePath: "/pages/user/user",
-      iconPath: "setting-o",
+      iconPath: "user-o",
       text: "我的"
     }]
   },

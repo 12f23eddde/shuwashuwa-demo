@@ -11,7 +11,8 @@ Page({
    */
   data: {
     currResCode: "复制res.code",
-    currToken: "复制Token"
+    currToken: "复制Token",
+    currURL: "http://shuwashuwa.kinami.cc:8848"
   },
 
   /**
@@ -32,7 +33,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      currURL: app.globalData.baseURL
+    })
   },
 
   /**
@@ -100,7 +103,7 @@ Page({
     }
   },
 
-  getUserInfo: async function(){
-    let userInfo = await getUserInfo();
+  onChange: function(){
+    app.globalData.baseURL = this.data.currURL
   }
 })

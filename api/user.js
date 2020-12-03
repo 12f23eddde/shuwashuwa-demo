@@ -69,7 +69,6 @@ export const getWechatUserInfo = async function(){
 // 在所有请求需要在header里放token的都可用
 // 包装了wxp.request, 在token失效时会自动更新token
 export const requestWithToken = async function(url, method, data){
-  console.log(url, method, data)
   let app = getApp()
   // 不存在token, 重新生成token
   if(!app.globalData.userToken){
@@ -118,10 +117,6 @@ export const getUserInfo = async function(){
 export const updateUserInfo = async function(userinfo){
   let app = getApp()
   let baseURL = app.globalData.baseURL
-  let requestRes = await requestWithToken(baseURL + '/api/user/info','PUT',userinfo)
-  console.log('update', requestRes)
+  let requestRes = await requestWithToken(baseURL + '/api/user/info','PUT', userinfo)
+  return requestRes
 }
-// module.exports = {
-//   login: login, 
-//   getWechatUserInfo: getWechatUserInfo
-// }
