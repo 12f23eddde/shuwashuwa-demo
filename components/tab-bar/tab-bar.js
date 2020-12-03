@@ -1,17 +1,18 @@
 // Credit: http://github.com/LoveChenJinwen/weappVant
 Component({
-  /**
-   * 组件的属性列表
-   */
-  properties: {
+  options: {
+    multipleSlots: true // 在组件定义时的选项中启用多slot支持
   },
-  /**
-   * 组件的初始数据
-   */
+  properties: {
+    // 将active属性传递给van-tabbar
+    active:{
+      type: Number,
+      value: 0
+    }
+  },
   data: {
     // For all icons:
     // https://youzan.github.io/vant-weapp/#/icon
-    selected: 0,
     list: [{
       pagePath: "/pages/index/index",
       iconPath: "home-o",
@@ -26,7 +27,7 @@ Component({
       text: "活动"
     }, {
       pagePath: "/pages/user/user",
-      iconPath: "setting-o",
+      iconPath: "user-o",
       text: "我的"
     }]
   },
@@ -36,10 +37,10 @@ Component({
   methods: {
     onChange(value) {
       let url = this.data.list[value.detail].pagePath;
-      this.setData({
-        selected: value.detail
-      })
       wx.switchTab({ url });
     }
+  },
+  lifetimes: {
+    
   }
 })

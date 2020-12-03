@@ -1,6 +1,7 @@
 // pages/debug/debug.js
-var login = require('../../api/user').login
-var parseToken = require('../../utils/util').parseToken
+
+import {login, getUserInfo} from '../../api/user'
+import {parseToken} from '../../utils/util'
 
 const app = getApp()
 
@@ -10,7 +11,8 @@ Page({
    */
   data: {
     currResCode: "复制res.code",
-    currToken: "复制Token"
+    currToken: "复制Token",
+    currURL: "http://shuwashuwa.kinami.cc:8848"
   },
 
   /**
@@ -31,7 +33,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      currURL: app.globalData.baseURL
+    })
   },
 
   /**
@@ -97,5 +101,9 @@ Page({
         data: resToken
       })
     }
+  },
+
+  onChange: function(){
+    app.globalData.baseURL = this.data.currURL
   }
 })

@@ -1,4 +1,4 @@
 /* pages/debug/debug.wxss */
-.getToken {
+.van-botton {
   margin-top: 20rpx;
 }
