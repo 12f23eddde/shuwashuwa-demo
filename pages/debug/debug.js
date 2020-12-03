@@ -128,5 +128,12 @@ Page({
 
   onChange: function(){
     app.globalData.baseURL = this.data.currURL
+  },
+
+  clearStorage: async function(){
+    await wx.clearStorage({})
+    wx.reLaunch({
+      url: '../index/index'
+    })
   }
 })

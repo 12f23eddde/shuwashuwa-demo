@@ -7,9 +7,11 @@
   <view class="getToken">
     <van-button type="default" bindtap="getToken">获取Token并复制</van-button>
   </view>
-  <view class="getToken">
+  <view class="clearStorage">
+    <van-button type="warning" bindtap="clearStorage">清除缓存并重启</van-button>
+  </view>
+  <view class="deleteUser">
     <van-button type="danger" bindtap="deleteUser">删除当前用户</van-button>
   </view>
   <van-field label="baseURL" bind:change="onChange" model:value="{{currURL}}" />
-  <tab-bar active='0'></tab-bar>
 </view>

@@ -15,9 +15,6 @@
     "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",
-  "useExtendedLib": {
-    "weui": true
-  },
   "tabBar": {
     "custom": true,
     "list": [
@@ -48,6 +45,7 @@
     ]
   },
   "usingComponents": {
+    "van-notify": "@vant/weapp/notify/index",
     "van-toast": "@vant/weapp/toast/index",
     "van-dialog": "@vant/weapp/dialog/index",
     "van-field": "@vant/weapp/field/index",

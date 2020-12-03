@@ -40,7 +40,6 @@ export const login = async function(){
     let date = new Date();
     date.setTime(resObj.exp * 1000);
     console.log('[login] Success uid =', resObj.userid, ', token expires at', util.formatTime(date));
-    console.log(resObj)
     // 设置全局变量的值
     app.globalData.userToken = requestRes.data.data.token
     return requestRes.data.data.token
