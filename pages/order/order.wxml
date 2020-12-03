@@ -1,3 +1,5 @@
 <!--pages/order/order.wxml-->
-<van-button bindtap="btnNewOrder">新维修单</van-button>
-<tab-bar active='1'></tab-bar>
+<view>
+  <van-button bindtap="btnNewOrder" icon="plus" type="primary" id="buttonNewOrder">新维修单</van-button>
+  <tab-bar active='1'></tab-bar>
+</view>

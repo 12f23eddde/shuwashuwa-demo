@@ -120,3 +120,11 @@ export const updateUserInfo = async function(userinfo){
   let requestRes = await requestWithToken(baseURL + '/api/user/info','PUT', userinfo)
   return requestRes
 }
+
+// 删除当前用户
+export const deleteCurrentUser = async function(){
+  let app = getApp()
+  let baseURL = app.globalData.baseURL
+  let requestRes = await requestWithToken(baseURL + '/api/user/deleteOneUser','DELETE')
+  return requestRes
+}

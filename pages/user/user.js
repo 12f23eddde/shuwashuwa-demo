@@ -1,5 +1,6 @@
 // pages/user/user.js
 import {getUserInfo, updateUserInfo} from '../../api/user'
+import Toast from '@vant/weapp/toast/toast'
 
 Page({
   // 由于微信对双向绑定的支持非常狗屎, 因此只能把userinfo给拆了
@@ -85,17 +86,10 @@ Page({
     // [后期可能需要更改] 尝试直接传this.data(可能有数据用不到?)
     await updateUserInfo(this.data)
     .catch((err)=>{
-      wx.showToast({
-        title: '用户信息提交失败',
-        icon: 'none'
-      })
-      throw(err)
+      Toast.fail('信息提交失败');
+      throw err
     })
-    
-    wx.showToast({
-      title: '用户信息更新成功',
-      icon: 'none'
-    })
+    Toast.success('信息更新成功');
     this.loadUserInfo()
   }
 })
