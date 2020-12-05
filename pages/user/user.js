@@ -17,14 +17,22 @@ Page({
     email: '',
     department: '',
     comment: '',
+    errMsg: {
+      userName: '',
+      studentId: '',
+      phoneNumber: '',
+      email: ''
+    }
   },
 
   // 由于微信原生不支持表单验证，引入wevalidator
   // 虽然不好看，但是这的确是最简单的方法力
   // https://github.com/ChanceYu/we-validator
   initValidator: function(){
-    // onMessage可以修改验证不通过时的行为，默认为toast
-    /*
+    this.validator = new WeValidator({
+      multiCheck: true,
+      // onMessage可以修改验证不通过时的行为，默认为toast
+      /*
       data 参数
       {
           msg, // 提示文字
@@ -33,11 +41,24 @@ Page({
           param // rules 验证字段传递的参数
       }
       */
-    WeValidator.onMessage = function(data){
-      Notify({ type: 'danger', message: data.msg });
-    }
-
-    this.validator = new WeValidator({
+      onMessage: function(data){
+        console.log(data)
+        // Notify({ type: 'danger', message: data.msg });
+  
+        // Credit: @vant/weapp/toast/toast.js
+        var pages = getCurrentPages();
+        var page = pages[pages.length - 1];
+  
+        // It's F*cking Magic!!!
+        // 直接修改this.data不能更改视图层, 只能用setData
+        // Credit: https://www.cnblogs.com/bushui/p/11595281.html
+        for (var name in data){
+          var targetStr = "errMsg." + name
+          page.setData({
+            [targetStr]: data[name].msg
+          })
+        }
+      },
       rules: {
         userName: {
           required: true
@@ -83,6 +104,7 @@ Page({
 
   // 提交更改，并重新加载用户信息
   onSubmit: async function(){
+    this.clearErrMsg()
     if(!this.validator.checkData(this.data)) return
     // [后期可能需要更改] 尝试直接传this.data(可能有数据用不到?)
     await updateUserInfo(this.data)
@@ -94,6 +116,15 @@ Page({
     this.loadUserInfo()
   },
 
+  clearErrMsg: async function(){
+    // Credit: https://www.cnblogs.com/bushui/p/11595281.html
+    for (var name in this.data.errMsg){
+      var targetStr = "errMsg." + name
+      this.setData({
+        [targetStr]: ''
+      })
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
