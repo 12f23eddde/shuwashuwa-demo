@@ -1,0 +1,21 @@
+<!--pages/order/order.wxml-->
+<!--改用collapse-->
+<van-dropdown-menu class='filterOrder' active-color="#1989fa">
+  <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
+</van-dropdown-menu>
+<van-collapse value="{{ activeNames }}" bind:change="onChange">
+  <van-collapse-item name="1" class="orderSlot" icon='/pages/order/rejectedOrder.png'>
+    <view slot="title" class="collTitle"> 1 </view>
+    <view slot="value"> 2020-12-25 </view>
+    <view slot="value" class="orderType"> xps13 </view>
+    <view slot="value" class="orderDescript"> 更换电池 </view>
+    <view class='rejectedDetails'> 已拒绝：需要具体型号及详细信息！ </view>
+    <view class='orderDetails'></view>
+    <view class="bottons">
+      <van-button type="default" class="orderBut">修改</van-button>
+      <van-button type="default" class="orderBut">反馈</van-button>
+      <van-button type="danger" class="orderBut">删除</van-button>
+    </view>
+  </van-collapse-item>
+</van-collapse>
+<tab-bar></tab-bar>
