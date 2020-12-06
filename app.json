@@ -45,6 +45,7 @@
     ]
   },
   "usingComponents": {
+    "van-image": "@vant/weapp/image/index",
     "van-notify": "@vant/weapp/notify/index",
     "van-toast": "@vant/weapp/toast/index",
     "van-dialog": "@vant/weapp/dialog/index",
@@ -53,6 +54,10 @@
     "van-cell-group": "@vant/weapp/cell-group/index",
     "van-picker": "@vant/weapp/picker/index",
     "van-button": "@vant/weapp/button/index",
+    "van-sticky": "@vant/weapp/sticky/index",
     "tab-bar": "/components/tab-bar/tab-bar"
-  }
+  },
+  "networkTimeout":{ 
+    "request":3000 
+  } 
 }

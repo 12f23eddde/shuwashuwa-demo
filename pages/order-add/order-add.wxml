@@ -14,5 +14,4 @@
     <van-field model:value="{{ comment }}" label="备注" placeholder="啊这"/>
   </van-cell-group>
   <van-button type="primary" size="large" bindtap="onSubmit"> 提交 </van-button>
-  <tab-bar active='1'></tab-bar>
 </view>
