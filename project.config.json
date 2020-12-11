@@ -4,9 +4,9 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": true,
-    "enhance": false,
+    "enhance": true,
     "postcss": true,
     "preloadBackgroundData": false,
     "minified": true,
@@ -31,18 +31,13 @@
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
-    "packNpmManually": true,
-    "packNpmRelationList": [
-      {
-        "packageJsonPath": "./package.json",
-        "miniprogramNpmDistDir": "./miniprogram/"
-      }
-    ]
+    "packNpmManually": false,
+    "packNpmRelationList": []
   },
   "compileType": "miniprogram",
-  "libVersion": "2.14.0",
-  "appid": "wx7eed5d51224970ef",
-  "projectname": "shuwashuwa",
+  "libVersion": "2.13.2",
+  "appid": "wx0939b77c3a96d434",
+  "projectname": "shuwashuwa-demo",
   "debugOptions": {
     "hidedInDevtools": []
   },

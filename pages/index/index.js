@@ -2,65 +2,72 @@
 //获取应用实例
 const app = getApp()
 
-Component({
+Page({
   data: {
-    motto: 'Hello World',
+    motto: '点击头像，将res.code复制到剪贴板',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
-  methods: {
-    //事件处理函数
-    bindViewTap: function() {
-      wx.navigateTo({
-        url: '../logs/logs'
-      })
-    },
-    onLoad: function () {
-      if (app.globalData.userInfo) {
-        this.setData({
-          userInfo: app.globalData.userInfo,
-          hasUserInfo: true
-        })
-      } else if (this.data.canIUse){
-        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-        // 所以此处加入 callback 以防止这种情况
-        app.userInfoReadyCallback = res => {
+  bindViewTap: function() {
+    wx.login({
+      success: res => {
+        if (res.code){
+          console.log(res.code);
           this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
+            motto:res.code
+          })
+          wx.setClipboardData({
+            data: res.code
           })
         }
-      } else {
-        // 在没有 open-type=getUserInfo 版本的兼容处理
-        wx.getUserInfo({
-          success: res => {
-            app.globalData.userInfo = res.userInfo
-            this.setData({
-              userInfo: res.userInfo,
-              hasUserInfo: true
-            })
-          }
+      }
+    })
+  },
+  onLoad: function () {
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        hasUserInfo: true
+      })
+    } else if (this.data.canIUse){
+      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+      // 所以此处加入 callback 以防止这种情况
+      app.userInfoReadyCallback = res => {
+        this.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
         })
       }
-    },
-    getUserInfo: function(e) {
-      console.log(e)
-      app.globalData.userInfo = e.detail.userInfo
-      this.setData({
-        userInfo: e.detail.userInfo,
-        hasUserInfo: true
+    } else {
+      // 在没有 open-type=getUserInfo 版本的兼容处理
+      wx.getUserInfo({
+        success: res => {
+          app.globalData.userInfo = res.userInfo
+          this.setData({
+            userInfo: res.userInfo,
+            hasUserInfo: true,
+          })
+        }
       })
     }
   },
-  pageLifetimes: {
-    show() {
-      if (typeof this.getTabBar === 'function' &&
-        this.getTabBar()) {
-        this.getTabBar().setData({
-          selected: 1
-        })
-      }
-    }
+  getUserInfo: function(e) {
+    console.log(e)
+    app.globalData.userInfo = e.detail.userInfo
+    this.setData({
+      userInfo: e.detail.userInfo,
+      hasUserInfo: true
+    })
+  },
+  gotoLog: function() {
+    wx.navigateTo({
+      url: '../logs/logs',
+    })
+  },
+  gotoDebug: function(){
+    wx.navigateTo({
+      url: '../debug/debug',
+    })
   }
 })

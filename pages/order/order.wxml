@@ -4,7 +4,7 @@
   <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
 </van-dropdown-menu>
 <van-collapse value="{{ activeNames }}" bind:change="onChange">
-  <van-collapse-item name="1" class="orderSlot" icon='/pages/order/rejectedOrder.png'>
+  <van-collapse-item name="1" class="orderSlot" icon='components\order-thumbnails\rejectedOrder.png'>
     <view slot="title" class="collTitle"> 1 </view>
     <view slot="value"> 2020-12-25 </view>
     <view slot="value" class="orderType"> xps13 </view>
@@ -18,4 +18,7 @@
     </view>
   </van-collapse-item>
 </van-collapse>
+
+<order-thumbnails></order-thumbnails>
+
 <tab-bar></tab-bar>

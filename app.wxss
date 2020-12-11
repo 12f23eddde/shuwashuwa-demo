@@ -1,3 +1,4 @@
+@import './miniprogram_npm/@vant/weapp/common/index.wxss';
 /**app.wxss**/
 .container {
   height: 100%;
@@ -8,3 +9,10 @@
   padding: 200rpx 0;
   box-sizing: border-box;
 } 
+/* 让字体更好看一些 */
+/* https://vant-contrib.gitee.io/vant-weapp/#/common */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei',
+    sans-serif;
+}

@@ -1,0 +1,3 @@
+<!--pages/activity/activity.wxml-->
+<text>pages/activity/activity.wxml</text>
+<tab-bar active='2'></tab-bar>
