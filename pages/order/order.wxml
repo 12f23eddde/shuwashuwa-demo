@@ -1,10 +1,4 @@
 <!--pages/order/order.wxml-->
-<<<<<<< Updated upstream
-<view>
-  <van-button bindtap="btnNewOrder" icon="plus" type="primary" id="buttonNewOrder">新维修单</van-button>
-  <tab-bar active='1'></tab-bar>
-</view>
-=======
 <!--改用collapse-->
 <van-dropdown-menu class='filterOrder' active-color="#1989fa">
   <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
@@ -49,4 +43,3 @@
 <van-dialog id="van-dialog" confirmButtonOpenType />
 
 <tab-bar></tab-bar>
->>>>>>> Stashed changes

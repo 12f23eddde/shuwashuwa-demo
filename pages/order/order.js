@@ -5,9 +5,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-<<<<<<< Updated upstream
-
-=======
     option1: [
       { text: '全部维修单', value: 0 },
       { text: '活跃维修单', value: 1 },
@@ -131,7 +128,6 @@ Page({
       });
     }
     */
->>>>>>> Stashed changes
   },
 
   /**
