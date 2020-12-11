@@ -3,22 +3,42 @@
 <van-dropdown-menu class='filterOrder' active-color="#1989fa">
   <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
 </van-dropdown-menu>
-<van-collapse value="{{ activeNames }}" bind:change="onChange">
-  <van-collapse-item name="1" class="orderSlot" icon='components\order-thumbnails\rejectedOrder.png'>
-    <view slot="title" class="collTitle"> 1 </view>
-    <view slot="value"> 2020-12-25 </view>
-    <view slot="value" class="orderType"> xps13 </view>
-    <view slot="value" class="orderDescript"> 更换电池 </view>
-    <view class='rejectedDetails'> 已拒绝：需要具体型号及详细信息！ </view>
-    <view class='orderDetails'></view>
-    <view class="bottons">
-      <van-button type="default" class="orderBut">修改</van-button>
-      <van-button type="default" class="orderBut">反馈</van-button>
-      <van-button type="danger" class="orderBut">删除</van-button>
-    </view>
-  </van-collapse-item>
+
+<van-collapse accordion value="{{ activeNames }}" bind:change="onChange">
+  <van-swipe-cell 
+    wx:for="{{ List }}"
+    class="titileOrder"
+    right-width="{{ 65 }}" 
+    async-close
+    bind:close="onClose"
+  >
+    <van-collapse-item icon="{{ item.iconPath }}" class="titalOrder">
+      <view slot="title" class="collTitle"> {{ item.num }} </view>
+      <view slot="value"> {{ item.date }} </view>
+      <view slot="value" class="orderType"> {{ item.pcmodule }} </view>
+      <view slot="value" class="orderDescript"> {{ item.requests }} </view>
+      <view class='rejectedDetails' wx:if="{{item.status == 'REJECTED'}}"> {{ item.reply }} </view>
+      <view class='orderDetails'> {{ item.orderDetails }} </view>
+      <view class="mapbuttons">
+        <view class="bottons">
+          <van-button 
+          icon="setting" 
+          type="orderBut" 
+          round size="large">修改</van-button>
+        </view>
+        <view class="bottons">
+          <van-button 
+          icon="comment-circle" 
+          type="orderBut" 
+          round size="large">反馈</van-button>
+        </view>
+      </view>
+    </van-collapse-item>
+    <view slot="right" class="closeSlot">删除</view>
+    
+  </van-swipe-cell>
 </van-collapse>
 
-<order-thumbnails></order-thumbnails>
+<van-dialog id="van-dialog" confirmButtonOpenType />
 
 <tab-bar></tab-bar>
