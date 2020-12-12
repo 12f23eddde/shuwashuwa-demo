@@ -69,6 +69,7 @@ export const getWechatUserInfo = async function(){
 // 包装了wxp.request, 在token失效时会自动更新token
 export const requestWithToken = async function(url, method, data){
   let app = getApp()
+  let baseURL = app.globalData.baseURL
   // 不存在token, 重新生成token
   if(!app.globalData.userToken){
     console.log('userToken does not exist')
@@ -87,7 +88,7 @@ export const requestWithToken = async function(url, method, data){
   if(requestRes.data.code == 401){
     await login()
     requestRes = await wxp.request({
-      url: url,
+      url: baseURL + url,
       header: {
         'token': app.globalData.userToken
       },
@@ -103,10 +104,7 @@ export const requestWithToken = async function(url, method, data){
 
 // 获取用户信息
 export const getUserInfo = async function(){
-  let app = getApp()
-  let baseURL = app.globalData.baseURL
-
-  let userinfo = await requestWithToken(baseURL + '/api/user/info')
+  let userinfo = await requestWithToken('/api/user/info')
   // 设置全局变量的值
   app.globalData.userInfo = userinfo
   return userinfo
@@ -114,16 +112,12 @@ export const getUserInfo = async function(){
 
 // 更新用户信息
 export const updateUserInfo = async function(userinfo){
-  let app = getApp()
-  let baseURL = app.globalData.baseURL
-  let requestRes = await requestWithToken(baseURL + '/api/user/info','PUT', userinfo)
+  let requestRes = await requestWithToken('/api/user/info','PUT', userinfo)
   return requestRes
 }
 
 // 删除当前用户
 export const deleteCurrentUser = async function(){
-  let app = getApp()
-  let baseURL = app.globalData.baseURL
-  let requestRes = await requestWithToken(baseURL + '/api/user/deleteOneUser','DELETE')
+  let requestRes = await requestWithToken('/api/user/deleteOneUser','DELETE')
   return requestRes
 }
