@@ -1,10 +1,12 @@
 <!--pages/order/order.wxml-->
 <!--改用collapse-->
-<van-dropdown-menu class='filterOrder' active-color="#1989fa">
+<van-dropdown-menu class='dropdownOrder' active-color="#1989fa">
   <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
 </van-dropdown-menu>
 
-<van-collapse value="{{ activeNames }}" bind:change="onChange">
+<view class="blank"></view>
+
+<van-collapse value="{{ activeNames }}" bind:change="onChange" class="orderCollapse">
   <van-swipe-cell 
     wx:for="{{ List }}"
     class="titileOrder"
@@ -46,4 +48,12 @@
 
 <van-dialog id="van-dialog" confirmButtonOpenType />
 
-<tab-bar></tab-bar>
+<view class='iconorder'>
+  <cover-image class='fixedIcon' src="/pages/order/addOrder.png" />
+</view>
+
+<view class="blank"></view>
+
+<tab-bar class="orderTB"></tab-bar>
+
+
