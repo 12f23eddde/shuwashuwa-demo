@@ -1,10 +1,4 @@
 <!--pages/order/order.wxml-->
-<<<<<<< Updated upstream
-<view>
-  <van-button bindtap="btnNewOrder" icon="plus" type="primary" id="buttonNewOrder">新维修单</van-button>
-  <tab-bar active='1'></tab-bar>
-</view>
-=======
 <!--改用collapse-->
 <van-dropdown-menu class='filterOrder' active-color="#1989fa">
   <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
@@ -31,13 +25,17 @@
           <van-button 
           icon="setting" 
           type="orderBut" 
-          round size="large">修改</van-button>
+          round size="large"
+          bindtap="onChangeURL"
+          data-url="{{'/pages/order-add/order-add?id='+item.num}}">修改</van-button>
         </view>
         <view class="bottons">
           <van-button 
           icon="comment-circle" 
           type="orderBut" 
-          round size="large">反馈</van-button>
+          round size="large"
+          bindtap="onChangeURL"
+          data-url="{{'/pages/order-add/order-add?id='+item.num}}">反馈</van-button>
         </view>
       </view>
     </van-collapse-item>
@@ -48,5 +46,4 @@
 
 <van-dialog id="van-dialog" confirmButtonOpenType />
 
-<tab-bar></tab-bar>
->>>>>>> Stashed changes
+<tab-bar active='1'></tab-bar>
