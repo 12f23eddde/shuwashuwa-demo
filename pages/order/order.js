@@ -24,7 +24,8 @@ Page({
         requests: 'None',
         status: 'REJECTED',
         orderDetails: 'None',
-        reply: '已拒绝'
+        reply: '已拒绝',
+        url: "service/service?id=1"
       },
       {
         iconPath: '/pages/order/comfirmedOrder.png',
@@ -35,7 +36,8 @@ Page({
         requests: '更换电池',
         status: 'ACCEPTED',
         orderDetails: '更换电池',
-        reply: '已拒绝'
+        reply: '已拒绝',
+        url: "order/order?id=2"
       },
       {
         iconPath: '/pages/order/comfirmedOrder.png',
@@ -46,7 +48,8 @@ Page({
         requests: '更换电池',
         status: 'ACCEPTED',
         orderDetails: '更换电池',
-        reply: '已拒绝'
+        reply: '已拒绝',
+        url: "service/service?id=3"
       },
       {
         iconPath: '/pages/order/comfirmedOrder.png',
@@ -57,7 +60,8 @@ Page({
         requests: '更换电池',
         status: 'ACCEPTED',
         orderDetails: '更换电池',
-        reply: '已拒绝'
+        reply: '已拒绝',
+        url: "service/service?id=4"
       },
       {
         iconPath: '/pages/order/comfirmedOrder.png',
@@ -68,7 +72,8 @@ Page({
         requests: '更换电池',
         status: 'ACCEPTED',
         orderDetails: '更换电池',
-        reply: '已拒绝'
+        reply: '已拒绝',
+        url: "service/service?id=5"
       },
       {
         iconPath: '/pages/order/comfirmedOrder.png',
@@ -79,7 +84,8 @@ Page({
         requests: '更换电池',
         status: 'ACCEPTED',
         orderDetails: '更换电池',
-        reply: '已拒绝'
+        reply: '已拒绝',
+        url: "service/service?id=6"
       },
       {
         iconPath: '/pages/order/comfirmedOrder.png',
@@ -90,7 +96,8 @@ Page({
         requests: '更换电池',
         status: 'ACCEPTED',
         orderDetails: '更换电池',
-        reply: '已拒绝'
+        reply: '已拒绝',
+        url: "service/service?id=7"
       },
       {
         iconPath: '/pages/order/comfirmedOrder.png',
@@ -101,7 +108,8 @@ Page({
         requests: '更换电池',
         status: 'ACCEPTED',
         orderDetails: '更换电池',
-        reply: '已拒绝'
+        reply: '已拒绝',
+        url: "service/service?id=8"
       },
     ],
   },
@@ -130,10 +138,14 @@ Page({
     */
   },
 
+  onEdit: async function (service_id) {
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
 
   },
 
@@ -185,9 +197,11 @@ Page({
   onShareAppMessage: function () {
 
   },
-  btnNewOrder: function (){
+
+  onChangeURL: async function (event){
+    let url = event.currentTarget.dataset.url;
     wx.navigateTo({
-      url: '/pages/order-add/order-add',
+      url: url,
     })
   }
 })
