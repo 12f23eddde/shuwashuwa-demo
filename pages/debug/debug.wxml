@@ -8,6 +8,9 @@
   <view class="getToken">
     <van-button type="default" bindtap="getToken">获取Token并复制</van-button>
   </view>
+  <view class="requestSub">
+    <van-button type="default" bindtap="requestSub">授权订阅消息</van-button>
+  </view>
   <view class="clearStorage">
     <van-button type="warning" bindtap="clearStorage">清除缓存并重启</van-button>
   </view>
@@ -23,4 +26,5 @@
   <van-button type="danger" bindtap="deleteUser">删除当前用户</van-button>
 >>>>>>> Stashed changes
   <van-field label="baseURL" bind:change="onChange" model:value="{{currURL}}" />
+  <van-field label="templateID" bind:change="onChange" model:value="{{currTID}}" />
 </view>

@@ -1,11 +1,9 @@
 // pages/debug/debug.js
 
 import {login, deleteCurrentUser} from '../../api/user'
-<<<<<<< Updated upstream
-=======
 import {requestSubscription} from '../../api/service'
 import {uploadWithToken, chooseImage} from '../../api/file'
->>>>>>> Stashed changes
+import {requestSubscription} from '../../api/service'
 import {parseToken} from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
 import Toast from '@vant/weapp/toast/toast'
@@ -19,7 +17,8 @@ Page({
   data: {
     currResCode: "复制res.code",
     currToken: "复制Token",
-    currURL: "http://shuwashuwa.kinami.cc:8848"
+    currURL: "http://shuwashuwa.kinami.cc:8848",
+    currTID: "DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q"
   },
 
   /**
@@ -41,7 +40,8 @@ Page({
    */
   onShow: function () {
     this.setData({
-      currURL: app.globalData.baseURL
+      currURL: app.globalData.baseURL,
+      currTID: app.globalData.tmplID
     })
   },
 
@@ -133,6 +133,7 @@ Page({
 
   onChange: function(){
     app.globalData.baseURL = this.data.currURL
+    app.globalData.tmplID = this.data.currTID
   },
 
   clearStorage: async function(){
@@ -140,5 +141,10 @@ Page({
     wx.reLaunch({
       url: '../index/index'
     })
+  },
+
+  requestSub: async function(){
+    let tmplIDs = [app.globalData.tmplID]
+    requestSubscription(tmplIDs)
   }
 })
