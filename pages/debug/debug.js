@@ -1,6 +1,11 @@
 // pages/debug/debug.js
 
 import {login, deleteCurrentUser} from '../../api/user'
+<<<<<<< Updated upstream
+=======
+import {requestSubscription} from '../../api/service'
+import {uploadWithToken, chooseImage} from '../../api/file'
+>>>>>>> Stashed changes
 import {parseToken} from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
 import Toast from '@vant/weapp/toast/toast'
