@@ -77,7 +77,7 @@ export const requestWithToken = async function(url, method, data){
   }
   // 获取用户信息
   let requestRes = await wxp.request({
-    url: url,
+    url: baseURL + url,
     header: {
       'token': app.globalData.userToken
     },
@@ -106,6 +106,7 @@ export const requestWithToken = async function(url, method, data){
 export const getUserInfo = async function(){
   let userinfo = await requestWithToken('/api/user/info')
   // 设置全局变量的值
+  let app = getApp()
   app.globalData.userInfo = userinfo
   return userinfo
 }

@@ -1,4 +1,5 @@
-// pages/order/order.js
+let app = getApp()
+
 Page({
 
   /**
@@ -118,27 +119,17 @@ Page({
     this.setData({
       activeNames: event.detail,
     });
-    /*
-    if (this.data.restoredAct === -1) {
-      this.setData({
-        activeNames: event.detail,
-        restoredAct: event.detail,
-        restoredReq: this.data.List[event.detail].requests,
-        ['List['+event.detail+'].requests']: ''
-      });
-    } else {
-      this.setData({
-        activeNames: event.detail,
-        ['List['+this.data.restoredAct+'].requests']: this.data.restoredReq,
-        restoredAct: event.detail,
-        restoredReq: this.data.List[event.detail].requests,
-        ['List['+event.detail+'].requests']: ''
-      });
-    }
-    */
+  },
+
+  goToDetail(event) {
+    let id = event.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '/pages/service-detail/service-detail?id=' + id
+    })
   },
 
   onEdit: async function (service_id) {
+    
   },
 
   /**

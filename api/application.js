@@ -14,13 +14,13 @@ export const postMyApplication = async function(application){
 // requires admin privilege
 export const getAllApplication = async function(){
   let requestData = await requestWithToken('/api/user/application', 'GET', application)
-  console.log('postMyApplication:', requestData)
+  console.log('getAllApplication:', requestData)
   return requestData
 }
 
 // requires admin privilege
 export const auditApplication = async function(){
   let requestData = await requestWithToken('/api/user/application', 'PUT', application)
-  console.log('postMyApplication:', requestData)
+  console.log('getAllApplication:', requestData)
   return requestData
 }

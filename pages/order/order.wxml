@@ -49,11 +49,11 @@
 <van-dialog id="van-dialog" confirmButtonOpenType />
 
 <view class='iconorder'>
-  <cover-image class='fixedIcon' src="/pages/order/addOrder.png" />
+  <cover-image class='fixedIcon' bindtap="goToDetail" src="/res/icons/addOrder.png" />
 </view>
 
 <view class="blank"></view>
 
-<tab-bar class="orderTB"></tab-bar>
+<tab-bar active='1' class="orderTB"></tab-bar>
 
 
