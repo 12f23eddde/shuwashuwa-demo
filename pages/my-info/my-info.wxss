@@ -58,8 +58,13 @@
 .userIcon {
   height: 120rpx;
   width: 120rpx;
-  margin-left: 3%;
+  margin-left: 4%;
   margin-right: 3%;
+}
+
+.userotherinfo {
+  text-align: right;
+  margin-right: 5%;
 }
 
 .uIcon {
