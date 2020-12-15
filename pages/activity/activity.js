@@ -42,24 +42,7 @@ Page({
   },
 
   loadCurrentActivities: async function(){
-    /*
-    //测试用:添加事件
-    let newActData={
-      "activityName": "Merry Christmas Forever",
-      "endTime": "2026-08-17 11:45:14",
-      "location": "string",
-      "startTime": "1919-08-10 11:45:14",
-      "timeSlots": [
-        {
-          "endTime": "2026-08-17 11:45:14",
-          "startTime": "1919-08-10 11:45:14",
-          "timeSlot": 0
-        }
-      ]
-    }
-    let newAct= await requestWithSAToken('POST',newActData)
-    console.log(newAct)
-    */
+    //await AddActivitiesForTest()
     var time=require('../../utils/util.js')
     let currentTime=time.formatTime(new Date())
     //Here, the second parameter is use for enable filter(to get current Acts) of not(to get all Acts)
@@ -79,7 +62,8 @@ Page({
       console.log('Time slot of activity id ',incomingActivityList[i].id,':',TimeSlot)
     }
     this.setData({
-      currentActivity: currentActivityList
+      currentActivity: currentActivityList,
+      onComingActivity: incomingActivityList
     })
   },
 
@@ -137,5 +121,34 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  AddActivitiesForTest: async function(){
+    let newActData={
+      "activityName": "Merry Christmas Forever",
+      "endTime": "2026-08-17 11:45:14",
+      "location": "string",
+      "startTime": "1919-08-10 11:45:14",
+      "timeSlots": [
+        {
+          "endTime": "2026-08-17 11:45:14",
+          "startTime": "1919-08-10 11:45:14",
+          "timeSlot": 0
+        }
+      ]
+    }
+    let newAct= await requestWithSAToken('POST',newActData)
+    console.log(newAct)
+    newActData.activityName="Merry Christmas in the Future"
+    newActData.startTime="2021-08-10 11:45:14"
+    newActData.timeSlots[0].startTime="2021-08-10 11:45:14"
+    newAct= await requestWithSAToken('POST',newActData)
+    console.log(newAct)
+    newActData.activityName="Merry Christmas in the past"
+    newActData.startTime="1919-08-10 11:45:14"
+    newActData.timeSlots[0].startTime="1919-08-10 11:45:14"
+    newActData.endTime="1926-08-17 11:45:14"
+    newActData.timeSlots[0].endTime="1926-08-10 11:45:14"
+    newAct= await requestWithSAToken('POST',newActData)
+    console.log(newAct)
   }
 })

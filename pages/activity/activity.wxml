@@ -2,7 +2,7 @@
 
 <tab-bar active='2'></tab-bar>
 <van-cell-group title="测试活动" :border="true">
-  <van-cell wx:for="{{ List }}" title="{{item.activityName}}" label="{{item.statusString}}" >
+  <van-cell wx:for="{{ List }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}" >
     <view slot="">
       <div style="display:block;">
         <span style="display:block;">地点: {{item.location}}</span>
@@ -18,7 +18,7 @@
 </van-cell-group>
 
 <van-cell-group title="当前活动" :border="false">
-  <van-cell wx:for="{{ currentActivity }}" title="{{item.activityName}}" label="{{item.statusString}}" >
+  <van-cell wx:for="{{ currentActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}" >
     <view slot="">
       <div style="display:block;">
         <span style="display:block;">地点: {{item.location}}</span>
@@ -34,7 +34,7 @@
 </van-cell-group>
 
 <van-cell-group title="未来活动" :border="false">
-  <van-cell wx:for="{{ onComingActivity }}" title="{{item.activityName}}" label="{{item.statusString}}" >
+  <van-cell wx:for="{{ onComingActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}" >
     <view slot="">
       <div style="display:block;">
         <span style="display:block;">地点: {{item.location}}</span>
