@@ -1,3 +1,7 @@
+import {getComingActivities,getActivitySlot} from '../../api/activity'
+import Toast from '@vant/weapp/toast/toast'
+import Notify from '@vant/weapp/notify/notify'
+import WeValidator from 'we-validator/index'
 // pages/activity/activity.js
 Page({
 
@@ -6,6 +10,18 @@ Page({
    */
   data: {
 
+  },
+
+  loadIncomingActivities: async function(){
+    let incomingActivityList= await getComingActivities()
+    console.log(incomingActivityList)
+    for (var i in incomingActivityList){
+      let activity=incomingActivityList[i]
+      console.log(activity)
+      let slots=await getActivitySlot(activity.id)
+      console.log(slots)
+      Toast(activity.id);
+    } 
   },
 
   /**
@@ -26,7 +42,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.loadIncomingActivities()
   },
 
   /**
