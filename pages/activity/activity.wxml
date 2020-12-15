@@ -3,7 +3,7 @@
 <tab-bar active='2'></tab-bar>
 <view wx:if="{{ currentActivity.length>0 }}">
   <van-cell-group title="当前活动">
-    <van-cell wx:for="{{ currentActivity }}" title="{{item.activityName}}" label="{{item.statusString}}" >
+    <van-cell wx:for="{{ currentActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}" >
       <view slot="">
         <div style="display:block;">
           <span style="display:block;">地点: {{item.location}}</span>
@@ -21,7 +21,7 @@
 
 <view wx:if="{{ incomingActivity.length>0 }}">
   <van-cell-group title="未来活动">
-    <van-cell wx:for="{{ incomingActivity }}" title="{{item.activityName}}" label="{{item.statusString}}" >
+    <van-cell wx:for="{{ incomingActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}" >
       <view slot="">
         <div style="display:block;">
           <span style="display:block;">地点: {{item.location}}</span>

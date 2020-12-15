@@ -4,7 +4,6 @@ import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
 // pages/activity/activity.js
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -15,7 +14,6 @@ Page({
     incomingActivity:[
 
     ],
-
   },
 
   loadCurrentActivities: async function(){
@@ -27,8 +25,6 @@ Page({
     let incomingActivityList= await getIncomingActivities(currentTime)
     console.log('CurrentActivityList:',currentActivityList)
     for (let i in currentActivityList){
-      //let TimeSlot= await getActivitySlot(currentActivityList[i].id)
-      //console.log('Time slot of activity id ',currentActivityList[i].id,':',TimeSlot)
       let startAndEndTime=await getSlotTime(currentActivityList[i].id,0)
       console.log(startAndEndTime.slice(0,19))
       console.log(startAndEndTime.slice(19))
