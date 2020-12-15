@@ -1,37 +1,83 @@
-.topbar{
-  height: 120px;
+.userPage{
+  align-items: center;
   display: flex;
   flex-direction: column;
+}
+
+.userinfo-avatar {
+  overflow:hidden;
+  display: block;
+  width: 180rpx;
+  height: 180rpx;
+  margin: 20rpx;
+  margin-top: 120rpx;
+  border-radius: 50%;
+}
+
+.nickname {
+  align-self: center;
+}
+
+.usernickname {
+  font-size: x-large;
+  font: bold;
+  color: rgb(103, 103, 103);
+  width: 100%;
+  text-align: left;
+}
+
+.userotherinfo {
+  color: rgb(142, 142, 142);
+  width: 100%;
+}
+
+.userinfo {
+  display:flex;
   align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
+  margin-top: 5%;
+  width: 85%;
+  height: 220rpx;
+  border-radius: 30rpx;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
-.projLogo {
-  margin-top: 10px;
-  width: 70px;
-  height: 70px;
+
+.detailInfo {
+  margin-top: 10%;
+  width: 90%;
 }
-.title{
-  font-family: Yu Mincho;
-  margin-bottom: 10px;
+
+.blank{ 
+  height: 46px;
+  clear:both; 
+  overflow:hidden; 
+  display:block; 
+  overflow:hidden;
 }
-.myBody{
+
+.userIcon {
+  height: 120rpx;
+  width: 120rpx;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.uIcon {
   height: 100%;
-  justify-content: space-between;
-  align-content: center;
+  width: 100%;
 }
-.ownBut{
-  margin-top: 20px;
-  margin-bottom: 20px;
-  height: 70px;
-  width: 70%;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  box-shadow: 3px 3px 3px rgb(138, 138, 138);
-  font-size: 22px;
-  font-family: 'Microsoft JhengHei';
-  background-color: #d5d4d4;
-  color: rgb(255, 255, 255);
+
+.buttons {
+  margin-top: 7%;
+  align-self: center;
+  display: block;
+  width: 80%;
+  border-radius: 50%;
+  box-shadow: 5rpx 5rpx 20rpx rgba(0, 0, 0, 0.2);
+  margin-bottom: 1%;
+}
+
+.van-button--buttonSubmit {
+  display: block;
+  width: 80%;
 }
