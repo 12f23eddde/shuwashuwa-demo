@@ -1,7 +1,15 @@
 /* pages/order/order.wxss */
+.dropdownOrder {
+  top: 0;
+  z-index: 1;
+  left: 0;
+  position: fixed;
+  width: 100%;
+}
+
 .titileOrder {
   display: block;
-  height: 120%;
+  font-size: large;
 }
 
 .nOrder {
@@ -32,7 +40,13 @@
 .collTitle {
   display: block;
   font-weight: bold;
+  font-size: x-large;
+}
+
+.dateView{
+  text-decoration: underline;
   font-size: large;
+  font-style: oblique;
 }
 
 .mapbuttons {
@@ -50,6 +64,7 @@
 .van-button--orderBut {
   align-self: center;
   display: inline-block;
+  --button-default-height: 80%;
   width: 100%;
 }
 
@@ -70,10 +85,48 @@
 .van-swipe-cell__right {
   align-items: center;
   display:flex;
-  width: 65px;
+  width: 80px;
   height: 10%;
   font-size: 15px;
   color: #fff;
   text-align: center;
   background-color: #f44;
+}
+
+.orderCollapse {
+  display: block;
+  margin-top: 0%;
+  margin-bottom: 10%;
+  height: 90%;
+}
+
+.blank{ 
+  height: 46px;
+  clear:both; 
+  overflow:hidden; 
+  display:block; 
+  overflow:hidden;
+}
+
+.fixedIcon {
+  width: 60px;
+  height: 60px;
+  position: fixed;
+  display: block;
+  right: 30px;
+  bottom: 110px;
+}
+
+.iconorder {
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  position: fixed;
+  display: block;
+  right: 30px;
+  bottom: 110px;
+  border-radius: 30px;
+  background-color: #22ac38;
+  border-color: #22ac38;
+  box-shadow: 0px 3px 2px grey;
 }

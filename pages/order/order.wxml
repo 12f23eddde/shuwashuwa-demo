@@ -1,20 +1,23 @@
 <!--pages/order/order.wxml-->
 <!--改用collapse-->
-<van-dropdown-menu class='filterOrder' active-color="#1989fa">
+<van-dropdown-menu class='dropdownOrder' active-color="#1989fa">
   <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
 </van-dropdown-menu>
 
-<van-collapse accordion value="{{ activeNames }}" bind:change="onChange">
+<view class="blank"></view>
+
+<van-collapse value="{{ activeNames }}" bind:change="onChange" class="orderCollapse">
   <van-swipe-cell 
     wx:for="{{ List }}"
     class="titileOrder"
-    right-width="{{ 65 }}" 
+    right-width="{{ 80 }}" 
     async-close
     bind:close="onClose"
   >
     <van-collapse-item icon="{{ item.iconPath }}" class="titalOrder">
       <view slot="title" class="collTitle"> {{ item.num }} </view>
-      <view slot="value"> {{ item.date }} </view>
+      <view slot="value" class="dateView"> {{ item.date }} </view>
+      <view slot="value" class="orderUser"> {{ item.userName }} </view>
       <view slot="value" class="orderType"> {{ item.pcmodule }} </view>
       <view slot="value" class="orderDescript"> {{ item.requests }} </view>
       <view class='rejectedDetails' wx:if="{{item.status == 'REJECTED'}}"> {{ item.reply }} </view>
@@ -24,13 +27,17 @@
           <van-button 
           icon="setting" 
           type="orderBut" 
-          round size="large">修改</van-button>
+          round size="large"
+          bindtap="onChangeURL"
+          data-url="{{'/pages/order-add/order-add?id='+item.num}}">修改</van-button>
         </view>
         <view class="bottons">
           <van-button 
           icon="comment-circle" 
           type="orderBut" 
-          round size="large">反馈</van-button>
+          round size="large"
+          bindtap="onChangeURL"
+          data-url="{{'/pages/order-add/order-add?id='+item.num}}">反馈</van-button>
         </view>
       </view>
     </van-collapse-item>
@@ -41,4 +48,12 @@
 
 <van-dialog id="van-dialog" confirmButtonOpenType />
 
-<tab-bar></tab-bar>
+<view class='iconorder'>
+  <cover-image class='fixedIcon' bindtap="goToDetail" src="/res/icons/addOrder.png" />
+</view>
+
+<view class="blank"></view>
+
+<tab-bar active='1' class="orderTB"></tab-bar>
+
+

@@ -26,6 +26,7 @@ App({
 
   globalData: {
     baseURL:"http://shuwashuwa.kinami.cc:8848",
+    tmplID: 'DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q',
     userToken: null,
     userInfo: null,
     wechatUserInfo: null,

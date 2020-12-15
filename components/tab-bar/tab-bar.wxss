@@ -1,4 +1,4 @@
 /* custom-tab-bar/index.wxss */
 .tabbar {
-  z-index: 9999
+  display: block;
 }

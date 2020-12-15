@@ -1,0 +1,12 @@
+<!--/pages/service-detail/service-detail-->
+<!--?id={service-id} 如果指定id参数，则跳转到服务单详情-->
+<!--若不指定，则创建新服务单-->
+<view>
+  <van-cell-group>
+  <van-field
+    model:value="{{ value }}"
+    placeholder="请输入用户名"
+    border="{{ false }}"
+  />
+</van-cell-group>
+</view>

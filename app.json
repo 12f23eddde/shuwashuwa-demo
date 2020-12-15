@@ -6,7 +6,7 @@
     "pages/activity/activity",
     "pages/order/order",
     "pages/debug/debug",
-    "pages/order-add/order-add"
+    "pages/service-detail/service-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -20,47 +20,41 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "res/icons/dashboard-8x.png",
-        "selectedIconPath": "res/icons/dashboard-8x.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/order/order",
-        "iconPath": "res/icons/document-8x.png",
-        "selectedIconPath": "res/icons/document-8x.png",
         "text": "维修单"
       },
       {
         "pagePath": "pages/activity/activity",
-        "iconPath": "res/icons/badge-8x.png",
-        "selectedIconPath": "res/icons/badge-8x.png",
         "text": "活动"
       },
       {
         "pagePath": "pages/user/user",
-        "iconPath": "res/icons/person-8x.png",
-        "selectedIconPath": "res/icons/person-8x.png",
         "text": "个人信息"
       }
     ]
   },
   "usingComponents": {
+    "tab-bar": "/components/tab-bar/tab-bar",
+    "van-image": "@vant/weapp/image/index",
     "van-notify": "@vant/weapp/notify/index",
     "van-toast": "@vant/weapp/toast/index",
     "van-dialog": "@vant/weapp/dialog/index",
     "van-field": "@vant/weapp/field/index",
-    "van-picker": "@vant/weapp/picker/index",
-    "tab-bar":"/components/tab-bar/tab-bar",
-    "van-button": "@vant/weapp/button/index",
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-sticky": "@vant/weapp/sticky/index",
     "van-collapse": "@vant/weapp/collapse/index",
     "van-collapse-item": "@vant/weapp/collapse-item/index",
     "van-dropdown-menu": "@vant/weapp/dropdown-menu/index",
     "van-dropdown-item": "@vant/weapp/dropdown-item/index",
     "van-swipe-cell": "@vant/weapp/swipe-cell/index"
   },
-  "networkTimeout":{ 
-    "request":3000 
-  } 
+  "networkTimeout": {
+    "request": 3000
+  }
 }
