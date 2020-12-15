@@ -1,1 +1,8 @@
 /* pages/activity/activity.wxss */
+.blank{ 
+  height: 46px;
+  clear:both; 
+  overflow:hidden; 
+  display:block; 
+  overflow:hidden;
+}

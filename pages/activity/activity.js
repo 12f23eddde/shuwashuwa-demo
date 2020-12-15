@@ -9,7 +9,36 @@ Page({
    * 页面的初始数据
    */
   data: {
+    currentActivity:[
 
+    ],
+    onComingActivity:[
+
+    ],
+    List: [
+      {
+        activityName: "第一次活动",
+        createTime: "1926-08-17 11:45:14",
+        endTime: "1926-08-17 11:45:14",
+        id: 0,
+        location: "理教108",
+        startTime: "1926-08-17 11:45:14",
+        status: 0,
+        statusString: "已完成",
+        updatedTime: "1926-08-17 11:45:14"
+      },
+      {
+        activityName: "第二次活动",
+        createTime: "1926-08-17 11:45:14",
+        endTime: "2020-12-13 17:00:00",
+        id: 1,
+        location: "二教525",
+        startTime: "2020-12-13 13:00:00",
+        status: 0,
+        statusString: "未开始",
+        updatedTime: "1926-08-17 11:45:14"
+      }
+    ]
   },
 
   loadCurrentActivities: async function(){
@@ -40,6 +69,9 @@ Page({
       let TimeSlot= await getActivitySlot(currentActivityList[i].id)
       console.log('Time slot of activity id ',currentActivityList[i].id,':',TimeSlot)
     }
+    this.setData({
+      currentActivity: currentActivityList
+    })
   },
 
   /**

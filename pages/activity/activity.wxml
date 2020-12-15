@@ -1,4 +1,54 @@
 <!--pages/activity/activity.wxml-->
-<text>pages/activity/activity.wxml</text>
+
 <tab-bar active='2'></tab-bar>
-<van-toast id="van-toast" />
+<van-cell-group title="测试活动" :border="true">
+  <van-cell wx:for="{{ List }}" title="{{item.activityName}}" label="{{item.statusString}}" >
+    <view slot="">
+      <div style="display:block;">
+        <span style="display:block;">地点: {{item.location}}</span>
+      </div>
+      <div style="display:block;">
+        <span style="display:block;">开始时间: {{item.startTime}}</span>
+      </div>
+      <div style="display:block;">
+        <span style="display:block;">结束时间: {{item.endTime}}</span>
+      </div>
+    </view>
+  </van-cell>
+</van-cell-group>
+
+<van-cell-group title="当前活动" :border="false">
+  <van-cell wx:for="{{ currentActivity }}" title="{{item.activityName}}" label="{{item.statusString}}" >
+    <view slot="">
+      <div style="display:block;">
+        <span style="display:block;">地点: {{item.location}}</span>
+      </div>
+      <div style="display:block;">
+        <span style="display:block;">开始时间: {{item.startTime}}</span>
+      </div>
+      <div style="display:block;">
+        <span style="display:block;">结束时间: {{item.endTime}}</span>
+      </div>
+    </view>
+  </van-cell>
+</van-cell-group>
+
+<van-cell-group title="未来活动" :border="false">
+  <van-cell wx:for="{{ onComingActivity }}" title="{{item.activityName}}" label="{{item.statusString}}" >
+    <view slot="">
+      <div style="display:block;">
+        <span style="display:block;">地点: {{item.location}}</span>
+      </div>
+      <div style="display:block;">
+        <span style="display:block;">开始时间: {{item.startTime}}</span>
+      </div>
+      <div style="display:block;">
+        <span style="display:block;">结束时间: {{item.endTime}}</span>
+      </div>
+    </view>
+  </van-cell>
+</van-cell-group>
+
+
+<view class="blank"></view>
+
