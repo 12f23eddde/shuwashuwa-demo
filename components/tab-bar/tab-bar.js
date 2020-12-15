@@ -26,7 +26,7 @@ Component({
       iconPath: "medal-o",
       text: "活动"
     }, {
-      pagePath: "/pages/user/user",
+      pagePath: "/pages/my-info/my-info",
       iconPath: "user-o",
       text: "我的"
     }]
