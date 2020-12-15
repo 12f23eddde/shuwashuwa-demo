@@ -6,7 +6,7 @@
     "pages/activity/activity",
     "pages/order/order",
     "pages/debug/debug",
-    "pages/order-add/order-add"
+    "pages/service-detail/service-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -20,26 +20,18 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "res/icons/dashboard-8x.png",
-        "selectedIconPath": "res/icons/dashboard-8x.png",
         "text": "首页"
       },
       {
         "pagePath": "pages/order/order",
-        "iconPath": "res/icons/document-8x.png",
-        "selectedIconPath": "res/icons/document-8x.png",
         "text": "维修单"
       },
       {
         "pagePath": "pages/activity/activity",
-        "iconPath": "res/icons/badge-8x.png",
-        "selectedIconPath": "res/icons/badge-8x.png",
         "text": "活动"
       },
       {
         "pagePath": "pages/user/user",
-        "iconPath": "res/icons/person-8x.png",
-        "selectedIconPath": "res/icons/person-8x.png",
         "text": "个人信息"
       }
     ]
@@ -62,7 +54,7 @@
     "van-dropdown-item": "@vant/weapp/dropdown-item/index",
     "van-swipe-cell": "@vant/weapp/swipe-cell/index"
   },
-  "networkTimeout":{ 
-    "request":3000 
-  } 
+  "networkTimeout": {
+    "request": 3000
+  }
 }
