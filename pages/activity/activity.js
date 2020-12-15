@@ -1,4 +1,4 @@
-import {getComingActivities,getActivitySlot} from '../../api/activity'
+import {getCurrentActivities,getActivitySlot,requestWithSAToken} from '../../api/activity'
 import Toast from '@vant/weapp/toast/toast'
 import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
@@ -12,16 +12,34 @@ Page({
 
   },
 
-  loadIncomingActivities: async function(){
-    let incomingActivityList= await getComingActivities()
-    console.log(incomingActivityList)
-    for (var i in incomingActivityList){
-      let activity=incomingActivityList[i]
-      console.log(activity)
-      let slots=await getActivitySlot(activity.id)
-      console.log(slots)
-      Toast(activity.id);
-    } 
+  loadCurrentActivities: async function(){
+    /*
+    //测试用:添加事件
+    var newActData={
+      "activityName": "string",
+      "endTime": "1926-08-17 11:45:14",
+      "location": "string",
+      "startTime": "1919-08-10 11:45:14",
+      "timeSlots": [
+        {
+          "endTime": "1926-08-17 11:45:14",
+          "startTime": "1919-08-10 11:45:14",
+          "timeSlot": 0
+        }
+      ]
+    }
+    let newAct= await requestWithSAToken('POST',newActData)
+    console.log(newAct)
+  */
+    var time=require('../../utils/util.js')
+    let currentTime=time.formatTime(new Date())
+    //Here, the second parameter is use for enable filter(to get current Acts) of not(to get all Acts)
+    let currentActivityList= await getCurrentActivities(currentTime,false)
+    console.log('CurrentActivityList:',currentActivityList)
+    for (var i in currentActivityList){
+      let TimeSlot= await getActivitySlot(currentActivityList[i].id)
+      console.log('Time slot of activity id ',currentActivityList[i].id,':',TimeSlot)
+    }
   },
 
   /**
@@ -42,7 +60,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.loadIncomingActivities()
+    this.loadCurrentActivities()
   },
 
   /**
