@@ -2,11 +2,67 @@
 <!--?id={service-id} 如果指定id参数，则跳转到服务单详情-->
 <!--若不指定，则创建新服务单-->
 <view>
-  <van-cell-group>
-  <van-field
-    model:value="{{ value }}"
-    placeholder="请输入用户名"
-    border="{{ false }}"
-  />
+  <van-cell-group title="电脑信息">
+
+    <van-cell 
+      title="购买日期"
+      required  
+      value="{{ boughtTime }}" 
+      bind:click="calenderClick" 
+    />
+    <van-calendar
+      show="{{ calenderShow }}"
+      show-confirm="{{ false }}"
+      bind:close="calenderClose"
+      bind:confirm="calenderConfirm"
+    />
+    <van-field
+      value="{{ brand }}"
+      required
+      clearable
+      label="品牌"
+      placeholder="请输入用户名"
+    />
+    <van-field
+      value="{{ computerModel }}"
+      required
+      clearable
+      label="型号"
+      icon="question-o"
+      placeholder="请输入用户名"
+      bind:click-icon="onClickIcon"
+    />
+    <van-field
+      value="{{ cpuModel }}"
+      clearable
+      label="CPU型号"
+      icon="question-o"
+      placeholder="请输入用户名"
+      bind:click-icon="onClickIcon"
+    />
+
+    <van-cell 
+      title="有独立显卡"
+      value="{{ boughtTime }}" 
+    >
+    <van-switch checked="{{ false }}" size="40rpx" bind:change="onChange" />
+    </van-cell>
+
+    
+
+  
+    <!-- boughtTime: "1919-08-10",
+    brand: "string",
+    computerModel: "string",
+    cpuModel: "string",
+    graphicsModel: "string",
+    hasDiscreteGraphics: true,
+    imageList: [],
+    laptopType: "string",
+    problemDescription: "string",
+    problemType: "string",
+    serviceEventId: 0,
+    timeSlot: 0,
+    underWarranty: true -->
 </van-cell-group>
 </view>

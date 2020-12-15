@@ -1,4 +1,5 @@
 import {createService, getService, submitDraft, submitForm} from '../../api/service'
+import {formatTime} from '../../utils/util'
 
 Page({
   data: {
@@ -15,7 +16,13 @@ Page({
     problemType: "string",
     serviceEventId: 0,
     timeSlot: 0,
-    underWarranty: true
+    underWarranty: true,
+    
+    calenderShow: false,
+    calenderMinDate: new Date(2010, 0, 1).getTime(),
+    calenderMaxDate: new Date().getTime(),
+    calenderCurrDate: null,
+
   },
 
   onSubmit: async function (){
@@ -25,6 +32,29 @@ Page({
   onSave: async function (){
     await submitDraft(this.data)
   },
+
+  calenderClick() {
+    this.setData({
+      calenderShow: true
+    })
+    console.log(this.data)
+  },
+
+  // 日期选择相关
+  calenderConfirm: function(event) {
+    console.log(event.detail)
+    this.setData({
+      calenderShow: false,
+      boughtTime: formatTime(event.detail).split(' ')[0],
+    });
+  },
+
+  calenderClose: function(){
+    this.setData({
+      calenderShow: false
+    });
+  },
+  
 
   /**
    * 生命周期函数--监听页面加载
