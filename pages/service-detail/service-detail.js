@@ -1,29 +1,49 @@
-import {createService, getService} from '../../api/service'
+import {createService, getService, submitDraft, submitForm} from '../../api/service'
 
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    service: null
+    activityId: 0,
+    boughtTime: "1919-08-10",
+    brand: "string",
+    computerModel: "string",
+    cpuModel: "string",
+    graphicsModel: "string",
+    hasDiscreteGraphics: true,
+    imageList: [],
+    laptopType: "string",
+    problemDescription: "string",
+    problemType: "string",
+    serviceEventId: 0,
+    timeSlot: 0,
+    underWarranty: true
+  },
+
+  onSubmit: async function (){
+    await submitForm(this.data)
+  },
+
+  onSave: async function (){
+    await submitDraft(this.data)
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    let new_service = null;
+    let curr_service = null;
     console.log(options)
-    // id 为空，在新建维修单
-    // 微信这options也太神秘了
+    // 微信这options也太神秘了, 是string型的undefined
+    // id 为空，新建维修单
     if (options.id != "undefined"){
-      new_service = await getService(options.id)
+      curr_service = await getService(options.id)
     } else {
-      new_service = await createService()
+      curr_service = await createService()
     }
+    // 同步事件中最后一张维修单
+    let lastForm = curr_service.serviceForms[curr_service.serviceForms.length-1]
+    this.setData(lastForm)
     this.setData({
-      service: new_service
+      serviceEventId:curr_service.id
     })
   },
 
