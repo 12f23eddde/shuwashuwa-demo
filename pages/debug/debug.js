@@ -2,6 +2,7 @@
 
 import {login, deleteCurrentUser} from '../../api/user'
 import {requestSubscription} from '../../api/service'
+import {uploadWithToken, chooseImage} from '../../api/file'
 import {parseToken} from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
 import Toast from '@vant/weapp/toast/toast'
@@ -144,5 +145,11 @@ Page({
   requestSub: async function(){
     let tmplIDs = [app.globalData.tmplID]
     requestSubscription(tmplIDs)
+  },
+
+  uploadPic: async function(){
+    let imagePaths = await chooseImage()
+    let uploadRes = await uploadWithToken('/api/image', imagePaths[0])
+    Toast.success(uploadRes)
   }
 })
