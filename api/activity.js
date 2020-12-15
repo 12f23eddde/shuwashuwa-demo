@@ -2,11 +2,11 @@ import {requestWithToken} from "./user";
 import {wxp} from '../utils/wxp';
 //获取未开始活动列表
 export const getCurrentActivities = async function(currentTime,filter){
-  var data={
+  let data={
     endLower: currentTime,
     startUpper:currentTime
   }
-  var requestRes
+  let requestRes
   if(filter){
     console.log("filter")
     requestRes = await requestWithToken('/api/activity','GET',data)
@@ -18,11 +18,33 @@ export const getCurrentActivities = async function(currentTime,filter){
   return requestRes
 }
 
+export const getIncomingActivities = async function(currentTime){
+  let data={
+    startLower:currentTime
+  }
+  let requestRes = await requestWithToken('/api/activity','GET',data)
+  return requestRes
+}
+
 export const getActivitySlot = async function(actId){
   let data={
     "activity":actId
   }
   let requestRes = await requestWithToken('/api/activity/slot','GET',data)
+  return requestRes
+}
+
+//get slot time for specific activity and slot(
+export const getSlotTime = async function(actId,slotID){
+  let data={
+    "activity":actId
+  }
+  let requestRes = await requestWithToken('/api/activity/slot','GET',data)
+  for (let i in requestRes){
+    if(requestRes[i].timeSlot==slotID)
+      return(requestRes[i].startTime+requestRes[i].endTime)
+  }
+  console.log(requestRes)
   return requestRes
 }
 
