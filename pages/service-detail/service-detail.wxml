@@ -2,13 +2,131 @@
 <!--?id={service-id} 如果指定id参数，则跳转到服务单详情-->
 <!--若不指定，则创建新服务单-->
 <view>
+  <van-notify id="van-notify" />
+
+  <van-cell-group title="维修时间">
+    <van-cell 
+      title="活动"
+      required="{{! disableEdit }}"
+      model:value="{{ activityChosen }}" 
+      bind:click="activityClick" 
+      is-link
+    />
+    <van-popup
+    show="{{ activityShow }}"
+    position="bottom"
+    >
+      <van-picker
+        show-toolbar
+        title="活动"
+        columns="{{ activityNames }}"
+        default-index="{{ 2 }}"
+        loading="{{ activityLoading }}"
+        bind:confirm="activityConfirm"
+        bind:cancel="activityClose"
+      />
+    </van-popup>
+
+    <van-cell 
+      title="时段"
+      required="{{! disableEdit }}"
+      model:value="{{ timeslotChosen }}" 
+      bind:click="timeslotClick" 
+      is-link
+    />
+    <van-popup
+    show="{{ timeslotShow }}"
+    position="bottom"
+    >
+      <van-picker
+        show-toolbar
+        title="活动"
+        columns="{{ timeslotNames }}"
+        default-index="{{ 2 }}"
+        loading="{{ timeslotLoading }}"
+        bind:confirm="timeslotConfirm"
+        bind:cancel="timeslotClose"
+      />
+    </van-popup>
+
+  </van-cell-group>
+
+
   <van-cell-group title="电脑信息">
+    <van-field
+      model:value="{{ brand }}"
+      required="{{! disableEdit }}"
+      clearable
+      label="品牌"
+      placeholder="联想"
+      readonly="{{ disableEdit }}"
+    />
+
+    <van-field
+      model:value="{{ computerModel }}"
+      required="{{! disableEdit }}"
+      clearable
+      label="型号"
+      icon="question-o"
+      placeholder="小新 Pro 13 2020"
+      bind:click-icon="onClickIcon"
+      readonly="{{ disableEdit }}"
+    />
+
+    <van-cell 
+      title="电脑类型"
+      required="{{! disableEdit }}"
+      model:value="{{ laptopType }}" 
+      bind:click="typeClick" 
+      is-link
+    />
+    <van-popup
+    show="{{ typeShow }}"
+    position="bottom"
+    >
+      <van-picker
+        show-toolbar
+        title="电脑类型"
+        columns="{{ pcTypes }}"
+        default-index="{{ 2 }}"
+        bind:confirm="typeConfirm"
+        bind:cancel="typeClose"
+      />
+    </van-popup>
+
+    <van-field
+      model:value="{{ cpuModel }}"
+      clearable
+      required="{{! disableEdit }}"
+      label="CPU型号"
+      icon="question-o"
+      placeholder="Intel i7-10710U / AMD Ryzen 7 4800U"
+      bind:click-icon="onClickIcon"
+      readonly="{{ disableEdit }}"
+    />
+
+    <van-cell title="有独立显卡" required="{{! disableEdit }}">
+      <van-switch checked="{{ hasDiscreteGraphics }}" size="35rpx" bind:change="gpuSwitch" disabled="{{ disableEdit }}"/>
+    </van-cell>
+
+    <van-field
+      model:value="{{ graphicsMode }}"
+      required="{{! disableEdit }}"
+      clearable
+      label="独立显卡型号"
+      icon="question-o"
+      disabled="{{ !hasDiscreteGraphics }}"
+      placeholder="Nvidia MX350"
+      bind:click-icon="onClickIcon"
+      readonly="{{ disableEdit }}"
+    />
 
     <van-cell 
       title="购买日期"
-      required  
-      value="{{ boughtTime }}" 
+      required="{{! disableEdit }}"  
+      model:value="{{ boughtTime }}" 
       bind:click="calenderClick" 
+      is-link
     />
     <van-calendar
       show="{{ calenderShow }}"
@@ -16,41 +134,11 @@
       bind:close="calenderClose"
       bind:confirm="calenderConfirm"
     />
-    <van-field
-      value="{{ brand }}"
-      required
-      clearable
-      label="品牌"
-      placeholder="请输入用户名"
-    />
-    <van-field
-      value="{{ computerModel }}"
-      required
-      clearable
-      label="型号"
-      icon="question-o"
-      placeholder="请输入用户名"
-      bind:click-icon="onClickIcon"
-    />
-    <van-field
-      value="{{ cpuModel }}"
-      clearable
-      label="CPU型号"
-      icon="question-o"
-      placeholder="请输入用户名"
-      bind:click-icon="onClickIcon"
-    />
 
-    <van-cell 
-      title="有独立显卡"
-      value="{{ boughtTime }}" 
-    >
-    <van-switch checked="{{ false }}" size="40rpx" bind:change="onChange" />
+    <van-cell title="在保修期内" required="{{! disableEdit }}">
+      <van-switch checked="{{ underWarranty }}" size="35rpx" bind:change="warrantySwitch" disabled="{{ disableEdit }}"/>
     </van-cell>
 
-    
-
-  
     <!-- boughtTime: "1919-08-10",
     brand: "string",
     computerModel: "string",
@@ -64,5 +152,63 @@
     serviceEventId: 0,
     timeSlot: 0,
     underWarranty: true -->
-</van-cell-group>
+  </van-cell-group>
+  <van-cell-group title="故障信息">
+    <van-cell 
+      title="故障类型"
+      required="{{! disableEdit }}"  
+      model:value="{{ problemType }}" 
+      bind:click="problemClick"
+      is-link
+    />
+    <van-popup
+    show="{{ problemShow }}"
+    position="bottom"
+    >
+      <van-picker
+        show-toolbar
+        title="故障类型"
+        columns="{{ problemTypes }}"
+        default-index="{{ 2 }}"
+        bind:cancel="problemClose"
+        bind:confirm="problemConfirm"
+      />
+    </van-popup>
+
+    <van-field
+      value="{{ problemDescription }}"
+      label="故障描述"
+      type="textarea"
+      placeholder="没图像，啥都亮"
+      autosize
+      required="{{! disableEdit }}"
+      readonly="{{ disableEdit }}"
+    />
+
+    <van-cell center>
+      <van-uploader
+        accept="image"
+        sizeType="['compressed']"
+        file-list="{{ imageList }}"
+        max-count="5"
+        multiple
+        disabled="{{ disableEdit }}"
+        preview-size="120rpx"
+        bind:after-read="uploadConfirm"
+      />
+    </van-cell>
+  </van-cell-group>
+
+  <view wx-if="{{ !disableEdit }}">
+    <van-button 
+    type="primary" 
+    size="large" 
+    bindtap="onSubmit" 
+    id="buttonSubmit"
+    loading="{{submitLoading}}"
+    disabled="{{submitLoading}}"
+    > 提交 
+  </van-button>
+  </view>
+
 </view>
