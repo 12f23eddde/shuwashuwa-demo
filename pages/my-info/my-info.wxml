@@ -24,6 +24,7 @@
       required label="姓名" 
       placeholder="Misaka99" 
       error-message="{{ errMsg.userName }}" 
+      disabled
     />
     <van-field 
       id="studentId" 
@@ -31,6 +32,7 @@
       required label="学号" 
       placeholder="114514" 
       error-message="{{ errMsg.studentId }}" 
+      disabled
     />
     <van-field 
       id="phoneNumber"
@@ -38,24 +40,28 @@
       required label="手机号"
       placeholder="15822905002" 
       error-message="{{ errMsg.phoneNumber }}" 
+      disabled
     />
     <van-field 
       id="nickName" 
       model:value="{{ nickName }}" 
       label="昵称" 
       placeholder="一般通过用户" 
+      disabled
     />
     <van-field 
       id="identity" 
       model:value="{{ identity }}" 
       label="身份" 
       placeholder="本科学生" 
+      disabled
     />
     <van-field 
       id="grade" 
       model:value="{{ grade }}" 
       label="年级" 
       placeholder="大三" 
+      disabled
     />
     <van-field 
       id="email" 
@@ -63,33 +69,38 @@
       label="邮箱" 
       placeholder="example@example.com" 
       error-message="{{ errMsg.email }}" 
+      disabled
     />
     <van-field 
       id="department" 
       model:value="{{ department }}" 
       label="部门" 
       placeholder="信息科学技术学院" 
+      disabled
     />
     <van-field 
       id="comment" 
       model:value="{{ comment }}" 
       autosize label="备注" 
       placeholder="啊这" 
+      disabled
     />
   </van-cell-group>
-  <view class="buttons">
-    <van-button 
-      type="primary" 
-      size="large" 
-      round 
-      bindtap="onSubmit" 
-      id="buttonSubmit"
-    >
-      提交修改
-    </van-button>
+  <view class="mapbuttons" >
+    <view class="buttons_">
+      <van-button type="primary" size="large" round>
+        修改个人信息
+      </van-button>
+    </view>
+    <view class="buttons_">
+      <van-button size="large" bindtap="onCancel" id="buttonSubmit" round>
+        申请成为志愿者
+      </van-button>
+    </view>
   </view>
   <view class="blank"></view>
   <view class="blank"></view>
   <view class="blank"></view>
 </view>
+
 <tab-bar active='3'></tab-bar>
