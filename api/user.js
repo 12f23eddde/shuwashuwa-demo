@@ -39,10 +39,23 @@ export const login = async function(){
     let resObj = util.parseToken(requestRes.data.data.token)
     let date = new Date();
     date.setTime(resObj.exp * 1000);
-    console.log('[login] Success uid =', resObj.userid, ', token expires at', util.formatTime(date));
     // 设置全局变量的值
     app.globalData.userToken = requestRes.data.data.token
+    app.globalData.userId = resObj.userid
+  
+    console.log('[login] Success uid =', resObj.userid, ', token expires at', util.formatTime(date));
+    
+    // 当login时更新用户信息(后期可能会更改)
+    let userInfoRes = await wxp.request({
+      url: baseURL + '/api/user/info',
+      header:{
+        'token': app.globalData.userToken
+      }
+    })
+    // 设置全局变量的值
+    app.globalData.userInfo = userInfoRes.data.data
     return requestRes.data.data.token
+    
   }else{
     console.log('[getToken] ErrorCode=', requestRes.data.code, requestRes.data.data, requestRes)
     wx.showToast({
@@ -85,7 +98,7 @@ export const requestWithToken = async function(url, method, data){
     data: data
   })
   // 如果发现token失效, 那就登录后再请求一次
-  if(requestRes.data.code == 401){
+  if(requestRes.data.code == 40005){
     await login()
     requestRes = await wxp.request({
       url: baseURL + url,

@@ -12,7 +12,7 @@ export const createService = async function(){
 // 获取一个维修事件的详细信息
 // 返回一个serviceEvent
 export const getService = async function(id){
-  let requestData = await requestWithToken('/api/service/detail', 'GET', {eventId:id})
+  let requestData = await requestWithToken('/api/service/detail', 'GET', {id: id})
   console.log('getService:', requestData)
   return requestData
 }
@@ -27,6 +27,66 @@ export const submitDraft = async function(data){
   let requestData = await requestWithToken('/api/service/draft', 'PUT', data)
   console.log('submitDraft:', requestData)
   return requestData.data
+}
+
+// ref: http://shuwashuwa.kinami.cc:8848/swagger-ui.html#/event-controller/handleShutdownUsingDELETE
+export const cancelService = async function(id){
+  let requestData = await requestWithToken('/api/service','DELETE', id)
+  return requestData
+}
+
+/* 管理员-审核订单
+  auditDTO: {
+    "message": "记得把电脑带过来",
+    "problemSummary": "string",
+    "result": true,
+    "serviceEventId": 0,
+    "serviceFormId": 0
+  }
+*/
+export const auditService = async function(auditDTO){
+  let requestData = await requestWithToken('/api/service/audit','PUT', auditDTO)
+  return requestData
+}
+
+/* 志愿者-完成订单
+  resultDTO: {
+    "message": "string",
+    "serviceEventId": 0
+  }
+ */
+export const completeService = async function(id, message){
+  let requestData = await requestWithToken('/api/service/complete','PUT', {
+    message: message,
+    serviceEventId: id
+  })
+  return requestData
+}
+
+/* 用户-反馈
+  feedbackDTO: {
+    "message": "string",
+    "serviceEventId": 0
+  }
+ */
+export const feedbackService = async function(id, message){
+  let requestData = await requestWithToken('/api/service/feedback','PUT', {
+    message: message,
+    serviceEventId: id
+  })
+  return requestData
+}
+
+// 志愿者-接单
+export const workService = async function(id){
+  let requestData = await requestWithToken('/api/service/work','PUT', {serviceEventId: id})
+  return requestData
+}
+
+// 志愿者-取消接单
+export const cancelWorkService = async function(id){
+  let requestData = await requestWithToken('/api/service/work','DELETE', {serviceEventId: id})
+  return requestData
 }
 
 /*
@@ -50,12 +110,6 @@ options: {
 // 返回符合查询条件的service简略信息 List=[{},{},{},{},{}]
 export const listServices = async function(options){
   let requestData = await requestWithToken('/api/service', 'GET', options)
-  return requestData
-}
-
-// ref: http://shuwashuwa.kinami.cc:8848/swagger-ui.html#/event-controller/handleShutdownUsingDELETE
-export const cancelService = async function(id){
-  let requestData = await requestWithToken('/api/service','DELETE', {serviceEventId: id})
   return requestData
 }
 
