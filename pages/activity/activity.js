@@ -45,27 +45,7 @@ Page({
         inQueueService:inQueueServiceList
     })
   },
-  
-  loadCurrentActivities: async function(){
-    //await this.AddActivitiesForTest()
-    var time=require('../../utils/util.js')
-    let currentTime=time.formatTime(new Date())
-    //Here, the second parameter is use for enable filter(to get current Acts) of not(to get all Acts)
-    let currentActivityList= await getCurrentActivities(currentTime,true)
-    let incomingActivityList= await getIncomingActivities(currentTime)
-    console.log('CurrentActivityList:',currentActivityList)
-    /*
-    for (let i in currentActivityList){
-      let startAndEndTime=await getSlotTime(currentActivityList[i].id,0)
-      console.log(startAndEndTime.startTime)
-      console.log(startAndEndTime.endTime)
-    }*/
-    console.log('IncomingActivityList:',incomingActivityList)
-    this.setData({
-      currentActivity: currentActivityList,
-      incomingActivity: incomingActivityList
-    })
-  },
+
 
   /**
    * 生命周期函数--监听页面加载
@@ -123,6 +103,34 @@ Page({
   onShareAppMessage: function () {
 
   },
+
+  gotoOrder(event){
+    wx.switchTab({
+      url: '../order/order',
+    })
+  },
+
+  loadCurrentActivities: async function(){
+    //await this.AddActivitiesForTest()
+    var time=require('../../utils/util.js')
+    let currentTime=time.formatTime(new Date())
+    //Here, the second parameter is use for enable filter(to get current Acts) of not(to get all Acts)
+    let currentActivityList= await getCurrentActivities(currentTime,true)
+    let incomingActivityList= await getIncomingActivities(currentTime)
+    console.log('CurrentActivityList:',currentActivityList)
+    /*
+    for (let i in currentActivityList){
+      let startAndEndTime=await getSlotTime(currentActivityList[i].id,0)
+      console.log(startAndEndTime.startTime)
+      console.log(startAndEndTime.endTime)
+    }*/
+    console.log('IncomingActivityList:',incomingActivityList)
+    this.setData({
+      currentActivity: currentActivityList,
+      incomingActivity: incomingActivityList
+    })
+  },
+
   continueEnter: async function (event) {
     console.log(event.currentTarget.dataset)
     let url = '/pages/service-detail/service-detail?id='+event.currentTarget.dataset.serviceeventid;
@@ -130,12 +138,14 @@ Page({
       url: url,
     })
   },
+
   deleteEvent: async function (event) {
     console.log(event.currentTarget.dataset)
     let requestRes=await requestWithToken('/api/service','DELETE',event.currentTarget.dataset.serviceeventid)
     console.log(requestRes)
     this.loadCurrentServices()
   },
+
   AddActivitiesForTest: async function(){
     let newActData={
       "activityName": "Merry Christmas Forever",

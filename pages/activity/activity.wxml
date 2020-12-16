@@ -59,23 +59,9 @@
     </view>
   </view>
   <view wx:if="{{ inEditService.length>0 }}" class="mapbuttons">
-    <van-cell-group class="activityCell">
-      <van-cell wx:for="{{ inEditService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
-        label="{{item.statusString}}">
-        <van-swipe-cell right-width="{{ 150 }}">
-          <view slot="right">
-            <van-button type="primary" bindtap="continueEnter" data-serviceEventId="{{item.serviceEventId}}">继续填写</van-button>
-            <van-button type="danger" bind:click="deleteEvent" data-serviceEventId="{{item.serviceEventId}}">删除</van-button>
-          </view>
-          <view slot="">
-            <div style="display:block;">
-              <span style="display:block;"> {{item.computerModel}}</span>
-            </div>
-            <div style="display:block;">
-              <span style="display:block;"> {{item.problemSummary}}</span>
-            </div>
-          </view>
-        </van-swipe-cell>
+    <van-cell-group class="activityCell" bindtap="gotoOrder">
+      <van-cell title="你有{{inEditService.length}}张待填写维修单" value="点击跳转">
+        
       </van-cell>
     </van-cell-group>
   </view>
