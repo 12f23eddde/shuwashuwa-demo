@@ -4,7 +4,7 @@ import {
   workService, cancelWorkService
 } from '../../api/service'
 import {uploadImage} from '../../api/file'
-import {getIncomingActivities, getActivitySlot} from '../../api/activity'
+import {getIncomingActivities, getActivitySlot, getSlotTime} from '../../api/activity'
 import {formatTime} from '../../utils/util'
 import Notify from '@vant/weapp/notify/notify'
 import Dialog from '@vant/weapp/dialog/dialog'
@@ -121,6 +121,7 @@ Page({
   },
 
   onAuditPass: async function(){
+    if(!this.validator2.checkData(this.data)) return;
     await auditService({
       message: this.data.descriptionAdvice,
       problemSummary: this.data.problemSummary,
@@ -132,6 +133,7 @@ Page({
   },
 
   onAuditFail: async function(){
+    if(!this.validator2.checkData(this.data)) return;
     await auditService({
       message: this.data.descriptionAdvice,
       problemSummary: this.data.problemSummary,
@@ -345,13 +347,27 @@ Page({
       throw {"errCode": 40000, "errMsg": "[uploadConfirm] event.detail contains no file"}
     }
     for (let image of imagesChosen){
-      let res = uploadImage(image.url)
+      let res = await uploadImage(image.url)
       // 更新imagesToUpload
+      const { imagesToUpload = [] } = this.data;
+      imagesToUpload.push({ ...image, url: app.globalData.baseURL + '/img/' + res, isImage: true });
+      this.setData({ imagesToUpload });
+      // 更新imageList
       const { imageList = [] } = this.data;
-      imageList.push({ ...image, url: app.globalData.baseURL + '/img/' + res });
+      imageList.push(res);
       this.setData({ imageList });
-      console.log(imageList)
     }
+  },
+  uploadCancel: async function(event){
+    if(this.data.disableEdit) return;
+    let imageToDelete = event.detail.index
+    const { imagesToUpload = [] } = this.data;
+    imagesToUpload.splice(imageToDelete, 1)
+    this.setData({ imagesToUpload });
+    // 更新imageList
+    const { imageList = [] } = this.data;
+    imageList.splice(imageToDelete, 1)
+    this.setData({ imageList });
   },
 
   onClickIcon: async function(event){
@@ -407,6 +423,30 @@ Page({
         underWarranty: {required: 'Switch状态为null'},
       },
     })
+    this.validator2 = new WeValidator({
+      // onMessage可以修改验证不通过时的行为，默认为toast
+      /*
+      data 参数
+      {
+          msg, // 提示文字
+          name, // 表单控件的 name
+          value, // 表单控件的值
+          param // rules 验证字段传递的参数
+      }
+      */
+      onMessage: function(data){
+        console.log(data)
+        Notify({ type: 'danger', message: data.msg })
+      },
+      rules: {
+        descriptionAdvice: {required: true},
+        problemSummary: {required: true},
+      },
+      messages: {
+        descriptionAdvice: {required: '请填写审核消息'},
+        problemSummary: {required: '请填写故障'},
+      },
+    })
   },
 
   // id >= 0 加载现有service
@@ -434,12 +474,40 @@ Page({
     // 解决没有独显型号的问题
     this.setData({
       serviceEventId: curr_service.id,
+      activityId: curr_service.activityId,
       problemSummary: curr_service.problemSummary,
       status: curr_service.status,
       graphicsModel: (this.data.graphicsModel? this.data.graphicsModel : '没有独立显卡'),
       hasDiscreteGraphics: (this.data.hasDiscreteGraphics === null? false: this.data.hasDiscreteGraphics),
       underWarranty: (this.data.underWarranty === null? false: this.data.underWarranty)
     })
+
+    // 加载activityName与timeslot
+    if(this.data.activityId){
+      let timeslots = await getActivitySlot(this.data.activityId)
+      for (let timeslot of timeslots){
+        if (timeslot.timeSlot == this.data.timeSlot){
+          this.setData({
+            timeslotChosen: timeslot.startTime + ' - ' + timeslot.endTime
+          })
+          break;
+        }
+      }
+    }
+
+    // 加载images
+    if(this.data.imageList){
+      for(let imagePath of this.data.imageList){
+        const { imagesToUpload = [] } = this.data;
+        imagesToUpload.push({
+          name: imagePath,
+          thumb: app.globalData.baseURL + '/img/100_' + imagePath,
+          url: app.globalData.baseURL + '/img/' + imagePath,
+          isImage: true
+        });
+      this.setData({ imagesToUpload });
+      }
+    }
 
     // 可以编辑,创建新维修或者是自己的维修
     if (curr_service.userId == app.globalData.userId){

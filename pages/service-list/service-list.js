@@ -1,5 +1,6 @@
 import {listServices, cancelService, workService} from '../../api/service'
 import {getCurrentActivities} from '../../api/activity'
+import {getUserInfo} from '../../api/user'
 
 const app = getApp()
 
@@ -90,10 +91,19 @@ Page({
 
   },
 
+  goToDetail(event) {
+    let id = event.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '/pages/service-detail/service-detail?id=' + id
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
+    if(!app.globalData.userInfo){  // 避免userInfo不存在
+      await getUserInfo()
+    }
     this.setData({
       user: !app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer,
       volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,

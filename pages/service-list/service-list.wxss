@@ -1,0 +1,8 @@
+.fixedIcon {
+  width: 100rpx;
+  height: 100rpx;
+  position: fixed;
+  display: block;
+  right: 50rpx;
+  bottom: 200rpx;
+}

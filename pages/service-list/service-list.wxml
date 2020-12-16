@@ -21,5 +21,8 @@
       </van-cell>
     </van-cell-group>
   </view>
+  <view class='iconorder'>
+    <cover-image class='fixedIcon' bindtap="goToDetail" src="/res/icons/addOrder.png" />
+  </view>
   <tab-bar active='1' class="orderTB"></tab-bar>
 </view>
