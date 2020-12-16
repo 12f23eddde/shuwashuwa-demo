@@ -11,7 +11,7 @@
     </view>
     <view class="userotherinfo">
       <van-icon name="manager" />
-      <view class="phone">15822905002</view>
+      <view class="phone">{{ phoneNumber }}</view>
       <view class="stutype">普通用户</view>
     </view>
   </view>

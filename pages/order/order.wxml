@@ -15,7 +15,7 @@
       async-close
       bind:close="onClose"
     >
-      <van-collapse-item icon="{{ item.iconPath }}" class="titalOrder">
+      <van-collapse-item icon="{{ item.iconPath }}" class="titileOrder">
         <view slot="title" class="collTitle"> {{ item.pcmodule }} </view>
         <view slot="value" class="dateView"> {{ item.date }} </view>
         <view slot="value" class="orderUser"> {{ item.userName }} </view>
