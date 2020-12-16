@@ -35,7 +35,7 @@
   <view wx:if="{{ inQueueService.length>0 }}" class="mapbuttons">
     <van-cell-group class="activityCell">
       <van-cell wx:for="{{ inQueueService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
-        label="{{item.statusString}}">
+        label="{{item.statusString}}" is-link url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">
         <view slot="">
           <div style="display:block;">
             <span style="display:block;">地点: {{item.location}}</span>
@@ -58,7 +58,7 @@
   <view wx:if="{{ inEditService.length>0 }}" class="mapbuttons">
     <van-cell-group class="activityCell">
       <van-cell wx:for="{{ inEditService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
-        label="{{item.statusString}}">
+        label="{{item.statusString}}" is-link url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">
         <view slot="">
           <div style="display:block;">
             <span style="display:block;">地点: {{item.location}}</span>
