@@ -30,7 +30,8 @@ Page({
     let client=util.parseToken(app.globalData.userToken).userid
     let option={
       'client':client,
-      'status':0
+      'status':0,
+      'closed':false
     }
     console.log(option)
     let inEditServiceList=await listServices(option)
@@ -52,16 +53,13 @@ Page({
     let currentActivityList= await getCurrentActivities(currentTime,true)
     let incomingActivityList= await getIncomingActivities(currentTime)
     console.log('CurrentActivityList:',currentActivityList)
+    /*
     for (let i in currentActivityList){
       let startAndEndTime=await getSlotTime(currentActivityList[i].id,0)
-      console.log(startAndEndTime.slice(0,19))
-      console.log(startAndEndTime.slice(19))
-    }
+      console.log(startAndEndTime.startTime)
+      console.log(startAndEndTime.endTime)
+    }*/
     console.log('IncomingActivityList:',incomingActivityList)
-    for (let i in incomingActivityList){
-      let TimeSlot= await getActivitySlot(incomingActivityList[i].id)
-      console.log('Time slot of activity id ',incomingActivityList[i].id,':',TimeSlot)
-    }
     this.setData({
       currentActivity: currentActivityList,
       incomingActivity: incomingActivityList

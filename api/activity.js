@@ -41,11 +41,15 @@ export const getSlotTime = async function(actId,slotID){
   }
   let requestRes = await requestWithToken('/api/activity/slot','GET',data)
   for (let i in requestRes){
-    if(requestRes[i].timeSlot==slotID)
-      return(requestRes[i].startTime+requestRes[i].endTime)
+    if(requestRes[i].timeSlot==slotID){
+      let time={
+        'startTime':requestRes[i].startTime,
+        'endTime':requestRes[i].endTime
+      }
+      return(time)
+    } 
   }
-  console.log(requestRes)
-  return requestRes
+  throw {"errCode":40000, "errMsg":"The activity do not have correspond time slot"}
 }
 
 //测试用的，记得删掉——
