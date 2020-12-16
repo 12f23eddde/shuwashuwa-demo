@@ -32,7 +32,7 @@ Page({
     let option={
       'client':client,
       'status':0,
-      //'closed':false
+      'closed':false
     }
     console.log(option)
     let inEditServiceList=await listServices(option)
@@ -46,9 +46,6 @@ Page({
     })
   },
   
-  continueEnter: async function(id){
-
-  },
   loadCurrentActivities: async function(){
     //await this.AddActivitiesForTest()
     var time=require('../../utils/util.js')
@@ -128,7 +125,7 @@ Page({
   },
   continueEnter: async function (event) {
     console.log(event.currentTarget.dataset)
-    let url = '/pages/order-add/order-add?id='+event.currentTarget.dataset.serviceeventid;
+    let url = '/pages/service-detail/service-detail?id='+event.currentTarget.dataset.serviceeventid;
     wx.navigateTo({
       url: url,
     })
