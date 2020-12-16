@@ -110,7 +110,7 @@
     </van-cell>
 
     <van-field
-      model:value="{{ graphicsMode }}"
+      model:value="{{ graphicsModel }}"
       required="{{! disableEdit }}"
       clearable
       label="独立显卡型号"
@@ -130,6 +130,8 @@
     />
     <van-calendar
       show="{{ calenderShow }}"
+      min-date="{{ calenderMinDate }}"
+      max-date="{{ calenderMaxDate }}"
       show-confirm="{{ false }}"
       bind:close="calenderClose"
       bind:confirm="calenderConfirm"
@@ -176,7 +178,7 @@
     </van-popup>
 
     <van-field
-      value="{{ problemDescription }}"
+      model:value="{{ problemDescription }}"
       label="故障描述"
       type="textarea"
       placeholder="没图像，啥都亮"
@@ -199,7 +201,7 @@
     </van-cell>
   </van-cell-group>
 
-  <view wx-if="{{ !disableEdit }}">
+  <view wx-if="{{ editable }}">
     <van-button 
     type="primary" 
     size="large" 
@@ -207,7 +209,7 @@
     id="buttonSubmit"
     loading="{{submitLoading}}"
     disabled="{{submitLoading}}"
-    > 提交 
+    > {{ editText }}
   </van-button>
   </view>
 

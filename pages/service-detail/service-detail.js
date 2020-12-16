@@ -52,12 +52,24 @@ Page({
     helpShow: false,
     submitLoading: false,
 
-    disableEdit: false,
-    disableAudit: true,
-    disableWork: true
+    disableEdit: true,
+    editable: true,
+    auditable: false,
+    workable: false,
+    editText: "编辑"
   },
 
   onSubmit: async function (){
+    // 编辑
+    if(this.data.disableEdit){
+      this.setData({
+        disableEdit: false,
+        editText:"提交"
+      })
+      return
+    }
+
+    // 提交
     if(!this.validator.checkData(this.data)) return
     this.setData({
       submitLoading: true
@@ -72,9 +84,12 @@ Page({
       throw err
     })
     this.setData({
-      submitLoading: false
+      submitLoading: false,
+      disableEdit: true,
+      editText:"编辑"
     })
   },
+
   onSave: async function (){
     await submitDraft(this.data)
   },
@@ -137,7 +152,7 @@ Page({
     })
 
     // 加载timeslot 感谢pjy
-    let incomingTimeSlots = await getIncomingActivities(this.data.activityId)
+    let incomingTimeSlots = await getActivitySlot(this.data.activityId)
     .catch((err) => {
       this.timeslotClose()
       throw err
@@ -195,6 +210,15 @@ Page({
     this.setData({
       hasDiscreteGraphics: detail,
     })
+    if(detail){
+      this.setData({
+        graphicsModel: '',
+      })
+    }else{
+      this.setData({
+        graphicsModel: '没有独立显卡',
+      })
+    }
   },
 
   warrantySwitch: function({ detail }){
@@ -333,7 +357,9 @@ Page({
     // 解决没有独显型号的问题
     this.setData({
       serviceEventId:curr_service.id,
-      graphicsModel: (this.data.graphicsModel ? this.data.graphicsModel : '没有独立显卡')
+      graphicsModel: (this.data.graphicsModel? this.data.graphicsModel : '没有独立显卡'),
+      hasDiscreteGraphics: (this.data.hasDiscreteGraphics === null? false: this.data.hasDiscreteGraphics),
+      underWarranty: (this.data.underWarranty === null? false: this.data.underWarranty)
     })
   },
 
