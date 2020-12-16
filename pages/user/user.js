@@ -8,6 +8,7 @@ Page({
   // 由于微信对双向绑定的支持非常狗屎, 因此只能把userinfo给拆了
   // 微信文档, 永远的谜语人
   data: {
+    role: '',
     userName: '',
     studentId: '',
     phoneNumber: '',

@@ -29,6 +29,7 @@ App({
     tmplID: 'DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q',
     userToken: null,
     userInfo: null,
+    userId: null,
     wechatUserInfo: null,
   }
 })

@@ -3,6 +3,7 @@
 <!--若不指定，则创建新服务单-->
 <view>
   <van-notify id="van-notify" />
+  <van-dialog id="van-dialog"></van-dialog>
 
   <van-cell-group title="维修时间">
     <van-cell 
@@ -201,6 +202,26 @@
     </van-cell>
   </van-cell-group>
 
+  <van-cell-group title="审核结果">
+    <van-field
+      model:value="{{ problemSummary }}"
+      required="{{! disableEdit }}"
+      clearable
+      label="故障概述"
+      placeholder="更换电池"
+      readonly="{{ !auditable }}"
+    />
+    <van-field
+      model:value="{{ message }}"
+      label="审核消息"
+      type="textarea"
+      placeholder="请您重新上传照片，看不清电池型号"
+      readonly="{{ !auditable }}"
+      autosize
+      required
+    />
+  </van-cell-group>
+
   <view wx-if="{{ editable }}">
     <van-button 
     type="primary" 
@@ -209,8 +230,24 @@
     id="buttonSubmit"
     loading="{{submitLoading}}"
     disabled="{{submitLoading}}"
-    > {{ editText }}
-  </van-button>
+    > {{ (disableEdit? '编辑':'提交') }}
+    </van-button>
+  </view>
+
+  <view wx-if="{{ editable && disableEdit }}">
+    <van-button 
+    type="danger" 
+    size="large" 
+    bindtap="onCancel" 
+    id="buttonCancel"
+    > 取消
+    </van-button>
+  </view>
+
+  <view wx-if="{{ workable }}">
+  </view>
+
+  <view wx-if="{{ auditable }}">
   </view>
 
 </view>

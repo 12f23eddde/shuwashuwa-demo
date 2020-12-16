@@ -1,8 +1,9 @@
-import {createService, getService, submitDraft, submitForm} from '../../api/service'
+import {createService, getService, cancelService, submitDraft, submitForm} from '../../api/service'
 import {uploadImage} from '../../api/file'
-import {getIncomingActivities, getActivitySlot, getSlotTime} from '../../api/activity'
+import {getIncomingActivities, getActivitySlot} from '../../api/activity'
 import {formatTime} from '../../utils/util'
 import Notify from '@vant/weapp/notify/notify'
+import Dialog from '@vant/weapp/dialog/dialog'
 import WeValidator from 'we-validator/index'
 
 const app = getApp()
@@ -23,6 +24,11 @@ Page({
     serviceEventId: 0,
     timeSlot: 0,
     underWarranty: true,
+
+    message: "string",
+    problemSummary: "string",
+    result: true,
+    serviceFormId: 0,
     
     activityList: [],
     activityNames: [],
@@ -54,9 +60,8 @@ Page({
 
     disableEdit: true,
     editable: true,
-    auditable: false,
-    workable: false,
-    editText: "编辑"
+    auditable: true,
+    workable: true,
   },
 
   onSubmit: async function (){
@@ -64,7 +69,6 @@ Page({
     if(this.data.disableEdit){
       this.setData({
         disableEdit: false,
-        editText:"提交"
       })
       return
     }
@@ -86,12 +90,34 @@ Page({
     this.setData({
       submitLoading: false,
       disableEdit: true,
-      editText:"编辑"
+    })
+
+    this.loadService(this.data.serviceEventId)
+  },
+
+  onCancel: async function(){
+    await Dialog.confirm({
+      title: "取消维修",
+      message:"您确定要取消当前维修吗？此操作不可逆。"
+    }).then(async ()=>{
+      let res = await cancelService(this.data.serviceEventId)
+      console.log(res)
+    })
+    wx.navigateBack({
+      delta: 0,
     })
   },
 
   onSave: async function (){
     await submitDraft(this.data)
+  },
+
+  onAuditPass: async function(){
+
+  },
+
+  onAuditFail: async function(){
+
   },
 
   activityClick: async function(){
@@ -111,6 +137,7 @@ Page({
       this.activityClose()
       throw err
     })
+    console.log(incomingActivityList)
     this.setData({
       activityList: incomingActivityList
     })
@@ -338,22 +365,26 @@ Page({
       },
     })
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: async function (options) {
+
+  loadService: async function (id) {
     let curr_service = null;
-    console.log(options)
-    // 微信这options也太神秘了, 是string型的undefined
-    // id 为空，新建维修单
-    if (options.id != "undefined"){
-      curr_service = await getService(options.id)
-    } else {
+    if (id >= 0){  // 加载维修单, 默认不开启编辑
+      curr_service = await getService(id)
+      this.setData({
+        disableEdit: true
+      })
+    } else {  // id 为空 新建维修单,默认开启编辑
       curr_service = await createService()
+      this.setData({
+        disableEdit: false
+      })
     }
     // 同步事件中最后一张维修单
     let lastForm = curr_service.serviceForms[curr_service.serviceForms.length-1]
     this.setData(lastForm)
+    this.setData({
+      serviceFormId: curr_service.serviceForms.length-1
+    })
     // 解决没有独显型号的问题
     this.setData({
       serviceEventId:curr_service.id,
@@ -361,6 +392,48 @@ Page({
       hasDiscreteGraphics: (this.data.hasDiscreteGraphics === null? false: this.data.hasDiscreteGraphics),
       underWarranty: (this.data.underWarranty === null? false: this.data.underWarranty)
     })
+
+    // 可以编辑,创建新维修或者是自己的维修
+    if(curr_service.status <= 2){
+      if (curr_service.userId == app.globalData.userId){
+        this.setData({
+          editable: true,
+          // auditable: false,
+          // workable: false
+        })
+      }
+    }
+    // 可以接单,不能自己接自己
+    if(3 <= curr_service.status <= 4){
+      if(app.globalData.userInfo.volunteer && curr_service.userId != app.globalData.userId){
+        this.setData({
+          editable: false,
+          workable: true
+        })
+      }
+    }
+    // 可以审核,不能自己审自己
+    if(curr_service.status == 1){
+      if(app.globalData.userInfo.admin && curr_service.userId != app.globalData.userId){
+        this.setData({
+          editable: false,
+          auditable: true
+        })
+      }
+    }
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: async function (options) {
+    console.log(options)
+    // 微信这options也太神秘了, 是string型的undefined
+    if (options.id != "undefined"){  // 加载维修单, 默认不开启编辑
+      this.loadService(options.id)
+    } else {  // id 为空 新建维修单,默认开启编辑
+      this.loadService(-1)
+    }
   },
 
   /**

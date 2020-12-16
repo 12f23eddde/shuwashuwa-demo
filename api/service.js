@@ -12,7 +12,7 @@ export const createService = async function(){
 // 获取一个维修事件的详细信息
 // 返回一个serviceEvent
 export const getService = async function(id){
-  let requestData = await requestWithToken('/api/service/detail', 'GET', {eventId:id})
+  let requestData = await requestWithToken('/api/service/detail', 'GET', {id: id})
   console.log('getService:', requestData)
   return requestData
 }
@@ -31,7 +31,7 @@ export const submitDraft = async function(data){
 
 // ref: http://shuwashuwa.kinami.cc:8848/swagger-ui.html#/event-controller/handleShutdownUsingDELETE
 export const cancelService = async function(id){
-  let requestData = await requestWithToken('/api/service','DELETE', {serviceEventId: id})
+  let requestData = await requestWithToken('/api/service','DELETE', id)
   return requestData
 }
 
