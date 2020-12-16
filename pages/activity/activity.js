@@ -1,13 +1,22 @@
 import {getCurrentActivities,getIncomingActivities,getActivitySlot,getSlotTime,requestWithSAToken} from '../../api/activity'
+import {listServices} from '../../api/service'
 import Toast from '@vant/weapp/toast/toast'
 import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
+const util = require('../../utils/util')
+
 // pages/activity/activity.js
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    inEditService:[
+
+    ],
+    inQueueService:[
+
+    ],
     currentActivity:[
 
     ],
@@ -16,8 +25,27 @@ Page({
     ],
   },
 
+  loadCurrentServices: async function(){
+    let app=getApp()
+    let client=util.parseToken(app.globalData.userToken).userid
+    let option={
+      'client':client,
+      'status':0
+    }
+    console.log(option)
+    let inEditServiceList=await listServices(option)
+    console.log("inEditServiceList:",inEditServiceList)
+    option.status=3
+    let inQueueServiceList=await listServices(option)
+    console.log("inQueueServices:",inQueueServiceList)
+    this.setData({
+        inEditService:inEditServiceList,
+        inQueueService:inQueueServiceList
+    })
+  },
+  
   loadCurrentActivities: async function(){
-    //await AddActivitiesForTest()
+    //await this.AddActivitiesForTest()
     var time=require('../../utils/util.js')
     let currentTime=time.formatTime(new Date())
     //Here, the second parameter is use for enable filter(to get current Acts) of not(to get all Acts)
@@ -58,6 +86,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.loadCurrentServices()
     this.loadCurrentActivities()
   },
 
@@ -99,7 +128,7 @@ Page({
     let newActData={
       "activityName": "Merry Christmas Forever",
       "endTime": "2026-08-17 11:45:14",
-      "location": "string",
+      "location": "301",
       "startTime": "1919-08-10 11:45:14",
       "timeSlots": [
         {

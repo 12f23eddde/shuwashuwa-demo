@@ -49,7 +49,7 @@ options: {
 */
 // 返回符合查询条件的service简略信息 List=[{},{},{},{},{}]
 export const listServices = async function(options){
-  let requestData = await requestWithToken('/api/service/', 'GET', options)
+  let requestData = await requestWithToken('/api/service', 'GET', options)
   return requestData
 }
 
