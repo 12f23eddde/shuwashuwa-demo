@@ -55,6 +55,5 @@
 
 <van-dialog id="van-dialog" confirmButtonOpenType />
 
-<tab-bar active='1' class="orderTB"></tab-bar>
 
 
