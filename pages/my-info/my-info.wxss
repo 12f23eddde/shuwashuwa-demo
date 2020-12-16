@@ -72,17 +72,24 @@
   width: 100%;
 }
 
-.buttons {
-  margin-top: 7%;
-  align-self: center;
-  display: block;
-  width: 80%;
-  border-radius: 50%;
-  box-shadow: 5rpx 5rpx 20rpx rgba(0, 0, 0, 0.2);
-  margin-bottom: 1%;
+
+.mapbuttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .van-button--buttonSubmit {
+  align-self: center;
+  display: inline-block;
+  --button-default-height: 80%;
+  width: 100%;
+}
+
+.buttons_ {
+  margin-top: 7%;
   display: block;
-  width: 80%;
+  width: 45%;
+  border-radius: 50%;
 }
