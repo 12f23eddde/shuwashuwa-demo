@@ -3,6 +3,7 @@ import {listServices} from '../../api/service'
 import Toast from '@vant/weapp/toast/toast'
 import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
+import { requestWithToken } from '../../api/user'
 const util = require('../../utils/util')
 
 // pages/activity/activity.js
@@ -31,7 +32,7 @@ Page({
     let option={
       'client':client,
       'status':0,
-      'closed':false
+      //'closed':false
     }
     console.log(option)
     let inEditServiceList=await listServices(option)
@@ -45,6 +46,9 @@ Page({
     })
   },
   
+  continueEnter: async function(id){
+
+  },
   loadCurrentActivities: async function(){
     //await this.AddActivitiesForTest()
     var time=require('../../utils/util.js')
@@ -121,6 +125,19 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  continueEnter: async function (event) {
+    console.log(event.currentTarget.dataset)
+    let url = '/pages/order-add/order-add?id='+event.currentTarget.dataset.serviceeventid;
+    wx.navigateTo({
+      url: url,
+    })
+  },
+  deleteEvent: async function (event) {
+    console.log(event.currentTarget.dataset)
+    let requestRes=await requestWithToken('/api/service','DELETE',event.currentTarget.dataset.serviceeventid)
+    console.log(requestRes)
+    this.loadCurrentServices()
   },
   AddActivitiesForTest: async function(){
     let newActData={

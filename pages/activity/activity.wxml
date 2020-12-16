@@ -38,14 +38,17 @@
     <van-cell-group class="activityCell">
       <van-cell wx:for="{{ inQueueService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
         label="{{item.statusString}}">
-        <view slot="">
-          <div style="display:block;">
-            <span style="display:block;"> {{item.computerModel}}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;"> {{item.problemSummary}}</span>
-          </div>
-        </view>
+        <van-swipe-cell right-width="{{ 65 }}">
+          <view slot="right"><van-button type="danger">删除</van-button></view>
+          <view slot="">
+            <div style="display:block;">
+              <span style="display:block;"> {{item.computerModel}}</span>
+            </div>
+            <div style="display:block;">
+              <span style="display:block;"> {{item.problemSummary}}</span>
+            </div>
+          </view>
+        </van-swipe-cell>
       </van-cell>
     </van-cell-group>
   </view>
@@ -59,14 +62,20 @@
     <van-cell-group class="activityCell">
       <van-cell wx:for="{{ inEditService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
         label="{{item.statusString}}">
-        <view slot="">
-          <div style="display:block;">
-            <span style="display:block;"> {{item.computerModel}}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;"> {{item.problemSummary}}</span>
-          </div>
-        </view>
+        <van-swipe-cell right-width="{{ 150 }}">
+          <view slot="right">
+            <van-button type="primary" bindtap="continueEnter" data-serviceEventId="{{item.serviceEventId}}">继续填写</van-button>
+            <van-button type="danger" bind:click="deleteEvent" data-serviceEventId="{{item.serviceEventId}}">删除</van-button>
+          </view>
+          <view slot="">
+            <div style="display:block;">
+              <span style="display:block;"> {{item.computerModel}}</span>
+            </div>
+            <div style="display:block;">
+              <span style="display:block;"> {{item.problemSummary}}</span>
+            </div>
+          </view>
+        </van-swipe-cell>
       </van-cell>
     </van-cell-group>
   </view>
