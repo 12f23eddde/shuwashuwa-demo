@@ -106,7 +106,7 @@ Page({
 
   gotoOrder(event){
     wx.switchTab({
-      url: '../order/order',
+      url: '../service-list/service-list',
     })
   },
 
