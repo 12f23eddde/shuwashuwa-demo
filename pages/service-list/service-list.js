@@ -1,4 +1,4 @@
-import {listServices, cancelService, workService} from '../../api/service'
+import {listServices, cancelService, workService, getService} from '../../api/service'
 import {getCurrentActivities} from '../../api/activity'
 import {getUserInfo} from '../../api/user'
 
@@ -22,7 +22,9 @@ Page({
 
     user: false,
     admin: false,
-    volunteer: false
+    volunteer: false,
+
+    activeNames: ['1'],
   },
 
   initMenu: function (){
@@ -52,8 +54,9 @@ Page({
       })
     }else{  // 是普通用户
       this.setData({
-        menuValue: 6,
+        menuValue: 7,
         menuOptions: [
+          { text: '所有维修单', value: 7 },
           { text: '待编辑', value: 0 },
           { text: '活动中', value: 6 },
           { text: '已完成', value: 5 },
@@ -62,14 +65,49 @@ Page({
     }
   },
 
+  onChange(event) {
+    this.setData({
+      activeNames: event.detail,
+    });
+  },
+
   // 根据menuValue和用户权限把serviceList拼出来
   // 对于相同的menuValue, 用户权限不同看到的东西也是不一样的
   loadServices: async function(){
     let val = this.data.menuValue
-    
+    console.log(val)
+    console.log('hreer')
     // 一个options就够
-    if (0 <= val <= 5){
-      let option = {}
+    if (0 <= val && val <= 5){
+      let res = await this.loadServicebyVal(val)
+      this.setData({
+        serviceList: res
+      })
+    }else if (val===6) {  // 活动中维修单需要多次请求
+
+    }else if (val===7) {
+      console.log('hi')
+      let i = 0;
+      let res = []
+      for (i = 0; i <=5; i++) {
+        let temp = await this.loadServicebyVal(i)
+        if (temp !== []) {
+          let j = 0
+          for (j = 0; j < temp.length; j++) {
+            res.push(temp[j])
+          }
+          console.log(temp)
+        }
+      }
+      console.log(res)
+      this.setData({
+        serviceList: res
+      })
+    }
+  },
+
+  loadServicebyVal: async function(val) {
+    let option = {}
       option.status = val
       option.closed = false
       if(this.data.user) {option.client = app.globalData.userId}
@@ -81,15 +119,28 @@ Page({
       if(this.data.volunteer && val==3) {option.volunteer = app.globalData.userId}
       console.log('[loadservices] val=' + val + ' user='+ this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
       let res = await listServices(option)
-      console.log(res)
+      let i = 0
+      for (i = 0; i < res.length; i++) {
+        let serviceEventId = res[i].serviceEventId
+        let r_ = await getService(serviceEventId)
+        let problemType = r_.serviceForms[r_.serviceForms.length - 1].problemType
+        res[i].problemType = problemType
+        if (res[i].status === 0) {
+          res[i].iconPath = '/pages/service-list/rejectedOrder.png'
+        }
+        else if (res[i].status === 1) {
+          res[i].iconPath = '/pages/service-list/verifyingOrder.png'
+        }
+        else {
+          res[i].iconPath = '/pages/service-list/comfirmededOrder.png'
+        }
+      }
       this.setData({
         serviceList: res
       })
-    }else if (val==6) {  // 活动中维修单需要多次请求
-
-    }
-
+      return res
   },
+
 
   goToDetail(event) {
     let id = event.currentTarget.dataset.id;
@@ -110,6 +161,7 @@ Page({
       admin: app.globalData.userInfo.admin
     })
     this.initMenu()
+    this.loadServices()
   },
 
   /**
@@ -123,7 +175,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    
   },
 
   /**
@@ -159,5 +211,12 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  onChangeURL: async function (event) {
+    let url = event.currentTarget.dataset.url;
+    wx.navigateTo({
+      url: url,
+    })
   }
 })
