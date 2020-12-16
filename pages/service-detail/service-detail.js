@@ -28,11 +28,12 @@ Page({
     serviceEventId: 0,
     timeSlot: 0,
     underWarranty: true,
+    descriptionAdvice: "string",
 
-    message: "string",
     problemSummary: "string",
     result: true,
     serviceFormId: 0,
+    status: 0,
 
     volunteerMessage: "",
     userMessage: "",
@@ -120,33 +121,45 @@ Page({
   },
 
   onAuditPass: async function(){
-    this.setData({
-      result: true
+    await auditService({
+      message: this.data.descriptionAdvice,
+      problemSummary: this.data.problemSummary,
+      result: true,
+      serviceEventId: this.data.serviceEventId,
+      serviceFormId: this.data.serviceFormId
     })
-    await auditService(this.data)
+    this.loadService(this.data.serviceEventId)
   },
 
   onAuditFail: async function(){
-    this.setData({
-      result: false
+    await auditService({
+      message: this.data.descriptionAdvice,
+      problemSummary: this.data.problemSummary,
+      result: true,
+      serviceEventId: this.data.serviceEventId,
+      serviceFormId: this.data.serviceFormId
     })
-    await auditService(this.data)
+    this.loadService(this.data.serviceEventId)
   },
 
   onWork: async function(){
     await workService(this.data.serviceEventId)
+    this.loadService(this.data.serviceEventId)
   },
 
   onCancelWork: async function(){
     await cancelWorkService(this.data.serviceEventId)
+    this.loadService(this.data.serviceEventId)
   },
 
   onComplete: async function(){
     await completeService(this.data.serviceEventId, this.data.volunteerMessage)
+    this.loadService(this.data.serviceEventId)
   },
 
   onFeedBack: async function(){
     await feedbackService(this.data.serviceEventId, this.data.userMessage)
+    this.loadService(this.data.serviceEventId)
   },
 
   activityClick: async function(){
@@ -250,10 +263,11 @@ Page({
   },
   // 日期选择相关
   calenderConfirm: function(event) {
-    console.log(event.detail)
+    let currDate = new Date(event.detail)
+    // 将currDate做了神奇的处理，输出年月
     this.setData({
       calenderShow: false,
-      boughtTime: formatTime(event.detail).split(' ')[0],
+      boughtTime: formatTime(currDate).split(' ')[0],
     });
   },
   calenderClose: function(){
@@ -395,6 +409,8 @@ Page({
     })
   },
 
+  // id >= 0 加载现有service
+  // id < 0 创建service
   loadService: async function (id) {
     let curr_service = null;
     if (id >= 0){  // 加载维修单, 默认不开启编辑
@@ -408,48 +424,44 @@ Page({
         disableEdit: false
       })
     }
+    console.log(curr_service)
     // 同步事件中最后一张维修单
     let lastForm = curr_service.serviceForms[curr_service.serviceForms.length-1]
     this.setData(lastForm)
     this.setData({
-      serviceFormId: curr_service.serviceForms.length-1,
-      message: curr_service.message
+      serviceFormId: lastForm.formID,
     })
     // 解决没有独显型号的问题
     this.setData({
-      serviceEventId:curr_service.id,
+      serviceEventId: curr_service.id,
+      problemSummary: curr_service.problemSummary,
+      status: curr_service.status,
       graphicsModel: (this.data.graphicsModel? this.data.graphicsModel : '没有独立显卡'),
       hasDiscreteGraphics: (this.data.hasDiscreteGraphics === null? false: this.data.hasDiscreteGraphics),
       underWarranty: (this.data.underWarranty === null? false: this.data.underWarranty)
     })
 
     // 可以编辑,创建新维修或者是自己的维修
-    if(curr_service.status <= 2){
-      if (curr_service.userId == app.globalData.userId){
-        this.setData({
-          editable: true,
-          // auditable: false,
-          // workable: false
-        })
-      }
+    if (curr_service.userId == app.globalData.userId){
+      this.setData({
+        editable: true,
+        // auditable: false,
+        // workable: false
+      })
     }
     // 可以接单,不能自己接自己
-    if(3 <= curr_service.status <= 4){
-      if(app.globalData.userInfo.volunteer && curr_service.userId != app.globalData.userId){
-        this.setData({
-          editable: false,
-          workable: true
-        })
-      }
+    if(app.globalData.userInfo.volunteer && curr_service.userId != app.globalData.userId){
+      this.setData({
+        editable: false,
+        workable: true
+      })
     }
     // 可以审核,不能自己审自己
-    if(curr_service.status == 1){
-      if(app.globalData.userInfo.admin && curr_service.userId != app.globalData.userId){
-        this.setData({
-          editable: false,
-          auditable: true
-        })
-      }
+    if(app.globalData.userInfo.admin && curr_service.userId != app.globalData.userId){
+      this.setData({
+        editable: false,
+        auditable: true
+      })
     }
   },
 
