@@ -1,0 +1,28 @@
+<view>
+  <van-dropdown-menu class='dropdownOrder' active-color="#22ac38">
+    <van-dropdown-item model:value="{{ menuValue }}" options="{{ menuOptions }}" bind:change="loadServices"/>
+  </van-dropdown-menu>
+
+  <view wx:if="{{ serviceList.length > 0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ serviceList }}" wx:key="serviceEventId" title="{{item.computerModel}}"
+        label="{{item.statusString}}" is-link url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">问题：{{item.problemSummary}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">客户：{{item.userName}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">志愿者：{{item.volunteerName}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <view class='iconorder'>
+    <cover-image class='fixedIcon' bindtap="goToDetail" src="/res/icons/addOrder.png" />
+  </view>
+  <tab-bar active='1' class="orderTB"></tab-bar>
+</view>

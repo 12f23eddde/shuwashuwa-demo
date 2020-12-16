@@ -18,7 +18,7 @@ Component({
       iconPath: "home-o",
       text: "首页"
     }, {
-      pagePath: "/pages/order/order",
+      pagePath: "/pages/service-list/service-list",
       iconPath: "todo-list-o",
       text: "维修单"
     }, {

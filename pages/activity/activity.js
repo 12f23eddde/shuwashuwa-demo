@@ -32,7 +32,7 @@ Page({
     let option={
       'client':client,
       'status':0,
-      'closed':false
+      'closed':'false'
     }
     console.log(option)
     let inEditServiceList=await listServices(option)

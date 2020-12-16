@@ -37,9 +37,30 @@
       <van-switch checked="{{ hasDiscreteGraphics }}" size="35rpx" bind:change="gpuSwitch" disabled="{{ disableEdit }}" active-color="#22ac38"/>
     </van-cell>
     <van-field model:value="{{ graphicsModel }}" required="{{! disableEdit }}" clearable label="独立显卡型号" icon="question-o" disabled="{{ !hasDiscreteGraphics }}" placeholder="Nvidia MX350" bind:click-icon="onClickIcon" readonly="{{ disableEdit }}" />
-    <van-cell title="购买日期" required="{{! disableEdit }}" model:value="{{ boughtTime }}" bind:click="calenderClick" is-link />
-    <!--换成DatetimePicker-->
-    <van-calendar show="{{ calenderShow }}" min-date="{{ calenderMinDate }}" max-date="{{ calenderMaxDate }}" show-confirm="{{ false }}" bind:close="calenderClose" bind:confirm="calenderConfirm" />
+   
+    <van-popup show="{{ calenderShow }}" position="bottom">
+      <van-datetime-picker
+      type="year-month"
+      value="{{ calenderCurrDate }}"
+      min-date="{{ calenderMinDate }}"
+      max-date="{{ calenderMaxDate }}"
+      bind:cancel="calenderClose" 
+      bind:confirm="calenderConfirm"
+      />
+    </van-popup>
+    
+    <van-cell title="购买年月" required="{{! disableEdit }}" model:value="{{ boughtTime }}" bind:click="calenderClick" is-link />
+    <van-popup show="{{ calenderShow }}" position="bottom">
+      <van-datetime-picker
+      title="购买年月"
+      type="year-month"
+      value="{{ calenderCurrDate }}"
+      min-date="{{ calenderMinDate }}"
+      max-date="{{ calenderMaxDate }}"
+      bind:cancel="calenderClose" 
+      bind:confirm="calenderConfirm"
+      />
+    </van-popup>
     
     <van-cell title="在保修期内" required="{{! disableEdit }}">
       <van-switch checked="{{ underWarranty }}" size="35rpx" bind:change="warrantySwitch" disabled="{{ disableEdit }}" active-color="#22ac38"/>
@@ -68,18 +89,43 @@
     </van-popup>
     <van-field model:value="{{ problemDescription }}" label="故障描述" type="textarea" placeholder="" autosize required="{{! disableEdit }}" readonly="{{ disableEdit }}" />
     <van-cell title="故障图片">
-      <van-uploader accept="image" sizeType="['compressed']" file-list="{{ imageList }}" max-count="5" multiple disabled="{{ disableEdit }}" preview-size="120rpx" bind:after-read="uploadConfirm" />
+      <van-uploader accept="image" 
+        sizeType="['compressed']" 
+        file-list="{{ imageList }}" 
+        max-count="5" 
+        multiple 
+        preview-image 
+        preview-full-image 
+        disabled="{{ disableEdit }}" 
+        preview-size="120rpx" 
+        bind:after-read="uploadConfirm"
+        bind:delete="uploadCancel"
+       />
     </van-cell>
   </van-cell-group>
 </view>
 
-<view class="mapbuttons" >
-  <van-cell-group title="审核结果" class="serviceDetailCell_">
-    <van-field model:value="{{ problemSummary }}" required="{{! disableEdit }}" clearable label="故障概述" placeholder="更换电池" readonly="{{ !auditable }}" />
-    <van-field model:value="{{ message }}" label="审核消息" type="textarea" placeholder="请您重新上传照片，看不清电池型号" readonly="{{ !auditable }}" autosize required />
-  </van-cell-group>
-</view>
-  <view class="mapbuttons" wx-if="{{ editable && !disableEdit }}">
+  <view class="mapbuttons" wx-if="{{ status != 0 }}">
+    <van-cell-group title="审核结果" class="serviceDetailCell_">
+      <van-field model:value="{{ problemSummary }}" required="{{ (auditable && status == 1) }}" clearable label="故障概述" placeholder="更换电池" readonly="{{ !(auditable && status == 1) }}" />
+      <van-field model:value="{{ descriptionAdvice }}" label="审核消息" type="textarea" placeholder="请您重新上传照片，看不清电池型号" readonly="{{ !(auditable && status == 1) }}" autosize required="{{ (auditable && status == 1) }}" />
+    </van-cell-group>
+  </view>
+
+  <view class="mapbuttons" wx-if="{{ editable && status == 5 }}">
+    <van-cell-group title="维修反馈" class="serviceDetailCell_">
+      <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="维修后暂时还没出什么问题"  autosize required />
+    </van-cell-group>
+  </view>
+
+  <view class="mapbuttons" wx-if="{{ workable && status == 4 }}">
+    <van-cell-group title="维修反馈" class="serviceDetailCell_">
+      <van-field model:value="{{ volunteerMessage }}" label="志愿者留言" type="textarea" placeholder="记得先拆键盘"  autosize required />
+    </van-cell-group>
+  </view>
+
+<!-- 用户功能 -->
+  <view class="mapbuttons" wx-if="{{ editable && !disableEdit && status <= 2}}">
     <view class="buttons" >
       <van-button type="primary" size="large" bindtap="onSubmit" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         提交
@@ -87,8 +133,7 @@
     </view>
   </view>
 
-  <!-- wx-if="{{ editable && disableEdit }}" -->
-  <view class="mapbuttons" wx-if="{{ editable && disableEdit }}">
+  <view class="mapbuttons" wx-if="{{ editable && disableEdit && status <= 2}}">
     <view class="buttons_">
       <van-button type="primary" size="large" bindtap="onSubmit" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         修改
@@ -101,7 +146,49 @@
     </view>
   </view>
 
-  <view wx-if="{{ workable }}"></view>
-  <view wx-if="{{ auditable }}"></view>
+  <view class="mapbuttons" wx-if="{{ editable && status == 5 }}">
+    <view class="buttons" >
+      <van-button type="primary" size="large" bindtap=" onFeedBack" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+        反馈
+      </van-button>
+    </view>
+  </view>
+
+<!-- 管理员功能 -->
+  <view class="mapbuttons" wx-if="{{ auditable && status == 1}}">
+    <view class="buttons_">
+      <van-button type="primary" size="large" bindtap="onAuditPass" id="buttonSubmit" round>
+        审核通过
+      </van-button>
+    </view>
+    <view class="buttons_">
+      <van-button type="danger" size="large" bindtap="onAuditFail" id="buttonSubmit" round>
+        审核不通过
+      </van-button>
+    </view>
+  </view>
+
+<!-- 志愿者功能 -->
+  <view class="mapbuttons" wx-if="{{ workable && status==3 }}">
+    <view class="buttons" >
+      <van-button type="primary" size="large" bindtap="onWork" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+        接单
+      </van-button>
+    </view>
+  </view>
+
+  <view class="mapbuttons" wx-if="{{ workable && status==4 }}">
+    <view class="buttons_">
+      <van-button type="primary" size="large" bindtap="onComplete" id="buttonSubmit" round>
+        完成
+      </van-button>
+    </view>
+    <view class="buttons_">
+      <van-button type="danger" size="large" bindtap="onCancelWork" id="buttonSubmit" round>
+        取消
+      </van-button>
+    </view>
+  </view>
+
 </view>
 <view class="blank"></view>
