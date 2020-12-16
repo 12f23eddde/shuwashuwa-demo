@@ -27,6 +27,10 @@ Page({
   onLoad: function () {
     this.loadUserInfo()
   },
+
+  onShow: function() {
+    this.loadUserInfo()
+  },
   
   // 由于微信原生不支持表单验证，引入wevalidator
   // 虽然不好看，但是这的确是最简单的方法力
