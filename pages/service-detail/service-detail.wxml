@@ -6,11 +6,11 @@
   <van-notify id="van-notify" />
 
   <van-dialog id="van-dialog"></van-dialog>
+
   <view class="maptitle" >
-  <view class="title">
-    填写维修单
+    <view class="title"> 填写维修单 </view>
   </view>
-  </view>
+  
   <view class="mapbuttons" >
   <van-cell-group title="维修时间" class="serviceDetailCell">
     <van-cell title="活动" required="{{! disableEdit }}" model:value="{{ activityChosen }}" bind:click="activityClick" is-link />

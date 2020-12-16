@@ -1,76 +1,102 @@
 <!--pages/activity/activity.wxml-->
 
 <tab-bar active='2'></tab-bar>
-<view wx:if="{{ inEditService.length>0 }}">
-  <van-cell-group title="待填维修单">
-    <van-cell wx:for="{{ inEditService }}" wx:key="serviceEventId" title="{{item.computerModel}}" label="{{item.statusString}}" >
-      <view slot="">
-        <div style="display:block;">
-          <span style="display:block;">地点: {{item.location}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">开始时间: {{item.startTime}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">结束时间: {{item.endTime}}</span>
-        </div>
-      </view>
-    </van-cell>
-  </van-cell-group>
-</view>
+<view class="actvityPage">
+  <view class="maptitle">
+    <view class="title" wx:if="{{ currentActivity.length>0 }}">
+      当前活动
+    </view>
+    <view class="titleNa" wx:else>
+      没有正在进行的活动
+    </view>
+  </view>
+  <view wx:if="{{ currentActivity.length>0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ currentActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}">
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <view class="maptitle" wx:if="{{ inQueueService.length>0 }}">
+    <view class="title">
+      排队中维修单
+    </view>
+  </view>
+  <view wx:if="{{ inQueueService.length>0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ inQueueService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
+        label="{{item.statusString}}">
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <view class="maptitle">
+    <view class="title" wx:if="{{ inEditService.length>0 }}">
+      待填维修单
+    </view>
+  </view>
+  <view wx:if="{{ inEditService.length>0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ inEditService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
+        label="{{item.statusString}}">
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <view class="maptitle" wx:if="{{ incomingActivity.length>0 }}">
+    <view class="title">
+      未来活动
+    </view>
+  </view>
+  <view wx:if="{{ incomingActivity.length>0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ incomingActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}">
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
 
-<view wx:if="{{ inQueueService }}">
-  <van-cell-group title="排队中维修单">
-    <van-cell wx:for="{{ inQueueService }}" wx:key="serviceEventId" title="{{item.computerModel}}" label="{{item.statusString}}" >
-      <view slot="">
-        <div style="display:block;">
-          <span style="display:block;">地点: {{item.location}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">开始时间: {{item.startTime}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">结束时间: {{item.endTime}}</span>
-        </div>
-      </view>
-    </van-cell>
-  </van-cell-group>
-</view>
+  <view class="blank"></view>
+  <view class="blank"></view>
 
-<view wx:if="{{ currentActivity.length>0 }}">
-  <van-cell-group title="当前活动">
-    <van-cell wx:for="{{ currentActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}" >
-      <view slot="">
-        <div style="display:block;">
-          <span style="display:block;">地点: {{item.location}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">开始时间: {{item.startTime}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">结束时间: {{item.endTime}}</span>
-        </div>
-      </view>
-    </van-cell>
-  </van-cell-group>
 </view>
-
-<view wx:if="{{ incomingActivity.length>0 }}">
-  <van-cell-group title="未来活动">
-    <van-cell wx:for="{{ incomingActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}" >
-      <view slot="">
-        <div style="display:block;">
-          <span style="display:block;">地点: {{item.location}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">开始时间: {{item.startTime}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">结束时间: {{item.endTime}}</span>
-        </div>
-      </view>
-    </van-cell>
-  </van-cell-group>
-</view>
-
-<view class="blank"></view>
