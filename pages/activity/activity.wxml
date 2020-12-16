@@ -2,6 +2,7 @@
 
 <tab-bar active='2'></tab-bar>
 <view class="actvityPage">
+  <!--当前活动-->
   <view class="maptitle">
     <view class="title" wx:if="{{ currentActivity.length>0 }}">
       当前活动
@@ -27,6 +28,7 @@
       </van-cell>
     </van-cell-group>
   </view>
+  <!--排队中维修单-->
   <view class="maptitle" wx:if="{{ inQueueService.length>0 }}">
     <view class="title">
       排队中维修单
@@ -35,21 +37,22 @@
   <view wx:if="{{ inQueueService.length>0 }}" class="mapbuttons">
     <van-cell-group class="activityCell">
       <van-cell wx:for="{{ inQueueService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
-        label="{{item.statusString}}" is-link url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">
-        <view slot="">
-          <div style="display:block;">
-            <span style="display:block;">地点: {{item.location}}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;">开始时间: {{item.startTime}}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;">结束时间: {{item.endTime}}</span>
-          </div>
-        </view>
+        label="{{item.statusString}}">
+        <van-swipe-cell right-width="{{ 65 }}">
+          <view slot="right"><van-button type="danger">删除</van-button></view>
+          <view slot="">
+            <div style="display:block;">
+              <span style="display:block;"> {{item.computerModel}}</span>
+            </div>
+            <div style="display:block;">
+              <span style="display:block;"> {{item.problemSummary}}</span>
+            </div>
+          </view>
+        </van-swipe-cell>
       </van-cell>
     </van-cell-group>
   </view>
+  <!--待填维修单-->
   <view class="maptitle">
     <view class="title" wx:if="{{ inEditService.length>0 }}">
       待填维修单
@@ -58,21 +61,25 @@
   <view wx:if="{{ inEditService.length>0 }}" class="mapbuttons">
     <van-cell-group class="activityCell">
       <van-cell wx:for="{{ inEditService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
-        label="{{item.statusString}}" is-link url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">
-        <view slot="">
-          <div style="display:block;">
-            <span style="display:block;">地点: {{item.location}}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;">开始时间: {{item.startTime}}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;">结束时间: {{item.endTime}}</span>
-          </div>
-        </view>
+        label="{{item.statusString}}">
+        <van-swipe-cell right-width="{{ 150 }}">
+          <view slot="right">
+            <van-button type="primary" bindtap="continueEnter" data-serviceEventId="{{item.serviceEventId}}">继续填写</van-button>
+            <van-button type="danger" bind:click="deleteEvent" data-serviceEventId="{{item.serviceEventId}}">删除</van-button>
+          </view>
+          <view slot="">
+            <div style="display:block;">
+              <span style="display:block;"> {{item.computerModel}}</span>
+            </div>
+            <div style="display:block;">
+              <span style="display:block;"> {{item.problemSummary}}</span>
+            </div>
+          </view>
+        </van-swipe-cell>
       </van-cell>
     </van-cell-group>
   </view>
+  <!--未来活动-->
   <view class="maptitle" wx:if="{{ incomingActivity.length>0 }}">
     <view class="title">
       未来活动

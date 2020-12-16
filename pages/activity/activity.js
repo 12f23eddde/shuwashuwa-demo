@@ -3,6 +3,7 @@ import {listServices} from '../../api/service'
 import Toast from '@vant/weapp/toast/toast'
 import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
+import { requestWithToken } from '../../api/user'
 const util = require('../../utils/util')
 
 // pages/activity/activity.js
@@ -53,16 +54,13 @@ Page({
     let currentActivityList= await getCurrentActivities(currentTime,true)
     let incomingActivityList= await getIncomingActivities(currentTime)
     console.log('CurrentActivityList:',currentActivityList)
+    /*
     for (let i in currentActivityList){
       let startAndEndTime=await getSlotTime(currentActivityList[i].id,0)
-      console.log(startAndEndTime.slice(0,19))
-      console.log(startAndEndTime.slice(19))
-    }
+      console.log(startAndEndTime.startTime)
+      console.log(startAndEndTime.endTime)
+    }*/
     console.log('IncomingActivityList:',incomingActivityList)
-    for (let i in incomingActivityList){
-      let TimeSlot= await getActivitySlot(incomingActivityList[i].id)
-      console.log('Time slot of activity id ',incomingActivityList[i].id,':',TimeSlot)
-    }
     this.setData({
       currentActivity: currentActivityList,
       incomingActivity: incomingActivityList
@@ -124,6 +122,19 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  continueEnter: async function (event) {
+    console.log(event.currentTarget.dataset)
+    let url = '/pages/service-detail/service-detail?id='+event.currentTarget.dataset.serviceeventid;
+    wx.navigateTo({
+      url: url,
+    })
+  },
+  deleteEvent: async function (event) {
+    console.log(event.currentTarget.dataset)
+    let requestRes=await requestWithToken('/api/service','DELETE',event.currentTarget.dataset.serviceeventid)
+    console.log(requestRes)
+    this.loadCurrentServices()
   },
   AddActivitiesForTest: async function(){
     let newActData={
