@@ -510,22 +510,22 @@ Page({
     }
 
     // 可以编辑,创建新维修或者是自己的维修
-    if (curr_service.userId == app.globalData.userId){
+    if (curr_service.userId === app.globalData.userId){
       this.setData({
         editable: true,
-        // auditable: false,
-        // workable: false
+        auditable: false,
+        workable: false
       })
     }
     // 可以接单,不能自己接自己
-    if(app.globalData.userInfo.volunteer && curr_service.userId != app.globalData.userId){
+    if(app.globalData.userInfo.volunteer && curr_service.userId !== app.globalData.userId){
       this.setData({
         editable: false,
         workable: true
       })
     }
     // 可以审核,不能自己审自己
-    if(app.globalData.userInfo.admin && curr_service.userId != app.globalData.userId){
+    if(app.globalData.userInfo.admin && curr_service.userId !== app.globalData.userId){
       this.setData({
         editable: false,
         auditable: true
