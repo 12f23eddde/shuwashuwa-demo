@@ -35,8 +35,8 @@
   display:flex;
   align-items: center;
   margin-top: 5%;
-  width: 85%;
-  height: 220rpx;
+  width: 90%;
+  height: 200rpx;
   border-radius: 30rpx;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
   text-align: center;

@@ -26,21 +26,21 @@
         <view class="mapbuttons">
           <view class="bottons">
             <van-button 
-            icon="setting" 
-            type="orderBut" 
-            round 
-            size="large"
-            bindtap="onChangeURL"
-            data-url="{{'/pages/order-add/order-add?id='+item.num}}">修改</van-button>
+              icon="setting" 
+              type="orderBut" 
+              round 
+              size="large"
+              bindtap="onChangeURL"
+              data-url="{{'/pages/order-add/order-add?id='+item.num}}">修改</van-button>
           </view>
           <view class="bottons">
             <van-button 
-            icon="comment-circle" 
-            type="orderBut" 
-            round 
-            size="large"
-            bindtap="onChangeURL"
-            data-url="{{'/pages/order-add/order-add?id='+item.num}}">反馈</van-button>
+              icon="comment-circle" 
+              type="orderBut" 
+              round 
+              size="large"
+              bindtap="onChangeURL"
+              data-url="{{'/pages/order-add/order-add?id='+item.num}}">反馈</van-button>
           </view>
         </view>
       </van-collapse-item>
