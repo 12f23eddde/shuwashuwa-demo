@@ -1,3 +1,5 @@
+import {getUserInfo, updateUserInfo} from '../../api/user'
+
 const app = getApp()
 
 Page({
@@ -21,28 +23,11 @@ Page({
       email: ''
     }
   },
+
   onLoad: function () {
-    wx.getSetting({
-      success (res){
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wx.getUserInfo({
-            success: function(res) {
-              console.log(res.userInfo)
-            }
-          })
-        }
-      }
-    })
+    this.loadUserInfo()
   },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-  },
+  
   // 由于微信原生不支持表单验证，引入wevalidator
   // 虽然不好看，但是这的确是最简单的方法力
   // https://github.com/ChanceYu/we-validator
@@ -132,6 +117,13 @@ Page({
     })
     Toast.success('信息更新成功');
     this.loadUserInfo()
+  },
+
+  onClickChange: function(event) {
+    let id = event.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '/pages/user/user'
+    })
   },
 
   clearErrMsg: async function(){
