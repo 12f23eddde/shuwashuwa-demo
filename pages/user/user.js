@@ -107,6 +107,7 @@ Page({
   // 提交更改，并重新加载用户信息
   onSubmit: async function(){
     this.clearErrMsg()
+    console.log(this)
     if(!this.validator.checkData(this.data)) return
     // [后期可能需要更改] 尝试直接传this.data(可能有数据用不到?)
     await updateUserInfo(this.data)

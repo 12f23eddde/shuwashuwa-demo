@@ -1,4 +1,8 @@
-import {createService, getService, cancelService, submitDraft, submitForm} from '../../api/service'
+import {
+  createService, getService, submitForm, submitDraft,
+  cancelService, auditService, completeService, feedbackService, 
+  workService, cancelWorkService
+} from '../../api/service'
 import {uploadImage} from '../../api/file'
 import {getIncomingActivities, getActivitySlot} from '../../api/activity'
 import {formatTime} from '../../utils/util'
@@ -29,6 +33,9 @@ Page({
     problemSummary: "string",
     result: true,
     serviceFormId: 0,
+
+    volunteerMessage: "",
+    userMessage: "",
     
     activityList: [],
     activityNames: [],
@@ -113,11 +120,33 @@ Page({
   },
 
   onAuditPass: async function(){
-
+    this.setData({
+      result: true
+    })
+    await auditService(this.data)
   },
 
   onAuditFail: async function(){
+    this.setData({
+      result: false
+    })
+    await auditService(this.data)
+  },
 
+  onWork: async function(){
+    await workService(this.data.serviceEventId)
+  },
+
+  onCancelWork: async function(){
+    await cancelWorkService(this.data.serviceEventId)
+  },
+
+  onComplete: async function(){
+    await completeService(this.data.serviceEventId, this.data.volunteerMessage)
+  },
+
+  onFeedBack: async function(){
+    await feedbackService(this.data.serviceEventId, this.data.userMessage)
   },
 
   activityClick: async function(){
@@ -383,7 +412,8 @@ Page({
     let lastForm = curr_service.serviceForms[curr_service.serviceForms.length-1]
     this.setData(lastForm)
     this.setData({
-      serviceFormId: curr_service.serviceForms.length-1
+      serviceFormId: curr_service.serviceForms.length-1,
+      message: curr_service.message
     })
     // 解决没有独显型号的问题
     this.setData({

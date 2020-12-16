@@ -79,13 +79,13 @@ export const feedbackService = async function(id, message){
 
 // 志愿者-接单
 export const workService = async function(id){
-  let requestData = await requestWithToken('/api/service/work','PUT', {serviceEventId: id})
+  let requestData = await requestWithToken('/api/service/work','PUT', {id: id})
   return requestData
 }
 
 // 志愿者-取消接单
 export const cancelWorkService = async function(id){
-  let requestData = await requestWithToken('/api/service/work','DELETE', {serviceEventId: id})
+  let requestData = await requestWithToken('/api/service/work','DELETE', {id: id})
   return requestData
 }
 
