@@ -30,7 +30,8 @@ Page({
     let client=util.parseToken(app.globalData.userToken).userid
     let option={
       'client':client,
-      'status':0
+      'status':0,
+      'closed':'false'
     }
     console.log(option)
     let inEditServiceList=await listServices(option)
