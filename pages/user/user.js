@@ -9,6 +9,7 @@ Page({
   // 微信文档, 永远的谜语人
   data: {
     role: '',
+    userInfo: {},
     userName: '',
     studentId: '',
     phoneNumber: '',

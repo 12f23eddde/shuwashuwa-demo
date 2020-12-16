@@ -6,7 +6,8 @@
     "pages/activity/activity",
     "pages/order/order",
     "pages/debug/debug",
-    "pages/service-detail/service-detail"
+    "pages/service-detail/service-detail",
+    "pages/my-info/my-info"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -31,7 +32,7 @@
         "text": "活动"
       },
       {
-        "pagePath": "pages/user/user",
+        "pagePath": "pages/my-info/my-info",
         "text": "个人信息"
       }
     ]

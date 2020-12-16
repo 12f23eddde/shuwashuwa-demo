@@ -15,6 +15,28 @@ Page({
     activeNames: ['1'],
     restoredReq: '',
     restoredAct: -1,
+    // 需要将List中的元素换成service!
+    // iconPath需要根据维修单状态选择
+    serviceList: [
+      {
+        "activityId": 0,
+        "boughtTime": "1919-08-10",
+        "brand": "string",
+        "computerModel": "string",
+        "cpuModel": "string",
+        "graphicsModel": "string",
+        "hasDiscreteGraphics": true,
+        "imageList": [
+          "string"
+        ],
+        "laptopType": "string",
+        "problemDescription": "string",
+        "problemType": "string",
+        "serviceEventId": 0,
+        "timeSlot": 0,
+        "underWarranty": true
+      }
+    ],
     List: [
       {
         iconPath: '/pages/order/rejectedOrder.png',
@@ -189,7 +211,7 @@ Page({
 
   },
 
-  onChangeURL: async function (event){
+  onChangeURL: async function (event) {
     let url = event.currentTarget.dataset.url;
     wx.navigateTo({
       url: url,

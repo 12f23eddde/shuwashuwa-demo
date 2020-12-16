@@ -1,59 +1,56 @@
 <!--pages/order/order.wxml-->
-<!--改用collapse-->
-<van-dropdown-menu class='dropdownOrder' active-color="#1989fa">
+<!--维修单页表页面。可以在此筛选、查看维修单的简略信息-->
+
+<van-dropdown-menu class='dropdownOrder' active-color="#22ac38">
   <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
 </van-dropdown-menu>
 
 <view class='orderPage'>
-
-  
-<view class="blank"></view>
-
+  <view class="blank"></view>
   <van-collapse value="{{ activeNames }}" bind:change="onChange" class="orderCollapse">
-  <van-swipe-cell 
-    wx:for="{{ List }}"
-    class="titileOrder"
-    right-width="{{ 80 }}" 
-    async-close
-    bind:close="onClose"
-  >
-    <van-collapse-item icon="{{ item.iconPath }}" class="titalOrder">
-      <view slot="title" class="collTitle"> {{ item.pcmodule }} </view>
-      <view slot="value" class="dateView"> {{ item.date }} </view>
-      <view slot="value" class="orderUser"> {{ item.userName }} </view>
-      <view slot="value" class="orderType"> {{ item.pcmodule }} </view>
-      <view slot="value" class="orderDescript"> {{ item.requests }} </view>
-      <view class='rejectedDetails' wx:if="{{item.status == 'REJECTED'}}"> {{ item.reply }} </view>
-      <view class='orderDetails'> {{ item.orderDetails }} </view>
-      <view class="mapbuttons">
-        <view class="bottons">
-          <van-button 
-          icon="setting" 
-          type="orderBut" 
-          round size="large"
-          bindtap="onChangeURL"
-          data-url="{{'/pages/order-add/order-add?id='+item.num}}">修改</van-button>
+    <van-swipe-cell 
+      wx:for="{{ List }}"
+      class="titileOrder"
+      right-width="{{ 80 }}" 
+      async-close
+      bind:close="onClose"
+    >
+      <van-collapse-item icon="{{ item.iconPath }}" class="titalOrder">
+        <view slot="title" class="collTitle"> {{ item.pcmodule }} </view>
+        <view slot="value" class="dateView"> {{ item.date }} </view>
+        <view slot="value" class="orderUser"> {{ item.userName }} </view>
+        <view slot="value" class="orderType"> {{ item.pcmodule }} </view>
+        <view slot="value" class="orderDescript"> {{ item.requests }} </view>
+        <view class='rejectedDetails' wx:if="{{item.status == 'REJECTED'}}"> {{ item.reply }} </view>
+        <view class='orderDetails'> {{ item.orderDetails }} </view>
+        <view class="mapbuttons">
+          <view class="bottons">
+            <van-button 
+              icon="setting" 
+              type="orderBut" 
+              round 
+              size="large"
+              bindtap="onChangeURL"
+              data-url="{{'/pages/order-add/order-add?id='+item.num}}">修改</van-button>
+          </view>
+          <view class="bottons">
+            <van-button 
+              icon="comment-circle" 
+              type="orderBut" 
+              round 
+              size="large"
+              bindtap="onChangeURL"
+              data-url="{{'/pages/order-add/order-add?id='+item.num}}">反馈</van-button>
+          </view>
         </view>
-        <view class="bottons">
-          <van-button 
-          icon="comment-circle" 
-          type="orderBut" 
-          round size="large"
-          bindtap="onChangeURL"
-          data-url="{{'/pages/order-add/order-add?id='+item.num}}">反馈</van-button>
-        </view>
-      </view>
-    </van-collapse-item>
-    <view slot="right" class="closeSlot">删除</view>
-  </van-swipe-cell>
-</van-collapse>
-
+      </van-collapse-item>
+      <view slot="right" class="closeSlot">删除</view>
+    </van-swipe-cell>
+  </van-collapse>
   <view class='iconorder'>
     <cover-image class='fixedIcon' bindtap="goToDetail" src="/res/icons/addOrder.png" />
   </view>
-
   <view class="blank"></view>
-
 </view>
 
 <van-dialog id="van-dialog" confirmButtonOpenType />
