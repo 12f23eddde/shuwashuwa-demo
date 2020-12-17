@@ -1,4 +1,7 @@
-import {getCurrentActivities,getIncomingActivities,getActivitySlot,getSlotTime,requestWithSAToken} from '../../api/activity'
+import {
+  getCurrentActivities,getIncomingActivities,getActivitySlot,getSlotTime,
+  requestWithSAToken, checkIn
+} from '../../api/activity'
 import {listServices} from '../../api/service'
 import Toast from '@vant/weapp/toast/toast'
 import Notify from '@vant/weapp/notify/notify'
@@ -50,8 +53,18 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
+  onLoad: async function (options) {
+    if (options.activity != "undefined"){  // 加载维修单, 默认不开启编辑
+      let res = await checkIn(options.activity)
+      .catch((res)=>{
+        Toast.fail('签到失败')
+        console.log(res)
+        throw res
+      })
+      
+      Toast.success('签到成功')
+      console.log(res)
+    }
   },
 
   /**
