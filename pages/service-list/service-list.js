@@ -98,11 +98,14 @@ Page({
   // 根据menuValue和用户权限把serviceList拼出来
   // 对于相同的menuValue, 用户权限不同看到的东西也是不一样的
   loadServices: async function(){
+    this.setData({
+      serviceList: []
+    })
     let val = this.data.menuValue
     // 一个options就够
     if (0 <= val && val <= 5){
       let res = await this.loadServicebyVal(val)
-      if (res[0].closed === false) {
+      if (res[0] && res[0].closed === false) {
         this.setData({
           serviceList: res
         })
@@ -110,9 +113,6 @@ Page({
     }else if (val===6) {  // 活动中维修单需要多次请求
 
     }else if (val===7) {
-      this.setData({
-        serviceList: []
-      })
       let i = 0;
       let res = []
       for (i = 0; i <= 5; i++) {
@@ -120,7 +120,7 @@ Page({
         if (temp !== []) {
           let j = 0
           for (j = 0; j < temp.length; j++) {
-            if(temp[j].closed === false) {
+            if(temp[j] && temp[j].closed === false) {
               res.push(temp[j])
             }
           }
@@ -185,8 +185,6 @@ Page({
 
   onCancel: async function(event){
     const { position, instance } = event.detail;
-    console.log(position)
-    console.log(instance)
     if (position === 'right') {
       await Dialog.confirm({
         title: "取消维修",
@@ -197,8 +195,8 @@ Page({
         let res = await cancelService(serviceEventId)
         console.log(res)
         instance.close()
-        this.loadServices()
       })
+      this.loadServices()
     }
   },
   /**
