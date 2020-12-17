@@ -12,8 +12,10 @@
     </view>
     <view class="userotherinfo">
       <van-icon name="manager" />
-      <view class="phone">{{ phoneNumber }}</view>
-      <view class="stutype">普通用户</view>
+      <view wx:if="{{ phoneNumber }}" class="phone">{{ phoneNumber }}</view>
+      <view wx:if="{{ user }}" stutype>普通用户</view>
+      <view wx:if="{{ admin }}" stutype>管理员</view>
+      <view wx:if="{{ volunteer }}" stutype>志愿者</view>
     </view>
   </view>
   <van-toast id="van-toast" />
@@ -86,7 +88,7 @@
         修改个人信息
       </van-button>
     </view>
-    <view class="buttons_">
+    <view class="buttons_" wx:if="{{ user }}">
       <van-button size="large" id="buttonSubmit" round>
         申请成为志愿者
       </van-button>

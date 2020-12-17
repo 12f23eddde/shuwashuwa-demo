@@ -4,6 +4,11 @@ const app = getApp()
 
 Page({
   data: {
+    
+    user: false,
+    admin: false,
+    volunteer: false,
+
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -104,9 +109,13 @@ Page({
   // 加载用户信息，并放到data内
   loadUserInfo: async function(){
     let userinfo = await getUserInfo()
+    this.setData({
+      user: !app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer,
+      volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,
+      admin: app.globalData.userInfo.admin
+    })
     // [后期可能需要更改] 直接替换this.data的全部内容
     this.setData(userinfo)
-    console.log(userinfo)
   },
 
   // 提交更改，并重新加载用户信息
