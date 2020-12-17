@@ -105,11 +105,10 @@ Page({
     // 一个options就够
     if (0 <= val && val <= 5){
       let res = await this.loadServicebyVal(val)
-      if (res[0] && res[0].closed === false) {
-        this.setData({
-          serviceList: res
-        })
-      }
+      this.setData({
+        serviceList: res
+      })
+      
     }else if (val===6) {  // 活动中维修单需要多次请求
 
     }else if (val===7) {
@@ -120,9 +119,7 @@ Page({
         if (temp !== []) {
           let j = 0
           for (j = 0; j < temp.length; j++) {
-            if(temp[j] && temp[j].closed === false) {
-              res.push(temp[j])
-            }
+            res.push(temp[j])
           }
         }
       }
