@@ -75,8 +75,6 @@ Page({
   // 对于相同的menuValue, 用户权限不同看到的东西也是不一样的
   loadServices: async function(){
     let val = this.data.menuValue
-    console.log(val)
-    console.log('hreer')
     // 一个options就够
     if (0 <= val && val <= 5){
       let res = await this.loadServicebyVal(val)
@@ -86,7 +84,6 @@ Page({
     }else if (val===6) {  // 活动中维修单需要多次请求
 
     }else if (val===7) {
-      console.log('hi')
       let i = 0;
       let res = []
       for (i = 0; i <=5; i++) {
@@ -96,10 +93,8 @@ Page({
           for (j = 0; j < temp.length; j++) {
             res.push(temp[j])
           }
-          console.log(temp)
         }
       }
-      console.log(res)
       this.setData({
         serviceList: res
       })
@@ -111,13 +106,13 @@ Page({
       option.status = val
       option.closed = false
       if(this.data.user) {option.client = app.globalData.userId}
-      if(val==0) {
+      if(val === 0) {
         option.draft = true
         option.client = app.globalData.userId
       }
       else {option.draft = false}
-      if(this.data.volunteer && val==3) {option.volunteer = app.globalData.userId}
-      console.log('[loadservices] val=' + val + ' user='+ this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
+      if(this.data.volunteer && val === 3) {option.volunteer = app.globalData.userId}
+      // console.log('[loadservices] val=' + val + ' user='+ this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
       let res = await listServices(option)
       let i = 0
       for (i = 0; i < res.length; i++) {
@@ -140,7 +135,6 @@ Page({
       })
       return res
   },
-
 
   goToDetail(event) {
     let id = event.currentTarget.dataset.id;
@@ -175,7 +169,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    this.loadServices()
   },
 
   /**
