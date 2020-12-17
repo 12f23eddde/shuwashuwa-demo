@@ -1,5 +1,8 @@
 <!--pages/activity/activity.wxml-->
 
+<van-notify id="van-notify" />
+<van-toast id="van-toast" />
+
 <tab-bar active='2'></tab-bar>
 <view class="actvityPage">
   <!--当前活动-->

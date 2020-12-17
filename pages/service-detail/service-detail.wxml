@@ -140,7 +140,7 @@
       </van-button>
     </view>
     <view class="buttons_">
-      <van-button type="danger" size="large" bindtap="onCancel" id="buttonSubmit" round>
+      <van-button type="danger" size="large" bindtap="onCancel" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         删除
       </van-button>
     </view>
@@ -157,12 +157,12 @@
 <!-- 管理员功能 -->
   <view class="mapbuttons" wx-if="{{ auditable && status == 1}}">
     <view class="buttons_">
-      <van-button type="primary" size="large" bindtap="onAuditPass" id="buttonSubmit" round>
+      <van-button type="primary" size="large" bindtap="onAuditPass" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         审核通过
       </van-button>
     </view>
     <view class="buttons_">
-      <van-button type="danger" size="large" bindtap="onAuditFail" id="buttonSubmit" round>
+      <van-button type="danger" size="large" bindtap="onAuditFail" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         审核不通过
       </van-button>
     </view>
@@ -179,12 +179,12 @@
 
   <view class="mapbuttons" wx-if="{{ workable && status==4 }}">
     <view class="buttons_">
-      <van-button type="primary" size="large" bindtap="onComplete" id="buttonSubmit" round>
+      <van-button type="primary" size="large" bindtap="onComplete" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         完成
       </van-button>
     </view>
     <view class="buttons_">
-      <van-button type="danger" size="large" bindtap="onCancelWork" id="buttonSubmit" round>
+      <van-button type="danger" size="large" bindtap="onCancelWork" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         取消
       </van-button>
     </view>

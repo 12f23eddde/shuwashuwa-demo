@@ -3,6 +3,8 @@
     <van-dropdown-item model:value="{{ menuValue }}" options="{{ menuOptions }}" bind:change="loadServices"/>
   </van-dropdown-menu>
 
+  <van-dialog id="van-dialog" />
+
   <view class="blank"></view>
 
   <van-collapse 
@@ -17,6 +19,8 @@
       right-width="{{ 80 }}" 
       async-close
       bind:close="onClose"
+      disabled="{{item.status != 0}}"
+      data-id="{{item.serviceEventId}}"
     >
       <van-collapse-item icon="{{ item.iconPath }}" class="titileOrder">
         <view slot="title" class="collTitle"> {{ item.computerModel }} </view>

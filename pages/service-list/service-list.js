@@ -1,6 +1,7 @@
 import {listServices, cancelService, workService, getService} from '../../api/service'
 import {getCurrentActivities} from '../../api/activity'
 import {getUserInfo} from '../../api/user'
+import Dialog from '@vant/weapp/dialog/dialog'
 
 const app = getApp()
 
@@ -70,6 +71,29 @@ Page({
     });
   },
 
+  // 左滑删除
+  onClose(event) { 
+    const {position, instance } = event.detail;
+    switch (position) {
+      case 'left':
+      case 'cell':
+        instance.close();
+        break;
+      case 'right':
+        Dialog.confirm({
+          title: "取消维修",
+          message:"您确定要取消当前维修吗？此操作不可逆。"
+        }).then(async ()=>{
+          // console.log(res)
+          let serviceEventId = event.currentTarget.dataset.id
+          let res = await cancelService(serviceEventId)
+          instance.close()
+          this.loadServices()
+        })
+        break;
+    }
+  },
+
   // 根据menuValue和用户权限把serviceList拼出来
   // 对于相同的menuValue, 用户权限不同看到的东西也是不一样的
   loadServices: async function(){
@@ -88,7 +112,7 @@ Page({
       })
       let i = 0;
       let res = []
-      for (i = 0; i <=5; i++) {
+      for (i = 0; i <= 5; i++) {
         let temp = await this.loadServicebyVal(i)
         if (temp !== []) {
           let j = 0
@@ -118,13 +142,13 @@ Page({
   loadServicebyVal: async function(val) {
     let option = {}
       option.status = val
-      option.closed = false
+      option.closed = 'false'
       if(this.data.user) {option.client = app.globalData.userId}
       if(val === 0) {
-        option.draft = true
+        option.draft = 'true'
         option.client = app.globalData.userId
       }
-      else {option.draft = false}
+      else {option.draft = 'false'}
       if(this.data.volunteer && val === 3) {option.volunteer = app.globalData.userId}
       // console.log('[loadservices] val=' + val + ' user='+ this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
       let res = await listServices(option)
