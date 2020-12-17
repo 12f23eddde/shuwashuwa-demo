@@ -61,7 +61,6 @@
   <view wx:if="{{ inEditService.length>0 }}" class="mapbuttons">
     <van-cell-group class="activityCell" bindtap="gotoOrder">
       <van-cell title="你有{{inEditService.length}}张待填写维修单" value="点击跳转">
-        
       </van-cell>
     </van-cell-group>
   </view>

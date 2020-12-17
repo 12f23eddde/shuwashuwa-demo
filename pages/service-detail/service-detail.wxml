@@ -141,7 +141,7 @@
     </view>
     <view class="buttons_">
       <van-button type="danger" size="large" bindtap="onCancel" id="buttonSubmit" round>
-        取消
+        删除
       </van-button>
     </view>
   </view>

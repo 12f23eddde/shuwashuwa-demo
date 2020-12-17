@@ -513,8 +513,8 @@ Page({
     if (curr_service.userId === app.globalData.userId){
       this.setData({
         editable: true,
-        auditable: false,
-        workable: false
+        // auditable: false,
+        // workable: false
       })
     }
     // 可以接单,不能自己接自己
