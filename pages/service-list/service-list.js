@@ -39,13 +39,14 @@ Page({
           { text: '维修中', value: 4 },
           { text: '已完成', value: 5 },
           { text: '活动中', value: 6 },
+          { text: '所有维修单', value: 7 },
         ]
       })
     }else if(this.data.volunteer){  // 是志愿者
       this.setData({
         menuValue: 7,
         menuOptions: [
-          { text: '所有本人维修单', value: 7 },
+          { text: '所有维修单', value: 7 },
           { text: '待编辑', value: 0 },
           { text: '待接单', value: 3 },
           { text: '维修中', value: 4 },
