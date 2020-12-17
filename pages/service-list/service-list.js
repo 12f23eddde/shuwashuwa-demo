@@ -1,6 +1,7 @@
 import {listServices, cancelService, workService, getService} from '../../api/service'
 import {getCurrentActivities} from '../../api/activity'
 import {getUserInfo} from '../../api/user'
+import Dialog from '@vant/weapp/dialog/dialog'
 
 const app = getApp()
 
@@ -78,9 +79,11 @@ Page({
     // 一个options就够
     if (0 <= val && val <= 5){
       let res = await this.loadServicebyVal(val)
-      this.setData({
-        serviceList: res
-      })
+      if (res[0].closed === false) {
+        this.setData({
+          serviceList: res
+        })
+      }
     }else if (val===6) {  // 活动中维修单需要多次请求
 
     }else if (val===7) {
@@ -94,7 +97,9 @@ Page({
         if (temp !== []) {
           let j = 0
           for (j = 0; j < temp.length; j++) {
-            res.push(temp[j])
+            if(temp[j].closed === false) {
+              res.push(temp[j])
+            }
           }
         }
       }
@@ -154,6 +159,25 @@ Page({
       url: '/pages/service-detail/service-detail?id=' + id
     })
   },
+
+  onCancel: async function(event){
+    const { position, instance } = event.detail;
+    console.log(position)
+    console.log(instance)
+    if (position === 'right') {
+      await Dialog.confirm({
+        title: "取消维修",
+        message:"您确定要取消当前维修吗？此操作不可逆。"
+      }).then(async ()=>{
+        console.log(this.data.serviceEventId)
+        let serviceEventId = event.currentTarget.dataset.id
+        let res = await cancelService(serviceEventId)
+        console.log(res)
+        instance.close()
+        this.loadServices()
+      })
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -167,8 +191,6 @@ Page({
       admin: app.globalData.userInfo.admin
     })
     this.initMenu()  // 不需要网络请求，好耶
-    
-    
   },
 
   /**

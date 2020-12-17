@@ -16,7 +16,9 @@
       class="titileOrder"
       right-width="{{ 80 }}" 
       async-close
-      bind:close="onClose"
+      bind:close="onCancel"
+      disabled="{{item.status != 0}}"
+      data-id="{{item.serviceEventId}}"
     >
       <van-collapse-item icon="{{ item.iconPath }}" class="titileOrder">
         <view slot="title" class="collTitle"> {{ item.computerModel }} </view>
@@ -57,5 +59,9 @@
   </view>
   
   <view class="blank"></view>
+
+  <van-dialog id="van-dialog"></van-dialog>
+
   <tab-bar active='1' class="orderTB"></tab-bar>
+
 </view>
