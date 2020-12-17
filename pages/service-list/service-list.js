@@ -43,8 +43,9 @@ Page({
       })
     }else if(this.data.volunteer){  // 是志愿者
       this.setData({
-        menuValue: 3,
+        menuValue: 7,
         menuOptions: [
+          { text: '所有本人维修单', value: 7 },
           { text: '待编辑', value: 0 },
           { text: '待接单', value: 3 },
           { text: '维修中', value: 4 },
@@ -56,7 +57,7 @@ Page({
       this.setData({
         menuValue: 7,
         menuOptions: [
-          { text: '所有维修单', value: 7 },
+          { text: '所有本人维修单', value: 7 },
           { text: '待编辑', value: 0 },
           { text: '活动中', value: 6 },
           { text: '已完成', value: 5 },
@@ -84,6 +85,9 @@ Page({
     }else if (val===6) {  // 活动中维修单需要多次请求
 
     }else if (val===7) {
+      this.setData({
+        serviceList: []
+      })
       let i = 0;
       let res = []
       for (i = 0; i <=5; i++) {
@@ -130,9 +134,6 @@ Page({
           res[i].iconPath = '/pages/service-list/comfirmededOrder.png'
         }
       }
-      this.setData({
-        serviceList: res
-      })
       return res
   },
 
