@@ -141,7 +141,7 @@ Page({
           res[i].iconPath = '/pages/service-list/verifyingOrder.png'
         }
         else {
-          res[i].iconPath = '/pages/service-list/comfirmededOrder.png'
+          res[i].iconPath = '/pages/service-list/comfirmedOrder.png'
         }
       }
       return res
@@ -202,7 +202,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.loadServices()
   },
 
   /**

@@ -25,6 +25,7 @@
         <view slot="value" class="orderType"> {{ item.computerModel }} </view>
         <view class='rejectedDetails' wx:if="{{item.status == 0}}"> 等待编辑 </view>
         <view class='rejectedDetails' wx:if="{{item.status == 1}}"> 等待审核 </view>
+        <view class='comfirmedDetails' wx:if="{{item.status == 2}}"> 审核通过 </view>
         <view class='orderDetails'> {{ item.problemSummary }} </view>
         <view class="mapbuttons">
           <view class="bottons">
