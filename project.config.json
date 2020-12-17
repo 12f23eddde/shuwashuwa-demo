@@ -52,17 +52,25 @@
     "conversation": {
       "list": []
     },
-    "game": {
+    "plugin": {
       "list": []
     },
-    "plugin": {
+    "game": {
       "list": []
     },
     "gamePlugin": {
       "list": []
     },
     "miniprogram": {
-      "list": []
+      "list": [
+        {
+          "id": 0,
+          "name": "签到",
+          "pathName": "pages/activity/activity",
+          "query": "activity=2",
+          "scene": null
+        }
+      ]
     }
   }
 }

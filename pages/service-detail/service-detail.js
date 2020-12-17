@@ -104,6 +104,7 @@ Page({
   },
 
   onCancel: async function(){
+    this.setData({ submitLoading: true })
     await Dialog.confirm({
       title: "取消维修",
       message:"您确定要取消当前维修吗？此操作不可逆。"
@@ -114,13 +115,17 @@ Page({
     wx.navigateBack({
       delta: 0,
     })
+    this.setData({ submitLoading: false })
   },
 
   onSave: async function (){
+    this.setData({ submitLoading: true })
     await submitDraft(this.data)
+    this.setData({ submitLoading: false })
   },
 
   onAuditPass: async function(){
+    this.setData({ submitLoading: true })
     if(!this.validator2.checkData(this.data)) return;
     await auditService({
       message: this.data.descriptionAdvice,
@@ -130,10 +135,12 @@ Page({
       serviceFormId: this.data.serviceFormId
     })
     this.loadService(this.data.serviceEventId)
+    this.setData({ submitLoading: false })
   },
 
   onAuditFail: async function(){
     if(!this.validator2.checkData(this.data)) return;
+    this.setData({ submitLoading: true })
     await auditService({
       message: this.data.descriptionAdvice,
       problemSummary: this.data.problemSummary,
@@ -142,26 +149,35 @@ Page({
       serviceFormId: this.data.serviceFormId
     })
     this.loadService(this.data.serviceEventId)
+    this.setData({ submitLoading: false })
   },
 
   onWork: async function(){
+    this.setData({ submitLoading: true })
     await workService(this.data.serviceEventId)
     this.loadService(this.data.serviceEventId)
+    this.setData({ submitLoading: false })
   },
 
   onCancelWork: async function(){
+    this.setData({ submitLoading: true })
     await cancelWorkService(this.data.serviceEventId)
     this.loadService(this.data.serviceEventId)
+    this.setData({ submitLoading: false })
   },
 
   onComplete: async function(){
+    this.setData({ submitLoading: true })
     await completeService(this.data.serviceEventId, this.data.volunteerMessage)
     this.loadService(this.data.serviceEventId)
+    this.setData({ submitLoading: false })
   },
 
   onFeedBack: async function(){
+    this.setData({ submitLoading: true })
     await feedbackService(this.data.serviceEventId, this.data.userMessage)
     this.loadService(this.data.serviceEventId)
+    this.setData({ submitLoading: false })
   },
 
   activityClick: async function(){
@@ -513,8 +529,8 @@ Page({
     if (curr_service.userId === app.globalData.userId){
       this.setData({
         editable: true,
-        auditable: false,
-        workable: false
+        // auditable: false,
+        // workable: false
       })
     }
     // 可以接单,不能自己接自己

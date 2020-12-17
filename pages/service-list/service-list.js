@@ -1,6 +1,7 @@
 import {listServices, cancelService, workService, getService} from '../../api/service'
 import {getCurrentActivities} from '../../api/activity'
 import {getUserInfo} from '../../api/user'
+import Dialog from '@vant/weapp/dialog/dialog'
 
 const app = getApp()
 
@@ -30,7 +31,6 @@ Page({
   initMenu: function (){
     if(this.data.admin){  // 是管理员
       this.setData({
-        menuValue: 1,
         menuOptions: [
           { text: '待编辑', value: 0 },
           { text: '待审核', value: 1 },
@@ -39,12 +39,14 @@ Page({
           { text: '维修中', value: 4 },
           { text: '已完成', value: 5 },
           { text: '活动中', value: 6 },
+          { text: '所有维修单', value: 7 },
         ]
       })
     }else if(this.data.volunteer){  // 是志愿者
       this.setData({
-        menuValue: 3,
+        menuValue: 7,
         menuOptions: [
+          { text: '所有维修单', value: 7 },
           { text: '待编辑', value: 0 },
           { text: '待接单', value: 3 },
           { text: '维修中', value: 4 },
@@ -54,9 +56,8 @@ Page({
       })
     }else{  // 是普通用户
       this.setData({
-        menuValue: 7,
         menuOptions: [
-          { text: '所有维修单', value: 7 },
+          { text: '所有本人维修单', value: 7 },
           { text: '待编辑', value: 0 },
           { text: '活动中', value: 6 },
           { text: '已完成', value: 5 },
@@ -71,9 +72,35 @@ Page({
     });
   },
 
+  // 左滑删除
+  onClose(event) { 
+    const {position, instance } = event.detail;
+    switch (position) {
+      case 'left':
+      case 'cell':
+        instance.close();
+        break;
+      case 'right':
+        Dialog.confirm({
+          title: "取消维修",
+          message:"您确定要取消当前维修吗？此操作不可逆。"
+        }).then(async ()=>{
+          // console.log(res)
+          let serviceEventId = event.currentTarget.dataset.id
+          let res = await cancelService(serviceEventId)
+          instance.close()
+          this.loadServices()
+        })
+        break;
+    }
+  },
+
   // 根据menuValue和用户权限把serviceList拼出来
   // 对于相同的menuValue, 用户权限不同看到的东西也是不一样的
   loadServices: async function(){
+    this.setData({
+      serviceList: []
+    })
     let val = this.data.menuValue
     // 一个options就够
     if (0 <= val && val <= 5){
@@ -81,12 +108,13 @@ Page({
       this.setData({
         serviceList: res
       })
+      
     }else if (val===6) {  // 活动中维修单需要多次请求
 
     }else if (val===7) {
       let i = 0;
       let res = []
-      for (i = 0; i <=5; i++) {
+      for (i = 0; i <= 5; i++) {
         let temp = await this.loadServicebyVal(i)
         if (temp !== []) {
           let j = 0
@@ -101,16 +129,28 @@ Page({
     }
   },
 
+  mapStatusToIcon: function(status){
+    if (status == 0){
+      return '/pages/service-list/rejectedOrder.png'
+    }
+    if (status == 1){
+      return '/pages/service-list/verifyingOrder.png'
+    }
+    else {
+      return '/pages/service-list/comfirmededOrder.png'
+    }
+  },
+
   loadServicebyVal: async function(val) {
     let option = {}
       option.status = val
-      option.closed = false
+      option.closed = 'false'
       if(this.data.user) {option.client = app.globalData.userId}
       if(val === 0) {
-        option.draft = true
+        option.draft = 'true'
         option.client = app.globalData.userId
       }
-      else {option.draft = false}
+      else {option.draft = 'false'}
       if(this.data.volunteer && val === 3) {option.volunteer = app.globalData.userId}
       // console.log('[loadservices] val=' + val + ' user='+ this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
       let res = await listServices(option)
@@ -127,12 +167,9 @@ Page({
           res[i].iconPath = '/pages/service-list/verifyingOrder.png'
         }
         else {
-          res[i].iconPath = '/pages/service-list/comfirmededOrder.png'
+          res[i].iconPath = '/pages/service-list/comfirmedOrder.png'
         }
       }
-      this.setData({
-        serviceList: res
-      })
       return res
   },
 
@@ -141,6 +178,23 @@ Page({
     wx.navigateTo({
       url: '/pages/service-detail/service-detail?id=' + id
     })
+  },
+
+  onCancel: async function(event){
+    const { position, instance } = event.detail;
+    if (position === 'right') {
+      await Dialog.confirm({
+        title: "取消维修",
+        message:"您确定要取消当前维修吗？此操作不可逆。"
+      }).then(async ()=>{
+        console.log(this.data.serviceEventId)
+        let serviceEventId = event.currentTarget.dataset.id
+        let res = await cancelService(serviceEventId)
+        console.log(res)
+        instance.close()
+      })
+      this.loadServices()
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -154,8 +208,7 @@ Page({
       volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,
       admin: app.globalData.userInfo.admin
     })
-    this.initMenu()
-    this.loadServices()
+    this.initMenu()  // 不需要网络请求，好耶
   },
 
   /**
@@ -190,7 +243,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.loadServices()
   },
 
   /**
