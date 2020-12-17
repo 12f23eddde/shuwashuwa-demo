@@ -469,11 +469,10 @@ Page({
   // id < 0 创建service
   loadService: async function (id) {
     let curr_service = null;
-    if (id >= 0){  // 加载维修单, 默认不开启编辑
+    if (id >= 0){  // 加载维修单, 如果不是草稿不开启编辑
       curr_service = await getService(id)
-      this.setData({
-        disableEdit: true
-      })
+      if (curr_service.draft){this.setData({ disableEdit: false})}
+      else{this.setData({ disableEdit: true})}
     } else {  // id 为空 新建维修单,默认开启编辑
       curr_service = await createService()
       this.setData({

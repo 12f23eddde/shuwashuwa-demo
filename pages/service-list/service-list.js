@@ -74,7 +74,7 @@ Page({
 
   // 左滑删除
   onClose(event) { 
-    const {position, instance } = event.detail;
+    const { position, instance } = event.detail;
     switch (position) {
       case 'left':
       case 'cell':
