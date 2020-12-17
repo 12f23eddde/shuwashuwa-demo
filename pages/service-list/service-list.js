@@ -30,7 +30,6 @@ Page({
   initMenu: function (){
     if(this.data.admin){  // 是管理员
       this.setData({
-        menuValue: 1,
         menuOptions: [
           { text: '待编辑', value: 0 },
           { text: '待审核', value: 1 },
@@ -56,7 +55,6 @@ Page({
       })
     }else{  // 是普通用户
       this.setData({
-        menuValue: 7,
         menuOptions: [
           { text: '所有本人维修单', value: 7 },
           { text: '待编辑', value: 0 },
@@ -103,6 +101,18 @@ Page({
       this.setData({
         serviceList: res
       })
+    }
+  },
+
+  mapStatusToIcon: function(status){
+    if (status == 0){
+      return '/pages/service-list/rejectedOrder.png'
+    }
+    if (status == 1){
+      return '/pages/service-list/verifyingOrder.png'
+    }
+    else {
+      return '/pages/service-list/comfirmededOrder.png'
     }
   },
 
@@ -156,8 +166,9 @@ Page({
       volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,
       admin: app.globalData.userInfo.admin
     })
-    this.initMenu()
-    this.loadServices()
+    this.initMenu()  // 不需要网络请求，好耶
+    
+    
   },
 
   /**
