@@ -1,10 +1,10 @@
 import {
   createService, getService, submitForm, submitDraft,
   cancelService, auditService, completeService, feedbackService, 
-  workService, cancelWorkService
+  workService, cancelWorkService, getHelpMessage
 } from '../../api/service'
 import {uploadImage} from '../../api/file'
-import {getIncomingActivities, getActivitySlot, getSlotTime} from '../../api/activity'
+import {getIncomingActivities, getCurrentActivities, getActivitySlot} from '../../api/activity'
 import {formatTime} from '../../utils/util'
 import Notify from '@vant/weapp/notify/notify'
 import Dialog from '@vant/weapp/dialog/dialog'
@@ -64,6 +64,7 @@ Page({
     imagesToUpload: [],
 
     helpShow: false,
+    helpMessage: '获取帮助信息失败，请和茨菇小哥哥🤺',
     submitLoading: false,
 
     disableEdit: true,
@@ -197,7 +198,13 @@ Page({
       this.activityClose()
       throw err
     })
-    console.log(incomingActivityList)
+    let currentActivityList = await getCurrentActivities(currentTime, false)
+    .catch((err) => {
+      this.activityClose()
+      throw err
+    })
+    console.log(incomingActivityList, currentActivityList)
+    incomingActivityList.push(...currentActivityList)
     this.setData({
       activityList: incomingActivityList
     })
@@ -386,10 +393,14 @@ Page({
     this.setData({ imageList });
   },
 
-  onClickIcon: async function(event){
-    this.setData({
-      helpShow: true
-    })
+  helpClick: async function(event){
+    // this.setData({
+    //   helpMessage: await getHelpMessage()
+    // })
+    this.setData({helpShow: true})
+  },
+  helpClose: async function(event){
+    this.setData({helpShow: false})
   },
 
   initValidator: function(){

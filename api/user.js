@@ -68,9 +68,7 @@ export const login = async function(){
 
 // 获取微信用户信息(用户头像,昵称)
 export const getWechatUserInfo = async function(){
-  let userinfoRes = await wx.getSetting({
-    withSubscriptions: true,
-  })
+  let userinfoRes = await wx.getSetting({withSubscriptions: true})
   .catch((err)=>{
     console.log('[getWechatUserInfo]', err.errMsg)
     throw err

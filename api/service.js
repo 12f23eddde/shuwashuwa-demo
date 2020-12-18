@@ -113,6 +113,15 @@ export const listServices = async function(options){
   return requestData
 }
 
+// 获取帮助信息(后续可能需要修改)
+export const getHelpMessage = async function(){
+  let requestData = await wxp.request({url: 'http://shuwashuwa.kinami.cc'})
+  const pattern = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
+  let body = pattern.exec(requestData.data)
+  console.log(body)
+  return body
+}
+
 export const requestSubscription = async function(tmplIds){
   let requestData = await wxp.requestSubscribeMessage({
     tmplIds: tmplIds

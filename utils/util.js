@@ -45,7 +45,10 @@ export const getCurrentPage = () => {
   return pages[pages.length - 1];
 }
 
+// 用户身份（为了方便调试，直接用中文力）
+// ['普通用户','管理员','志愿者']
 export const whoAmI = async function(){
+  const app = getApp()
   if(!app.globalData.userInfo){
     await getUserInfo()
   }

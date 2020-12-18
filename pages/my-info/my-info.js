@@ -1,18 +1,16 @@
 import {getUserInfo, updateUserInfo} from '../../api/user'
 import {uploadImage} from '../../api/file'
-import {getMyApplication, postMyApplication} from '../../api/application'
-import Notify from '@vant/weapp/notify/notify'
+import {postApplication} from '../../api/application'
+import {whoAmI} from '../../utils/util'
 
+import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
 
 const app = getApp()
 
 Page({
   data: {
-    
-    user: false,
-    admin: false,
-    volunteer: false,
+    myRole: '',
 
     applicationShow: false,
     reasonForApplication: '',
@@ -103,9 +101,7 @@ Page({
   loadUserInfo: async function(){
     let userinfo = await getUserInfo()
     this.setData({
-      user: !app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer,
-      volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,
-      admin: app.globalData.userInfo.admin
+      myRole: await whoAmI()
     })
     // [后期可能需要更改] 直接替换this.data的全部内容
     this.setData(userinfo)
@@ -148,13 +144,16 @@ Page({
     this.clearErrMsg()
     if(!this.validator2.checkData(this.data)) return;
     this.setData({ submitLoading: true })
-    await postMyApplication(this.data)
+    await postApplication({
+      "cardPicLocation": this.data.cardPicLocation,
+      "reasonForApplication": this.data.reasonForApplication
+    })
     .catch((err)=>{
       this.setData({ applicationShow: false, submitLoading: false})
       Notify({type:'danger', message: '申请上传失败'})
       throw err
     })
-    Notify({type:'danger', message: '申请上传成功'})
+    Notify({type:'success', message: '申请上传成功'})
     this.setData({ applicationShow: false, submitLoading: false})
   },
   uploadConfirm: async function(event){

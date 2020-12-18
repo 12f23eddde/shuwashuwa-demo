@@ -2,11 +2,13 @@ import {
   getCurrentActivities,getIncomingActivities,getActivitySlot,getSlotTime,
   requestWithSAToken, checkIn
 } from '../../api/activity'
-import {listServices} from '../../api/service'
+import { listServices } from '../../api/service'
+import { requestWithToken } from '../../api/user'
+import { whoAmI } from '../../utils/util'
 import Toast from '@vant/weapp/toast/toast'
 import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
-import { requestWithToken } from '../../api/user'
+
 const util = require('../../utils/util')
 
 // pages/activity/activity.js
