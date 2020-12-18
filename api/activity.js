@@ -73,6 +73,6 @@ export const requestWithSAToken = async function(method, data){
 }
 
 export const checkIn = async function(activityId){
-  let requestRes = await requestWithToken('/api/activity/attend','PUT',{activity:activityId})
+  let requestRes = await requestWithToken('/api/activity/attend?activity=' + activityId,'PUT')
   return requestRes
 }

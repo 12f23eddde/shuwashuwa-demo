@@ -1,6 +1,7 @@
 import {requestWithToken} from './user'
 import {wxp} from '../utils/wxp'
 
+
 // 新建一个维修事件
 // 返回一个serviceEvent
 export const createService = async function(){
@@ -31,7 +32,7 @@ export const submitDraft = async function(data){
 
 // ref: http://shuwashuwa.kinami.cc:8848/swagger-ui.html#/event-controller/handleShutdownUsingDELETE
 export const cancelService = async function(id){
-  let requestData = await requestWithToken('/api/service','DELETE', id)
+  let requestData = await requestWithToken('/api/service?eventID='+id,'DELETE')
   return requestData
 }
 

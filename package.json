@@ -17,9 +17,9 @@
   },
   "homepage": "https://github.com/team-combinatorics/shuwashuwa-wxapp#readme",
   "dependencies": {
-    "@vant/weapp": "^1.6.2",
+    "@vant/weapp": "^1.6.3",
     "base64-utf8": "^0.1.8",
     "miniprogram-api-promise": "^1.0.4",
-    "we-validator": "^2.1.11"
+    "we-validator": "^2.1.14"
   }
 }
