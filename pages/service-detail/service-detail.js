@@ -3,11 +3,12 @@ import {
   cancelService, auditService, completeService, feedbackService, 
   workService, cancelWorkService, getHelpMessage
 } from '../../api/service'
-import {uploadImage} from '../../api/file'
+import {uploadImage, getHtmlWxml} from '../../api/file'
 import {getIncomingActivities, getCurrentActivities, getActivitySlot} from '../../api/activity'
 import {formatTime} from '../../utils/util'
 import Notify from '@vant/weapp/notify/notify'
 import Dialog from '@vant/weapp/dialog/dialog'
+import Toast from '@vant/weapp/toast/toast'
 import WeValidator from 'we-validator/index'
 
 const app = getApp()
@@ -64,7 +65,7 @@ Page({
     imagesToUpload: [],
 
     helpShow: false,
-    helpMessage: '获取帮助信息失败，请和茨菇小哥哥🤺',
+    helpMessage: '',
     submitLoading: false,
 
     disableEdit: true,
@@ -393,12 +394,23 @@ Page({
     this.setData({ imageList });
   },
 
+  // helpClick在模拟器上的结果和真机区别很大，建议以真机为准
   helpClick: async function(event){
-    // this.setData({
-    //   helpMessage: await getHelpMessage()
-    // })
-    this.setData({helpShow: true})
+    if(!this.data.helpMessage){  
+      Toast.loading({ // 加载并渲染为wxml可能需要一些时间，因此采用Toast避免用户误操作
+        message: '加载中...',
+        forbidClick: true,
+      });
+      const helpMsg = await getHtmlWxml('https://shuwashuwa.kinami.cc')
+      this.setData({
+        helpShow: true,
+        helpMessage: helpMsg
+      })
+    } else {
+      this.setData({helpShow: true})
+    }
   },
+
   helpClose: async function(event){
     this.setData({helpShow: false})
   },

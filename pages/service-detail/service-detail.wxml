@@ -5,13 +5,16 @@
 
   <van-notify id="van-notify" />
   <van-dialog id="van-dialog"/>
+  <van-toast id="van-toast" />
 
-  <van-popup show="{{ helpShow }}" position="bottom" bind:close="helpClose">
-    <rich-text nodes="{{ helpMessage }}" />
+  <!-- 显示帮助信息 -->
+  <!-- 可以通过 custom-style="height: 20%" 控制弹出层尺寸 -->
+  <van-popup show="{{ helpShow }}" position="bottom" closeable bind:close="helpClose">
+    <towxml nodes="{{ helpMessage }}"/>
   </van-popup>
 
   <view class="maptitle" >
-    <view class="title"> 填写维修单 </view>
+    <view class="title"> {{(status==0?'填写维修单':'维修单详情')}} </view>
   </view>
   
   <view class="mapbuttons" >

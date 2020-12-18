@@ -1,5 +1,6 @@
 import {wxp} from '../utils/wxp'
 import { requestWithToken } from './user'
+import towxml from '../miniprogram_npm/towxml/index'
 
 // 在所有请求需要在header里放token的都可用
 // 包装了wxp.upload, 在token失效时会自动更新token
@@ -57,11 +58,34 @@ export const chooseImage = async function(count=1, compressed=true){
   return images.tempFilePaths
 }
 
-// 只支持上传一张图片
+// 上传一张图片
 export const uploadImage = async function(filePath){
   return uploadWithToken('/api/image', 'file', filePath)
 }
 
+// 删除一张图片
 export const deleteImage= async function(filePath){
   return requestWithToken('/api/image?path=' + filePath)
+}
+
+// 获取一个markdown文件，并通过<towxml>将其渲染为wxml
+// 由于<wxml>不支持bindtap prop, 故将bindtap作为参数传入
+// Credit: https://github.com/sbfkcel/towxml
+export const getMarkdownWxml = async function(url, bindtap=()=>{}){
+  // url在后期可修改为相对url
+  let requestData = await wxp.request({url: url})
+  let decodedmsg = towxml(requestData.data,'markdown', {events:{tap:bindtap}})
+  console.log(decodedmsg)
+  return decodedmsg
+}
+
+// 获取一个html文件，并通过<towxml>将其渲染为wxml
+// 由于<wxml>不支持bindtap prop, 故将bindtap作为参数传入
+// Credit: https://github.com/sbfkcel/towxml
+export const getHtmlWxml = async function(url, bindtap=()=>{}){
+  // url在后期可修改为相对url
+  let requestData = await wxp.request({url: url})
+  let decodedmsg = towxml(requestData.data,'html', {events:{tap:bindtap}})
+  console.log(decodedmsg)
+  return decodedmsg
 }

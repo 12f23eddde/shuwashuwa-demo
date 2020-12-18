@@ -26,6 +26,7 @@ Page({
     volunteer: false,
 
     activeNames: ['1'],
+    pageLoading: false
   },
 
   initMenu: function (){
@@ -57,7 +58,7 @@ Page({
     }else{  // 是普通用户
       this.setData({
         menuOptions: [
-          { text: '所有本人维修单', value: 7 },
+          { text: '我的维修单', value: 7 },
           { text: '待编辑', value: 0 },
           { text: '活动中', value: 6 },
           { text: '已完成', value: 5 },
@@ -99,12 +100,15 @@ Page({
   // 对于相同的menuValue, 用户权限不同看到的东西也是不一样的
   loadServices: async function(){
     this.setData({
-      serviceList: []
+      serviceList: [],
+      pageLoading: true
     })
+
     let val = this.data.menuValue
+    let res = []
     // 一个options就够
     if (0 <= val && val <= 5){
-      let res = await this.loadServicebyVal(val)
+      res = await this.loadServicebyVal(val)
       this.setData({
         serviceList: res
       })
@@ -113,20 +117,15 @@ Page({
 
     }else if (val===7) {
       let i = 0;
-      let res = []
       for (i = 0; i <= 5; i++) {
         let temp = await this.loadServicebyVal(i)
-        if (temp !== []) {
-          let j = 0
-          for (j = 0; j < temp.length; j++) {
-            res.push(temp[j])
-          }
-        }
+        res.push(...temp)  // Nice ES6
       }
-      this.setData({
-        serviceList: res
-      })
     }
+    this.setData({
+      serviceList: res,
+      pageLoading: false
+    })
   },
 
   mapStatusToIcon: function(status){

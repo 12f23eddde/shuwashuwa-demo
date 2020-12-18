@@ -5,6 +5,17 @@
 
   <view class="blank"></view>
 
+  <!-- 急需CSS拯救 -->
+  <view wx-if="{{pageLoading}}">
+    <van-loading> 正在加载维修单... </van-loading>
+  </view>
+  
+  <!-- 没有对应的维修单 -->
+  <view wx-if="{{!pageLoading && serviceList.length == 0}}">
+    维修单空空如也...
+  </view>
+
+  <!-- 有对应的维修单 -->
   <van-collapse 
     value="{{ activeNames }}" 
     wx:if="{{ serviceList.length > 0 }}"
