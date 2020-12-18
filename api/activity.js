@@ -51,11 +51,11 @@ export const getSlotTime = async function(actId,slotID){
 
 //测试用的，记得删掉——
 //Edit from requestWithToken in api/user.js
-export const requestWithSAToken = async function(method, data){
+export const requestWithSAToken = async function(URL,method, data){
   let app = getApp()
   let baseURL = app.globalData.baseURL
   let requestRes = await wxp.request({
-    url: baseURL+'/api/super/activity',
+    url: baseURL+URL,
     header: {
       //此处应有SA token
     },

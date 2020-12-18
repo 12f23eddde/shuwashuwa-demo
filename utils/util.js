@@ -55,8 +55,8 @@ export const whoAmI = async function(){
   if(!app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer){
     return '普通用户'
   }else if(!app.globalData.userInfo.admin && app.globalData.userInfo.volunteer){
-    return '管理员'
-  }else if(app.globalData.userInfo.admin){
     return '志愿者'
+  }else if(app.globalData.userInfo.admin){
+    return '管理员'
   }else return ''
 }

@@ -173,19 +173,19 @@ Page({
         }
       ]
     }
-    let newAct= await requestWithSAToken('POST',newActData)
+    let newAct= await requestWithSAToken('/api/super/activity','POST',newActData)
     console.log(newAct)
     newActData.activityName="Merry Christmas in the Future"
     newActData.startTime="2021-08-10 11:45:14"
     newActData.timeSlots[0].startTime="2021-08-10 11:45:14"
-    newAct= await requestWithSAToken('POST',newActData)
+    newAct= await requestWithSAToken('/api/super/activity','POST',newActData)
     console.log(newAct)
     newActData.activityName="Merry Christmas in the past"
     newActData.startTime="1919-08-10 11:45:14"
     newActData.timeSlots[0].startTime="1919-08-10 11:45:14"
     newActData.endTime="1926-08-17 11:45:14"
     newActData.timeSlots[0].endTime="1926-08-10 11:45:14"
-    newAct= await requestWithSAToken('POST',newActData)
+    newAct= await requestWithSAToken('/api/super/activity','POST',newActData)
     console.log(newAct)
   }
 })
