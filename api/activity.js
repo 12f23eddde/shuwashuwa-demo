@@ -1,20 +1,17 @@
 import {requestWithToken} from "./user";
 import {wxp} from '../utils/wxp';
 //获取未开始活动列表
-export const getCurrentActivities = async function(currentTime,filter){
+export const getCurrentActivities = async function(currentTime){
   let data={
     endLower: currentTime,
     startUpper:currentTime
   }
-  let requestRes
-  if(filter){
-    console.log("filter")
-    requestRes = await requestWithToken('/api/activity','GET',data)
-  }
-  else{
-    console.log("no filter")
-    requestRes = await requestWithToken('/api/activity','GET')
-  }
+  let requestRes = await requestWithToken('/api/activity','GET',data)
+  return requestRes
+}
+
+export const getAllActivities = async function(){
+  let requestRes = await requestWithToken('/api/activity','GET')
   return requestRes
 }
 

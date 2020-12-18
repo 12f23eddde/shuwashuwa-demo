@@ -199,7 +199,7 @@ Page({
       this.activityClose()
       throw err
     })
-    let currentActivityList = await getCurrentActivities(currentTime, false)
+    let currentActivityList = await getCurrentActivities(currentTime)
     .catch((err) => {
       this.activityClose()
       throw err

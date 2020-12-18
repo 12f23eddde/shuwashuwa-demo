@@ -128,8 +128,7 @@ Page({
     //await this.AddActivitiesForTest()
     var time=require('../../utils/util.js')
     let currentTime=time.formatTime(new Date())
-    //Here, the second parameter is use for enable filter(to get current Acts) or not(to get all Acts)
-    let currentActivityList= await getCurrentActivities(currentTime,true)
+    let currentActivityList= await getCurrentActivities(currentTime)
     let incomingActivityList= await getIncomingActivities(currentTime)
     console.log('CurrentActivityList:',currentActivityList)
     /*
