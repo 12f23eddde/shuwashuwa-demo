@@ -60,8 +60,7 @@ export const requestWithSAToken = async function(method, data){
   let requestRes = await wxp.request({
     url: baseURL+'/api/super/activity',
     header: {
-      //此处应有SU token
-      'token': ''
+      //此处应有SA token
     },
     method: method,
     data: data

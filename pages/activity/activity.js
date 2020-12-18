@@ -54,7 +54,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    if (options.activity != "undefined"){  // 加载维修单, 默认不开启编辑
+    if (options.activity != undefined){  // 加载维修单, 默认不开启编辑
       let res = await checkIn(options.activity)
       .catch((res)=>{
         Toast.fail('签到失败')
@@ -127,7 +127,7 @@ Page({
     //await this.AddActivitiesForTest()
     var time=require('../../utils/util.js')
     let currentTime=time.formatTime(new Date())
-    //Here, the second parameter is use for enable filter(to get current Acts) of not(to get all Acts)
+    //Here, the second parameter is use for enable filter(to get current Acts) or not(to get all Acts)
     let currentActivityList= await getCurrentActivities(currentTime,true)
     let incomingActivityList= await getIncomingActivities(currentTime)
     console.log('CurrentActivityList:',currentActivityList)
