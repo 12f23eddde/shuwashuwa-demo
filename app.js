@@ -11,17 +11,13 @@ App({
     this.onLogin()
   },
 
+  // 当用户登录时，获取微信用户信息，并在shuwashuwa上登录
   onLogin: async function(){
-    const resUserInfo = await user.getWechatUserInfo();
-    if (resUserInfo) {
-      this.globalData.wechatUserInfo = resUserInfo
+    let userInfoRes = await user.getWechatUserInfo()
+    if(userInfoRes){
+      this.globalData.wechatUserInfo = userInfoRes
     }
-
-    const resToken = await user.login();
-    console.log(resToken)
-    if (resToken) {
-      this.globalData.userToken = resToken
-    }
+    await user.login();
   },
 
   globalData: {

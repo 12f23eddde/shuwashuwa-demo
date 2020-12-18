@@ -17,7 +17,8 @@ Page({
     currResCode: "复制res.code",
     currToken: "复制Token",
     currURL: "http://shuwashuwa.kinami.cc:8848",
-    currTID: "DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q"
+    currTID: "DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q",
+    navigateURL: "/pages/user/user"
   },
 
   /**
@@ -151,5 +152,11 @@ Page({
     let imagePaths = await chooseImage()
     let uploadRes = await uploadWithToken('/api/image', imagePaths[0])
     Toast.success(uploadRes)
+  },
+
+  gotoURL: async function(){
+    wx.navigateTo({
+      url: this.data.navigateURL,
+    })
   }
 })

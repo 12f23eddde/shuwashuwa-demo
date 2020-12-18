@@ -1,4 +1,5 @@
 import base64 from '../utils/base64.js';
+import { getUserInfo } from '../api/user.js';
 
 export const formatTime = date => {
   const year = date.getFullYear()
@@ -42,4 +43,20 @@ export const addErrorToField = (context, elementId, errMsg) => {
 export const getCurrentPage = () => {
   var pages = getCurrentPages();
   return pages[pages.length - 1];
+}
+
+// 用户身份（为了方便调试，直接用中文力）
+// ['普通用户','管理员','志愿者']
+export const whoAmI = async function(){
+  const app = getApp()
+  if(!app.globalData.userInfo){
+    await getUserInfo()
+  }
+  if(!app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer){
+    return '普通用户'
+  }else if(!app.globalData.userInfo.admin && app.globalData.userInfo.volunteer){
+    return '管理员'
+  }else if(app.globalData.userInfo.admin){
+    return '志愿者'
+  }else return ''
 }

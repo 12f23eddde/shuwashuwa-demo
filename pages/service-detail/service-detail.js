@@ -1,13 +1,14 @@
 import {
   createService, getService, submitForm, submitDraft,
   cancelService, auditService, completeService, feedbackService, 
-  workService, cancelWorkService
+  workService, cancelWorkService, getHelpMessage
 } from '../../api/service'
-import {uploadImage} from '../../api/file'
-import {getIncomingActivities, getActivitySlot, getSlotTime} from '../../api/activity'
+import {uploadImage, getHtmlWxml} from '../../api/file'
+import {getIncomingActivities, getCurrentActivities, getActivitySlot} from '../../api/activity'
 import {formatTime} from '../../utils/util'
 import Notify from '@vant/weapp/notify/notify'
 import Dialog from '@vant/weapp/dialog/dialog'
+import Toast from '@vant/weapp/toast/toast'
 import WeValidator from 'we-validator/index'
 
 const app = getApp()
@@ -64,6 +65,7 @@ Page({
     imagesToUpload: [],
 
     helpShow: false,
+    helpMessage: '',
     submitLoading: false,
 
     disableEdit: true,
@@ -197,7 +199,13 @@ Page({
       this.activityClose()
       throw err
     })
-    console.log(incomingActivityList)
+    let currentActivityList = await getCurrentActivities(currentTime, false)
+    .catch((err) => {
+      this.activityClose()
+      throw err
+    })
+    console.log(incomingActivityList, currentActivityList)
+    incomingActivityList.push(...currentActivityList)
     this.setData({
       activityList: incomingActivityList
     })
@@ -386,10 +394,25 @@ Page({
     this.setData({ imageList });
   },
 
-  onClickIcon: async function(event){
-    this.setData({
-      helpShow: true
-    })
+  // helpClick在模拟器上的结果和真机区别很大，建议以真机为准
+  helpClick: async function(event){
+    if(!this.data.helpMessage){  
+      Toast.loading({ // 加载并渲染为wxml可能需要一些时间，因此采用Toast避免用户误操作
+        message: '加载中...',
+        forbidClick: true,
+      });
+      const helpMsg = await getHtmlWxml('https://shuwashuwa.kinami.cc')
+      this.setData({
+        helpShow: true,
+        helpMessage: helpMsg
+      })
+    } else {
+      this.setData({helpShow: true})
+    }
+  },
+
+  helpClose: async function(event){
+    this.setData({helpShow: false})
   },
 
   initValidator: function(){
@@ -469,11 +492,10 @@ Page({
   // id < 0 创建service
   loadService: async function (id) {
     let curr_service = null;
-    if (id >= 0){  // 加载维修单, 默认不开启编辑
+    if (id >= 0){  // 加载维修单, 如果不是草稿不开启编辑
       curr_service = await getService(id)
-      this.setData({
-        disableEdit: true
-      })
+      if (curr_service.draft){this.setData({ disableEdit: false})}
+      else{this.setData({ disableEdit: true})}
     } else {  // id 为空 新建维修单,默认开启编辑
       curr_service = await createService()
       this.setData({

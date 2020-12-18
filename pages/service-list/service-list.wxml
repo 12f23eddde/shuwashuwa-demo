@@ -5,6 +5,17 @@
 
   <view class="blank"></view>
 
+  <!-- 急需CSS拯救 -->
+  <view wx-if="{{pageLoading}}">
+    <van-loading> 正在加载维修单... </van-loading>
+  </view>
+  
+  <!-- 没有对应的维修单 -->
+  <view wx-if="{{!pageLoading && serviceList.length == 0}}">
+    维修单空空如也...
+  </view>
+
+  <!-- 有对应的维修单 -->
   <van-collapse 
     value="{{ activeNames }}" 
     wx:if="{{ serviceList.length > 0 }}"
@@ -21,14 +32,14 @@
       wx:if="{{ !item.closed }}"
     >
       <van-collapse-item icon="{{ item.iconPath }}" class="titileOrder">
-        <view slot="title" class="collTitle"> {{ item.computerModel }} </view>
-        <view slot="value" class="dateView"> {{ item.serviceEventId }} </view>
-        <view slot="value" class="orderUser"> {{ item.problemType }} </view>
-        <view slot="value" class="orderType"> {{ item.computerModel }} </view>
+        <view slot="title" class="collTitle"> {{ item.serviceEventId }} </view>
+        <view slot="value" class="dateView"> {{ (item.computerModel?item.computerModel:'未填写型号') }} </view>
+        <view slot="value" class="orderUser"> {{ (item.problemType?item.problemType:'未填写问题') }} </view>
+        <view slot="value" class="orderType"> {{ (user?(item.volunteerName?item.volunteerName:'未被志愿者接单'):item.userName) }} </view>
         <view class='rejectedDetails' wx:if="{{item.status == 0}}"> 等待编辑 </view>
         <view class='rejectedDetails' wx:if="{{item.status == 1}}"> 等待审核 </view>
         <view class='comfirmedDetails' wx:if="{{item.status == 2}}"> 审核通过 </view>
-        <view class='orderDetails'> {{ item.problemSummary }} </view>
+        <view class='orderDetails'> {{( item.problemSummary?item.problemSummary:'未填写问题') }} </view>
         <view class="mapbuttons">
           <view class="bottons">
             <van-button 
@@ -62,5 +73,5 @@
 
   <van-dialog id="van-dialog"></van-dialog>
   
-  <tab-bar active='1' class="orderTB"></tab-bar>
+  <tab-bar active='1'></tab-bar>
 </view>

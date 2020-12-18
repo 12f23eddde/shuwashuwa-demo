@@ -4,11 +4,17 @@
 <view class="servDetailPage">
 
   <van-notify id="van-notify" />
+  <van-dialog id="van-dialog"/>
+  <van-toast id="van-toast" />
 
-  <van-dialog id="van-dialog"></van-dialog>
+  <!-- 显示帮助信息 -->
+  <!-- 可以通过 custom-style="height: 20%" 控制弹出层尺寸 -->
+  <van-popup show="{{ helpShow }}" position="bottom" closeable bind:close="helpClose">
+    <towxml nodes="{{ helpMessage }}"/>
+  </van-popup>
 
   <view class="maptitle" >
-    <view class="title"> 填写维修单 </view>
+    <view class="title"> {{(status==0?'填写维修单':'维修单详情')}} </view>
   </view>
   
   <view class="mapbuttons" >
@@ -27,16 +33,16 @@
   <view class="mapbuttons" >
   <van-cell-group title="电脑信息" class="serviceDetailCell_">
     <van-field model:value="{{ brand }}" required="{{! disableEdit }}" clearable label="品牌" placeholder="联想" readonly="{{ disableEdit }}" />
-    <van-field model:value="{{ computerModel }}" required="{{! disableEdit }}" clearable label="型号" icon="question-o" placeholder="小新 Pro 13 2020" bind:click-icon="onClickIcon" readonly="{{ disableEdit }}" />
+    <van-field model:value="{{ computerModel }}" required="{{! disableEdit }}" clearable label="型号" icon="question-o" placeholder="小新 Pro 13 2020" bind:click-icon="helpClick" readonly="{{ disableEdit }}" />
     <van-cell title="电脑类型" required="{{! disableEdit }}" model:value="{{ laptopType }}" bind:click="typeClick" is-link />
     <van-popup show="{{ typeShow }}" position="bottom">
       <van-picker show-toolbar title="电脑类型" columns="{{ pcTypes }}" default-index="{{ 2 }}" bind:confirm="typeConfirm" bind:cancel="typeClose" />
     </van-popup>
-    <van-field model:value="{{ cpuModel }}" clearable required="{{! disableEdit }}" label="CPU型号" icon="question-o" placeholder="Intel i7-10710U / AMD Ryzen 7 4800U" bind:click-icon="onClickIcon" readonly="{{ disableEdit }}" />
+    <van-field model:value="{{ cpuModel }}" clearable required="{{! disableEdit }}" label="CPU型号" icon="question-o" placeholder="Intel i7-10710U / AMD Ryzen 7 4800U" bind:click-icon="helpClick" readonly="{{ disableEdit }}" />
     <van-cell title="有独立显卡" required="{{! disableEdit }}">
       <van-switch checked="{{ hasDiscreteGraphics }}" size="35rpx" bind:change="gpuSwitch" disabled="{{ disableEdit }}" active-color="#22ac38"/>
     </van-cell>
-    <van-field model:value="{{ graphicsModel }}" required="{{! disableEdit }}" clearable label="独立显卡型号" icon="question-o" disabled="{{ !hasDiscreteGraphics }}" placeholder="Nvidia MX350" bind:click-icon="onClickIcon" readonly="{{ disableEdit }}" />
+    <van-field model:value="{{ graphicsModel }}" required="{{! disableEdit }}" clearable label="独立显卡型号" icon="question-o" disabled="{{ !hasDiscreteGraphics }}" placeholder="Nvidia MX350" bind:click-icon="helpClick" readonly="{{ disableEdit }}" />
    
     <van-popup show="{{ calenderShow }}" position="bottom">
       <van-datetime-picker

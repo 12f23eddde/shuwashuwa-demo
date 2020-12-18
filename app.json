@@ -59,7 +59,9 @@
     "van-calendar": "@vant/weapp/calendar/index",
     "van-switch": "@vant/weapp/switch/index",
     "van-popup": "@vant/weapp/popup/index",
-    "van-uploader": "@vant/weapp/uploader/index"
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "towxml":"/miniprogram_npm/towxml/towxml"
   },
   "networkTimeout": {
     "request": 3000

@@ -80,6 +80,16 @@
   align-items: center;
 }
 
+.buttons {
+  margin-top: 7%;
+  align-self: center;
+  display: block;
+  width: 80%;
+  border-radius: 50%;
+  box-shadow: 5rpx 5rpx 20rpx rgba(0, 0, 0, 0.2);
+  margin-bottom: 1%;
+}
+
 .van-button--buttonSubmit {
   align-self: center;
   display: inline-block;
