@@ -10,6 +10,7 @@ import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
 
 const util = require('../../utils/util')
+const app = getApp()
 
 // pages/activity/activity.js
 Page({
@@ -29,6 +30,7 @@ Page({
     incomingActivity:[
 
     ],
+    'auditable': false
   },
 
   loadCurrentServices: async function(){
@@ -56,6 +58,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    if (await whoAmI()=='管理员'){
+      this.setData({auditable:true})
+    }
     if (typeof(options.activity) != "undefined" && options.activity != "undefined"){  // 加载维修单, 默认不开启编辑
       let res = await checkIn(options.activity)
       .catch((res)=>{
@@ -187,5 +192,11 @@ Page({
     newActData.timeSlots[0].endTime="1926-08-10 11:45:14"
     newAct= await requestWithSAToken('/api/super/activity','POST',newActData)
     console.log(newAct)
+  },
+
+  auditApplication: function(){
+    wx.navigateTo({
+      url: '../application-list/application-list',
+    })
   }
 })
