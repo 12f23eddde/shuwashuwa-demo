@@ -38,7 +38,7 @@
               type="danger" 
               square
               size="small"
-              bindtap="replyApplication" data-status='1' data-id="{{item.formId}}"
+              bindtap="replyApplication" data-status='2' data-id="{{item.formId}}"
               data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">拒绝</van-button>
           </view>
         </view>

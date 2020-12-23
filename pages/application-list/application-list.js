@@ -102,16 +102,18 @@ Page({
     form.identity=form.identity?form.identity:""
     form.email=form.email?form.email:""
     form.status=status-'0'
+    form.userName=form.userName?form.userName:"";
     //回头再加留言功能  
     form.replyByAdmin=""
     console.log(form)
     await requestWithToken('/api/volunteer/application', 'PUT',form)
+    console.log("delete")
     let data={"status":0}
     let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
+    console.log(applicationList)
     this.setData({
       application:applicationList
     })
-    this.onShow()
   },
   viewPic: async function(event){
     console.log(event.currentTarget.dataset)
