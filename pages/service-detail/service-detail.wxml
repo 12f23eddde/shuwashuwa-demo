@@ -55,7 +55,8 @@
       />
     </van-popup>
     
-    <van-cell title="购买年月" required="{{! disableEdit }}" model:value="{{ boughtTime }}" bind:click="calenderClick" is-link />
+    <!-- 微信不支持在数据标签内进行join和split, 微信爬 -->
+    <van-cell title="购买年月" required="{{! disableEdit }}" value="{{ boughtMonth }}" bind:click="calenderClick" is-link />
     <van-popup show="{{ calenderShow }}" position="bottom">
       <van-datetime-picker
       title="购买年月"

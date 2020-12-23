@@ -294,6 +294,7 @@ Page({
     this.setData({
       calenderShow: false,
       boughtTime: formatTime(currDate).split(' ')[0],
+      boughtMonth: formatTime(currDate).split(' ')[0].split('-').slice(0,2).join('-')
     });
   },
   calenderClose: function(){
