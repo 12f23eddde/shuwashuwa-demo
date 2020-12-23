@@ -95,7 +95,8 @@
   </view>
 
   <view class="mapbuttons" wx-if="{{ disableEdit }}">
-    <view class="buttons_">
+    <!-- 对class做了一些小调整 -->
+    <view class="{{myRole==='志愿者'?'buttons':'buttons_'}}">
       <van-button type="primary" size="large" bindtap="onClickChange" round>
         修改个人信息
       </van-button>
@@ -103,6 +104,11 @@
     <view class="buttons_" wx:if="{{ myRole==='普通用户' }}">
       <van-button size="large" id="buttonSubmit" bindtap="applicationClick" round>
         申请成为志愿者
+      </van-button>
+    </view>
+    <view class="buttons_" wx:if="{{ myRole==='管理员' }}">
+      <van-button size="large" id="buttonSubmit" bindtap="applicationAudit" round>
+        审核志愿者申请
       </van-button>
     </view>
   </view>

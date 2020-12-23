@@ -103,6 +103,7 @@ Page({
     this.setData({
       myRole: await whoAmI()
     })
+    console.log(this.data.myRole)
     // [后期可能需要更改] 直接替换this.data的全部内容
     this.setData(userinfo)
   },
@@ -175,6 +176,9 @@ Page({
     this.setData({ imagesToUpload });
     // 更新imageList
     this.setData({cardPicLocation: ''});
+  },
+  applicationAudit: async function(){
+    wx.navigateTo({ url: '/pages/application-list/application-list' })
   },
 
   clearErrMsg: async function(){

@@ -127,14 +127,17 @@ Page({
   },
 
   onAuditPass: async function(){
-    this.setData({ submitLoading: true })
     if(!this.validator2.checkData(this.data)) return;
+    this.setData({ submitLoading: true })
     await auditService({
       message: this.data.descriptionAdvice,
       problemSummary: this.data.problemSummary,
       result: true,
       serviceEventId: this.data.serviceEventId,
       serviceFormId: this.data.serviceFormId
+    }).catch((err)=>{
+      this.setData({ submitLoading: false })
+      throw err
     })
     this.loadService(this.data.serviceEventId)
     this.setData({ submitLoading: false })
@@ -149,6 +152,9 @@ Page({
       result: true,
       serviceEventId: this.data.serviceEventId,
       serviceFormId: this.data.serviceFormId
+    }).catch((err)=>{
+      this.setData({ submitLoading: false })
+      throw err
     })
     this.loadService(this.data.serviceEventId)
     this.setData({ submitLoading: false })
