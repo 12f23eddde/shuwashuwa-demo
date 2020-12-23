@@ -6,7 +6,7 @@
   </view>
   
   <!-- 没有未审核申请表 -->
-  <view wx-if="{{!pageLoading && application.length == 0}}">
+  <view class="centerTitle" wx-if="{{!pageLoading && application.length == 0}}">
     没有未审核申请表
   </view>
   <!-- 有未审核申请表 -->

@@ -1,1 +1,15 @@
 /* pages/application-list/application-list.wxss */
+
+.applicationCell {
+  width: 90%;
+  align-self: center;
+  display: block;
+  box-shadow: 5rpx 5rpx 10rpx rgba(0, 0, 0, 0.2);
+}
+
+.centerTitle {
+  display: flex;                      
+  justify-content: center; 
+  align-items: center;
+  justify-content: center;
+}
