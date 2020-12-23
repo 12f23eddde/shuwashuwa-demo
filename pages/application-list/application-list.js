@@ -108,12 +108,10 @@ Page({
     await requestWithToken('/api/volunteer/application', 'PUT',form)
     let data={"status":0}
     let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
-    for(var json in applicationList){
-      json["imageURL"] = "http://shuwashuwa.kinami.cc:8848/img/"+json[cardPicLocation]
-    }
     this.setData({
       application:applicationList
     })
+    this.onShow()
   },
   viewPic: async function(event){
     console.log(event.currentTarget.dataset)

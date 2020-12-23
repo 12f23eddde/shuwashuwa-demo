@@ -21,55 +21,31 @@
       <view slot="">部门:{{(item.department?item.department:'未填写')}}</view>
       <view slot="">申请原因: {{(item.reasonForApplication?item.reasonForApplication:'未填写')}}</view>
       <view class="test">
-        <van-image fit="cover" width="162" height="100" src="{{item.imageURL}}"></van-image>
+        <van-image fit="cover" width="162" height="100" src="{{item.imageURL}}" 
+        bind:click="viewPic" data-picurl="{{item.cardPicLocation}}"></van-image>
       </view>
+      <view class="mapbuttons">
+          <view class="bottons">
+            <van-button 
+              type="primary" 
+              sqaure
+              size="small"
+              bindtap="replyApplication" data-status='1' data-id="{{item.formId}}"
+              data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">通过</van-button>
+          </view>
+          <view class="bottons">
+            <van-button 
+              type="danger" 
+              square
+              size="small"
+              bindtap="replyApplication" data-status='1' data-id="{{item.formId}}"
+              data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">拒绝</van-button>
+          </view>
+        </view>
     </van-cell>
   </view>
 
-    <van-swipe-cell 
-      wx:for="{{ application }}"
-      class="titileOrder"
-      right-width="{{ 120 }}" 
-      async-close
-    >
-      <van-cell title="{{item.userName}}" >
-        <div style="display:block;">
-          <span style="display:block;">{{(item.department?item.department:'')}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">年级: {{(item.grade?item.grade:'未填写年级')}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">学号: {{(item.studentId?item.studentId:'未填写学号')}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">邮箱: {{(item.email?item.email:'未填写邮箱')}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">手机号: {{(item.phoneNumber?item.phoneNumber:'未填写手机号')}}</span>
-        </div>
-        <div style="display:block;">
-          <span style="display:block;">申请原因: {{(item.reasonForApplication?item.reasonForApplication:'未填写申请原因')}}</span>
-        </div>
-        <van-button type="primary" size="normal" bindtap="viewPic" 
-          data-picurl="{{item.cardPicLocation}}" square>看图</van-button>
-        <view slot="">
-          <view slot="left" class="buttons_">
-            <van-button  type="primary" size="large" round>好</van-button>
-          </view>
-          <view slot="right" class="buttons_">
-            <van-button   type="primary" size="large" round>坏</van-button>
-          </view>
-        </view>
-      </van-cell> 
-        <view slot="right">
-          <van-button type="primary" size="normal" bindtap="replyApplication" 
-          data-status='1' data-id="{{item.formId}}" square>通过</van-button>
-          <van-button type="danger" size="normal" bindtap="replyApplication" 
-          data-status='2' data-id="{{item.formId}}" square>驳回</van-button>
-        </view>
-    </van-swipe-cell>
-
+    
   <view class="blank"></view>
 
   <van-dialog id="van-dialog"></van-dialog>
