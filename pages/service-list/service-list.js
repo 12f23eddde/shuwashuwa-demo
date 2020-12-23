@@ -24,6 +24,7 @@ Page({
     user: false,
     admin: false,
     volunteer: false,
+    userName: '',
 
     activeNames: ['1'],
     pageLoading: false
