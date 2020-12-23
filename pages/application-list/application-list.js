@@ -89,11 +89,22 @@ Page({
   },
 
   onConfirm: function(event){
-    let status=event.currentTarget.dataset.status
-    let _message = status==1?"确定要通过志愿者申请吗？":"确定要拒绝志愿者申请吗？"
     Dialog.confirm({
-      title: '确认',
-      message: _message,
+      title: '确认页面',
+      message: "确定要通过志愿者申请吗？",
+    })
+      .then(() => {
+        this.replyApplication(event)
+      })
+      .catch(() => {
+        // on cancel
+      });
+  },
+
+  onReject: function(event){
+    Dialog.confirm({
+      title: '确认页面',
+      message: "确定要拒绝志愿者申请吗？",
     })
       .then(() => {
         this.replyApplication(event)
