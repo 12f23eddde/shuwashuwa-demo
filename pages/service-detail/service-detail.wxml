@@ -55,7 +55,8 @@
       />
     </van-popup>
     
-    <van-cell title="购买年月" required="{{! disableEdit }}" model:value="{{ boughtTime }}" bind:click="calenderClick" is-link />
+    <!-- 微信不支持在数据标签内进行join和split, 微信爬 -->
+    <van-cell title="购买年月" required="{{! disableEdit }}" value="{{ boughtMonth }}" bind:click="calenderClick" is-link />
     <van-popup show="{{ calenderShow }}" position="bottom">
       <van-datetime-picker
       title="购买年月"
@@ -97,15 +98,16 @@
     <van-cell title="故障图片">
       <van-uploader accept="image" 
         sizeType="['compressed']" 
-        file-list="{{ imageList }}" 
-        max-count="5" 
+        file-list="{{ imagesToUpload }}" 
+        max-count="{{ disableEdit? imageList.length : 5}}" 
         multiple 
-        preview-image 
-        preview-full-image 
+        max-size="1048576"
         disabled="{{ disableEdit }}" 
+        deletable="{{ !disableEdit }}"
         preview-size="120rpx" 
         bind:after-read="uploadConfirm"
         bind:delete="uploadCancel"
+        bind:oversize="uploadOversize"
        />
     </van-cell>
   </van-cell-group>

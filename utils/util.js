@@ -1,5 +1,6 @@
 import base64 from '../utils/base64.js';
 import { getUserInfo } from '../api/user.js';
+import Dialog from '@vant/weapp/dialog/dialog'
 
 export const formatTime = date => {
   const year = date.getFullYear()
@@ -59,4 +60,21 @@ export const whoAmI = async function(){
   }else if(app.globalData.userInfo.admin){
     return '管理员'
   }else return ''
+}
+
+// 检查用户信息是否填写 注意Dialog in wxml
+export const checkUserInfo = async function(){
+  const app = getApp()
+  if(!app.globalData.userInfo){
+    await getUserInfo()
+  }
+  if(!app.globalData.userInfo.userName){
+    await Dialog.alert({
+      message: '请您先填写个人信息',
+    }).then(() => {
+      wx.switchTab({url: '/pages/my-info/my-info'})
+    });
+    return false;
+  }
+  return true;
 }

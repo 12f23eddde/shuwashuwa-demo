@@ -1,6 +1,7 @@
 import {listServices, cancelService, workService, getService} from '../../api/service'
 import {getCurrentActivities} from '../../api/activity'
 import {getUserInfo} from '../../api/user'
+import {checkUserInfo} from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
 
 const app = getApp()
@@ -173,7 +174,8 @@ Page({
       return res
   },
 
-  goToDetail(event) {
+  goToDetail: async function(event) {
+    if(!await checkUserInfo()) return;
     let id = event.currentTarget.dataset.id;
     wx.navigateTo({
       url: '/pages/service-detail/service-detail?id=' + id
@@ -200,15 +202,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    if(!app.globalData.userInfo){  // 避免userInfo不存在
-      await getUserInfo()
-    }
-    this.setData({
-      user: !app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer,
-      volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,
-      admin: app.globalData.userInfo.admin
-    })
-    this.initMenu()  // 不需要网络请求，好耶
+
   },
 
   /**
@@ -221,7 +215,16 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: async function () {
+    if(!app.globalData.userInfo){  // 避免userInfo不存在
+      await getUserInfo()
+    }
+    this.setData({
+      user: !app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer,
+      volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,
+      admin: app.globalData.userInfo.admin
+    })
+    this.initMenu()  // 不需要网络请求，好耶
     this.loadServices()
   },
 

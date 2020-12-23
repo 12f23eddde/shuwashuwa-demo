@@ -16,6 +16,7 @@ const app = getApp()
 Page({
   data: {
     activityId: 0,
+    activityName: "",
     boughtTime: "1919-08-10",
     brand: "string",
     computerModel: "string",
@@ -28,6 +29,8 @@ Page({
     problemType: "string",
     serviceEventId: 0,
     timeSlot: 0,
+    startTime: "string",
+    endTime: "string",
     underWarranty: true,
     descriptionAdvice: "string",
 
@@ -41,13 +44,11 @@ Page({
     
     activityList: [],
     activityNames: [],
-    activityChosen: '',
     activityShow: false,
     activityLoading:false,
 
     timeslotList: [],
     timeslotNames: [],
-    timeslotChosen: '',
     timeslotShow: false,
     timeslotLoading:false,
 
@@ -227,7 +228,7 @@ Page({
   activityConfirm: async function(event){
     const { picker, value, index } = event.detail;
     this.setData({
-      activityChosen: value,
+      activityName: value,
       activityId: this.data.activityList[index].id,
       activityShow: false
     });
@@ -243,7 +244,7 @@ Page({
       return
     }
 
-    if(!this.data.activityChosen){
+    if(!this.data.activityName){
       Notify({type:'danger', message:'请先选择活动'})
       return
     }
@@ -273,7 +274,8 @@ Page({
   timeslotConfirm: async function(event){
     const { picker, value, index } = event.detail;
     this.setData({
-      timeslotChosen: value,
+      startTime: this.data.timeslotList[index].startTime,
+      endTime: this.data.timeslotList[index].endTime, 
       timeSlot: this.data.timeslotList[index].timeSlot,
       timeslotShow: false
     });
@@ -300,6 +302,7 @@ Page({
     this.setData({
       calenderShow: false,
       boughtTime: formatTime(currDate).split(' ')[0],
+      boughtMonth: formatTime(currDate).split(' ')[0].split('-').slice(0,2).join('-')
     });
   },
   calenderClose: function(){
@@ -380,8 +383,9 @@ Page({
       let res = await uploadImage(image.url)
       // 更新imagesToUpload
       const { imagesToUpload = [] } = this.data;
-      imagesToUpload.push({ ...image, url: app.globalData.baseURL + '/img/' + res, isImage: true });
+      imagesToUpload.push({ ...image, url: app.globalData.baseURL + '/img/' + res});
       this.setData({ imagesToUpload });
+      console.log(imagesToUpload)
       // 更新imageList
       const { imageList = [] } = this.data;
       imageList.push(res);
@@ -398,6 +402,9 @@ Page({
     const { imageList = [] } = this.data;
     imageList.splice(imageToDelete, 1)
     this.setData({ imageList });
+  },
+  uploadOversize: function(){
+    Notify({type: 'danger', message: '图片大小超出限制'})
   },
 
   // helpClick在模拟器上的结果和真机区别很大，建议以真机为准
@@ -519,6 +526,9 @@ Page({
     this.setData({
       serviceEventId: curr_service.id,
       activityId: curr_service.activityId,
+      activityName: curr_service.activityName,
+      endTime: curr_service.endTime,
+      startTime: curr_service.startTime,
       problemSummary: curr_service.problemSummary,
       status: curr_service.status,
       graphicsModel: (this.data.graphicsModel? this.data.graphicsModel : '没有独立显卡'),
@@ -526,20 +536,15 @@ Page({
       underWarranty: (this.data.underWarranty === null? false: this.data.underWarranty)
     })
 
-    // 加载activityName与timeslot
-    if(this.data.activityId){
-      let timeslots = await getActivitySlot(this.data.activityId)
-      for (let timeslot of timeslots){
-        if (timeslot.timeSlot == this.data.timeSlot){
-          this.setData({
-            timeslotChosen: timeslot.startTime + ' - ' + timeslot.endTime
-          })
-          break;
-        }
-      }
-    }
+    // 处理一些中间变量
+    this.setData({
+      boughtMonth: this.data.boughtTime ? this.data.boughtTime.split('-').slice(0,2).join('-') : ''
+    })
 
-    // 加载images
+    // 加载images, 避免填写完成后图片加载两遍
+    this.setData({
+      imagesToUpload: []
+    })
     if(this.data.imageList){
       for(let imagePath of this.data.imageList){
         const { imagesToUpload = [] } = this.data;

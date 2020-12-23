@@ -64,6 +64,14 @@
       autosize label="备注" 
       placeholder="啊这" 
     />
+    <van-cell title="故障图片">
+      <van-uploader
+          sizeType="['compressed']" 
+          file-list="{{ fileList }}" 
+          max-count="1" 
+          bind:after-read="afterRead"
+        />
+    </van-cell>
   </van-cell-group>
   <view class="mapbuttons" >
     <view class="buttons_">
