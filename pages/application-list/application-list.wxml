@@ -10,6 +10,40 @@
     没有未审核申请表
   </view>
   <!-- 有未审核申请表 -->
+  <view >
+    <van-collapse
+      value="{{ activeNames }}" 
+      bind:change="onChange"
+    >
+      <van-collapse-item
+        wx:for="{{ application }}"
+        class="titileOrder"
+        async-close
+        data-id="{{item.serviceEventId}}"
+        wx:if="{{ !item.closed }}"
+      >
+          <image src="https://img.yzcdn.cn/vant/cat.jpeg"></image>
+          <view slot="title">{{ (item.userName?item.userName:'未填写姓名') }}</view>
+          <view slot="value">{{ (item.studentId?item.studentId:'未填写学号') }}</view>
+          <view slot="value">申请理由: {{ (item.reasonForApplication?item.reasonForApplication:'未填写') }}</view>
+          <van-cell value="test">
+            <view slot="value">年级: {{(item.grade?item.grade:'未填写年级')}}</view>
+            <view slot="value">邮箱: {{(item.email?item.email:'未填写邮箱')}}</view>
+            <view slot="value">手机号: {{(item.phoneNumber?item.phoneNumber:'未填写手机号')}}</view>
+          </van-cell>
+          <view class="test">
+            <!--图片-->
+            <view>
+              <image src="{{item.cardPicLocation}}"></image>
+            </view>
+            <view>
+              试试
+            </view>
+          </view>
+      </van-collapse-item>
+    </van-collapse>
+  </view>
+  <!--
     <van-swipe-cell 
       wx:for="{{ application }}"
       class="titileOrder"
@@ -37,6 +71,14 @@
         </div>
         <van-button type="primary" size="normal" bindtap="viewPic" 
           data-picurl="{{item.cardPicLocation}}" square>看图</van-button>
+        <view slot="">
+          <view slot="left" class="buttons_">
+            <van-button  type="primary" size="large" round>好</van-button>
+          </view>
+          <view slot="right" class="buttons_">
+            <van-button   type="primary" size="large" round>坏</van-button>
+          </view>
+        </view>
       </van-cell> 
         <view slot="right">
           <van-button type="primary" size="normal" bindtap="replyApplication" 
@@ -45,7 +87,7 @@
           data-status='2' data-id="{{item.formId}}" square>驳回</van-button>
         </view>
     </van-swipe-cell>
-  
+  -->
   <view class="blank"></view>
 
   <van-dialog id="van-dialog"></van-dialog>

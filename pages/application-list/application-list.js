@@ -10,6 +10,7 @@ Page({
     application:[
 
     ],
+    activeNames: ['1'],
     pageLoading: false
   },
 
@@ -55,6 +56,12 @@ Page({
 
   },
 
+  // vant的collapse要用到
+  onChange(event) {
+    this.setData({
+      activeNames: event.detail,
+    });
+  },
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */

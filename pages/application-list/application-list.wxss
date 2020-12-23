@@ -13,3 +13,27 @@
   align-items: center;
   justify-content: center;
 }
+
+.reason {
+  display: flex;                      
+  justify-content: flex-start; 
+}
+
+.buttons_ {
+  margin-top: 7%;
+  display: block;
+  width: 40%;
+  border-radius: 50%;
+  box-shadow: 5rpx 5rpx 10rpx rgba(0, 0, 0, 0.2);
+}
+
+.rejectedDetails {
+  display: block;
+  text-align: center;
+  color: #f44;
+  margin-bottom: 3%;
+}
+
+.test{
+  display: flex;   
+}
