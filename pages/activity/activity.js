@@ -30,7 +30,8 @@ Page({
     incomingActivity:[
 
     ],
-    'auditable': false
+    'auditable': false,
+    'pageLoading': true
   },
 
   loadCurrentServices: async function(){
@@ -130,6 +131,7 @@ Page({
   },
 
   loadCurrentActivities: async function(){
+    this.setData({pageLoading: true})
     //await this.AddActivitiesForTest()
     var time=require('../../utils/util.js')
     let currentTime=time.formatTime(new Date())
@@ -144,6 +146,7 @@ Page({
     }*/
     console.log('IncomingActivityList:',incomingActivityList)
     this.setData({
+      pageLoading: false,
       currentActivity: currentActivityList,
       incomingActivity: incomingActivityList
     })

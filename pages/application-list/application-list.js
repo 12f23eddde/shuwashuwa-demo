@@ -9,28 +9,20 @@ Page({
   data: {
     application:[
 
-    ]
+    ],
+    pageLoading: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad:async function (options) {
+    this.setData({pageLoading: true})
     let data={"status":0}
     let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
     console.log(applicationList)
-    for (let i of applicationList)
-    {
-      let detail=await requestWithToken('/api/volunteer/application/detail','GET',{"id":i.formId})
-      i.cardPicLocation=detail.cardPicLocation
-      i.email=detail.email
-      i.identity=detail.identity
-      i.phoneNumber=detail.phoneNumber
-      i.studentId=detail.studentId
-      i.reasonForApplication=detail.reasonForApplication
-      //replyByAdmin
-    }
     this.setData({
+      pageLoading: false,
       application:applicationList
     })
   },
@@ -95,12 +87,19 @@ Page({
       }
     }
     form.department=form.department?form.department:""
+    form.phoneNumber=form.phoneNumber?form.phoneNumber:""
+    form.identity=form.identity?form.identity:""
     form.email=form.email?form.email:""
     form.status=status-'0'
-    //回头再加留言功能
+    //回头再加留言功能  
     form.replyByAdmin=""
-    form.formID=form.formId
+    console.log(form)
     await requestWithToken('/api/volunteer/application', 'PUT',form)
+    let data={"status":0}
+    let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
+    this.setData({
+      application:applicationList
+    })
   },
   viewPic: async function(event){
     console.log(event.currentTarget.dataset)

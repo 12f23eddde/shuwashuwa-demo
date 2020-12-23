@@ -14,10 +14,13 @@
 <view class="actvityPage">
   <!--当前活动-->
   <view class="maptitle">
+    <view wx-if="{{pageLoading}}">
+      <van-loading> 正在加载活动... </van-loading>
+    </view>
     <view class="title" wx:if="{{ currentActivity.length>0 }}">
       当前活动
     </view>
-    <view class="titleNa" wx:else>
+    <view class="titleNa" wx:elif="{{!pageLoading}}">
       没有正在进行的活动
     </view>
   </view>

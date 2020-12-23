@@ -32,6 +32,9 @@
         <div style="display:block;">
           <span style="display:block;">手机号: {{(item.phoneNumber?item.phoneNumber:'未填写手机号')}}</span>
         </div>
+        <div style="display:block;">
+          <span style="display:block;">申请原因: {{(item.reasonForApplication?item.reasonForApplication:'未填写申请原因')}}</span>
+        </div>
         <van-button type="primary" size="normal" bindtap="viewPic" 
           data-picurl="{{item.cardPicLocation}}" square>看图</van-button>
       </van-cell> 
