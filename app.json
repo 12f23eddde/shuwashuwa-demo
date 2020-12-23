@@ -62,6 +62,8 @@
     "van-popup": "@vant/weapp/popup/index",
     "van-uploader": "@vant/weapp/uploader/index",
     "van-loading": "@vant/weapp/loading/index",
+    "van-checkbox": "@vant/weapp/checkbox/index",
+    "van-checkbox-group": "@vant/weapp/checkbox-group/index",
     "towxml":"/miniprogram_npm/towxml/towxml"
   },
   "networkTimeout": {
