@@ -403,7 +403,7 @@ Page({
     imageList.splice(imageToDelete, 1)
     this.setData({ imageList });
   },
-  uploadOverSize: function(){
+  uploadOversize: function(){
     Notify({type: 'danger', message: '图片大小超出限制'})
   },
 
