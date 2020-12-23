@@ -1,5 +1,6 @@
 <view>
   <van-notify id="van-notify" />
+  <van-dialog id="van-dialog" />
 <view class="userPage">
   <view class="userinfo-avatar">
     <open-data class="userPic" type="userAvatarUrl"></open-data>
@@ -96,17 +97,17 @@
 
   <view class="mapbuttons" wx-if="{{ disableEdit }}">
     <!-- 对class做了一些小调整 -->
-    <view class="{{myRole==='志愿者'?'buttons':'buttons_'}}">
+    <view class="{{volunteer && !admin?'buttons':'buttons_'}}">
       <van-button type="primary" size="large" bindtap="onClickChange" round>
         修改个人信息
       </van-button>
     </view>
-    <view class="buttons_" wx:if="{{ myRole==='普通用户' }}">
+    <view class="buttons_" wx:if="{{ !volunteer }}">
       <van-button size="large" id="buttonSubmit" bindtap="applicationClick" round>
         申请成为志愿者
       </van-button>
     </view>
-    <view class="buttons_" wx:if="{{ myRole==='管理员' }}">
+    <view class="buttons_" wx:if="{{ admin && volunteer }}">
       <van-button size="large" id="buttonSubmit" bindtap="applicationAudit" round>
         审核志愿者申请
       </van-button>
@@ -129,7 +130,7 @@
       <van-cell title="学生证照片" label="我们承诺您的信息只用于发放志愿证明" title-style="{{ errMsg.cardPicLocation }}">
         <van-uploader
           sizeType="['compressed']" 
-          file-list="{{ imageList }}" 
+          file-list="{{ imagesToUpload }}" 
           max-count="1" 
           bind:after-read="uploadConfirm"
           bind:delete="uploadCancel"

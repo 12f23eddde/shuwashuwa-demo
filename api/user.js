@@ -15,7 +15,7 @@ export const login = async function(){
   let app = getApp()
   let baseURL = app.globalData.baseURL
   // 前端获取微信res.code
-  let loginRes = await wx.login()
+  let loginRes = await wxp.login()
   
   // 后端通过openid获取token
   // wx.request 似乎不是Promise，故做封装
@@ -128,8 +128,8 @@ export const updateUserInfo = async function(userinfo){
   return requestRes
 }
 
-// 删除当前用户
+// [测试] 删除当前用户
 export const deleteCurrentUser = async function(){
-  let requestRes = await requestWithToken('/api/user/deleteOneUser','DELETE')
+  let requestRes = await requestWithToken('/test/myself','DELETE')
   return requestRes
 }

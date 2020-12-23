@@ -98,15 +98,16 @@
     <van-cell title="故障图片">
       <van-uploader accept="image" 
         sizeType="['compressed']" 
-        file-list="{{ imageList }}" 
-        max-count="5" 
+        file-list="{{ imagesToUpload }}" 
+        max-count="{{ disableEdit? imageList.length : 5}}" 
         multiple 
-        preview-image 
-        preview-full-image 
+        max-size="1048576"
         disabled="{{ disableEdit }}" 
+        deletable="{{ !disableEdit }}"
         preview-size="120rpx" 
         bind:after-read="uploadConfirm"
         bind:delete="uploadCancel"
+        bind:oversize="uploadOversize"
        />
     </van-cell>
   </van-cell-group>

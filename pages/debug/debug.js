@@ -1,9 +1,9 @@
 // pages/debug/debug.js
 
-import {login, deleteCurrentUser} from '../../api/user'
+import {login, deleteCurrentUser, requestWithToken} from '../../api/user'
 import {requestSubscription} from '../../api/service'
 import {uploadWithToken, chooseImage} from '../../api/file'
-import {parseToken} from '../../utils/util'
+import {parseToken, whoAmI} from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
 import Toast from '@vant/weapp/toast/toast'
 
@@ -18,7 +18,17 @@ Page({
     currToken: "复制Token",
     currURL: "http://shuwashuwa.kinami.cc:8848",
     currTID: "DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q",
-    navigateURL: "/pages/user/user"
+    navigateURL: "/pages/user/user",
+    admin:false,
+    volunteer: false,
+    myRole: ''
+  },
+
+  updateRole: async function(){
+    let url = '/test/auth?admin='+this.data.admin+'&volunteer='+this.data.volunteer
+    console.log(url)
+    let res = await requestWithToken(url, 'PUT')
+    console.log(res)
   },
 
   /**
@@ -38,10 +48,13 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: async function () {
     this.setData({
       currURL: app.globalData.baseURL,
-      currTID: app.globalData.tmplID
+      currTID: app.globalData.tmplID,
+      volunteer: app.globalData.userInfo.volunteer,
+      admin: app.globalData.userInfo.admin,
+      myRole: await whoAmI()
     })
   },
 

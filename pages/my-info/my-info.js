@@ -1,7 +1,7 @@
 import {getUserInfo, updateUserInfo} from '../../api/user'
 import {uploadImage} from '../../api/file'
 import {postApplication} from '../../api/application'
-import {whoAmI} from '../../utils/util'
+import {whoAmI, checkUserInfo} from '../../utils/util'
 
 import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
@@ -16,8 +16,8 @@ Page({
     reasonForApplication: '',
     cardPicLocation: '',
     imagesToUpload: [],
-
-    userInfo: {},
+    admin: false,
+    volunteer: false,
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     userName: '',
@@ -135,6 +135,7 @@ Page({
   },
 
   applicationClick: async function(){
+    if (!await checkUserInfo()) return;
     this.clearErrMsg()
     this.setData({ applicationShow: true })
   },
@@ -165,11 +166,11 @@ Page({
     const { imagesToUpload = [] } = this.data;
     imagesToUpload.push({ ...image, url: app.globalData.baseURL + '/img/' + res});
     this.setData({ imagesToUpload });
+    console.log(imagesToUpload)
     // 更新imageList
     this.setData({cardPicLocation: res});
   },
   uploadCancel: async function(event){
-    if(this.data.disableEdit) return;
     let imageToDelete = event.detail.index
     const { imagesToUpload = [] } = this.data;
     imagesToUpload.splice(imageToDelete, 1)

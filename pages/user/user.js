@@ -1,8 +1,11 @@
 // pages/user/user.js
 import {getUserInfo, updateUserInfo} from '../../api/user'
+import {uploadImage} from '../../api/file'
 import Toast from '@vant/weapp/toast/toast'
 import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
+
+const app = getApp()
 
 Page({
   // 由于微信对双向绑定的支持非常狗屎, 因此只能把userinfo给拆了
@@ -23,8 +26,20 @@ Page({
       userName: '',
       studentId: '',
       phoneNumber: '',
-      email: ''
+      email: '',
+
+      fileList: [],
     }
+  },
+
+  async afterRead(event) {
+    const { file } = event.detail;
+    // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+    let filePath = await uploadImage(file.url)
+    const { fileList = [] } = this.data;
+    fileList.push({ ...file, url: app.globalData.baseURL + '/img/' + filePath });
+    this.setData({ fileList });
+    console.log( fileList )
   },
 
   // 由于微信原生不支持表单验证，引入wevalidator
