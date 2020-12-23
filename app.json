@@ -8,7 +8,8 @@
     "pages/debug/debug",
     "pages/service-detail/service-detail",
     "pages/my-info/my-info",
-    "pages/service-list/service-list"
+    "pages/service-list/service-list",
+    "pages/application-list/application-list"
   ],
   "window": {
     "backgroundTextStyle": "light",

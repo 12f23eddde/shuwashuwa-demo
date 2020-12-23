@@ -4,13 +4,23 @@
 <van-toast id="van-toast" />
 
 <tab-bar active='2'></tab-bar>
+<view class="mapbuttons" wx-if="{{auditable}}">
+    <view class="buttons_">
+      <van-button type="primary" size="large" bindtap="auditApplication">
+        审核志愿者申请
+      </van-button>
+    </view>
+</view>
 <view class="actvityPage">
   <!--当前活动-->
   <view class="maptitle">
+    <view wx-if="{{pageLoading}}">
+      <van-loading> 正在加载活动... </van-loading>
+    </view>
     <view class="title" wx:if="{{ currentActivity.length>0 }}">
       当前活动
     </view>
-    <view class="titleNa" wx:else>
+    <view class="titleNa" wx:elif="{{!pageLoading}}">
       没有正在进行的活动
     </view>
   </view>

@@ -35,7 +35,7 @@
         <view slot="title" class="collTitle"> {{ item.serviceEventId }} </view>
         <view slot="value" class="dateView"> {{ (item.computerModel?item.computerModel:'未填写型号') }} </view>
         <view slot="value" class="orderUser"> {{ (item.problemType?item.problemType:'未填写问题') }} </view>
-        <view slot="value" class="orderType"> {{ (user?(item.volunteerName?item.volunteerName:'未被志愿者接单'):item.userName) }} </view>
+        <view slot="value" class="orderType"> {{ (item.userName==userName?(item.volunteerName?item.volunteerName:'未被志愿者接单'):item.userName) }} </view>
         <view class='rejectedDetails' wx:if="{{item.status == 0}}"> 等待编辑 </view>
         <view class='rejectedDetails' wx:if="{{item.status == 1}}"> 等待审核 </view>
         <view class='comfirmedDetails' wx:if="{{item.status == 2}}"> 审核通过 </view>
