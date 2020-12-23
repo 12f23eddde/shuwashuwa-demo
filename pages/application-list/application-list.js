@@ -22,6 +22,10 @@ Page({
     let data={"status":0}
     let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
     console.log(applicationList)
+    for(var i in applicationList){
+      applicationList[i].imageURL = 'http://shuwashuwa.kinami.cc:8848/img/'+applicationList[i].cardPicLocation;
+    }
+    console.log(applicationList)
     this.setData({
       pageLoading: false,
       application:applicationList
@@ -104,6 +108,9 @@ Page({
     await requestWithToken('/api/volunteer/application', 'PUT',form)
     let data={"status":0}
     let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
+    for(var json in applicationList){
+      json["imageURL"] = "http://shuwashuwa.kinami.cc:8848/img/"+json[cardPicLocation]
+    }
     this.setData({
       application:applicationList
     })
