@@ -6,7 +6,10 @@
     "pages/activity/activity",
     "pages/order/order",
     "pages/debug/debug",
-    "pages/service-detail/service-detail"
+    "pages/service-detail/service-detail",
+    "pages/my-info/my-info",
+    "pages/service-list/service-list",
+    "pages/application-list/application-list"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -23,7 +26,7 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/order/order",
+        "pagePath": "pages/service-list/service-list",
         "text": "维修单"
       },
       {
@@ -31,7 +34,7 @@
         "text": "活动"
       },
       {
-        "pagePath": "pages/user/user",
+        "pagePath": "pages/my-info/my-info",
         "text": "个人信息"
       }
     ]
@@ -52,7 +55,14 @@
     "van-collapse-item": "@vant/weapp/collapse-item/index",
     "van-dropdown-menu": "@vant/weapp/dropdown-menu/index",
     "van-dropdown-item": "@vant/weapp/dropdown-item/index",
-    "van-swipe-cell": "@vant/weapp/swipe-cell/index"
+    "van-swipe-cell": "@vant/weapp/swipe-cell/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-calendar": "@vant/weapp/calendar/index",
+    "van-switch": "@vant/weapp/switch/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "towxml":"/miniprogram_npm/towxml/towxml"
   },
   "networkTimeout": {
     "request": 3000

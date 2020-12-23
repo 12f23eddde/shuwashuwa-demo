@@ -1,4 +1,104 @@
 <!--pages/activity/activity.wxml-->
-<text>pages/activity/activity.wxml</text>
-<tab-bar active='2'></tab-bar>
+
+<van-notify id="van-notify" />
 <van-toast id="van-toast" />
+
+<tab-bar active='2'></tab-bar>
+<view class="mapbuttons" wx-if="{{auditable}}">
+    <view class="buttons_">
+      <van-button type="primary" size="large" bindtap="auditApplication">
+        审核志愿者申请
+      </van-button>
+    </view>
+</view>
+<view class="actvityPage">
+  <!--当前活动-->
+  <view class="maptitle">
+    <view class="title" wx:if="{{ currentActivity.length>0 }}">
+      当前活动
+    </view>
+    <view class="titleNa" wx:else>
+      没有正在进行的活动
+    </view>
+  </view>
+  <view wx:if="{{ currentActivity.length>0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ currentActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}">
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <!--排队中维修单-->
+  <view class="maptitle" wx:if="{{ inQueueService.length>0 }}">
+    <view class="title">
+      排队中维修单
+    </view>
+  </view>
+  <view wx:if="{{ inQueueService.length>0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ inQueueService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
+        label="{{item.statusString}}">
+        <van-swipe-cell right-width="{{ 65 }}">
+          <view slot="right"><van-button type="danger">删除</van-button></view>
+          <view slot="">
+            <div style="display:block;">
+              <span style="display:block;"> {{item.computerModel}}</span>
+            </div>
+            <div style="display:block;">
+              <span style="display:block;"> {{item.problemSummary}}</span>
+            </div>
+          </view>
+        </van-swipe-cell>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <!--待填维修单-->
+  <view class="maptitle">
+    <view class="title" wx:if="{{ inEditService.length>0 }}">
+      待填维修单
+    </view>
+  </view>
+  <view wx:if="{{ inEditService.length>0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell" bindtap="gotoOrder">
+      <van-cell title="你有{{inEditService.length}}张待填写维修单" value="点击跳转">
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <!--未来活动-->
+  <view class="maptitle" wx:if="{{ incomingActivity.length>0 }}">
+    <view class="title">
+      未来活动
+    </view>
+  </view>
+  <view wx:if="{{ incomingActivity.length>0 }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ incomingActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}">
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <view class="blank"></view>
+  <view class="blank"></view>
+
+</view>

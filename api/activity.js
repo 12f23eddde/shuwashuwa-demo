@@ -1,20 +1,25 @@
 import {requestWithToken} from "./user";
 import {wxp} from '../utils/wxp';
 //获取未开始活动列表
-export const getCurrentActivities = async function(currentTime,filter){
-  var data={
+export const getCurrentActivities = async function(currentTime){
+  let data={
     endLower: currentTime,
     startUpper:currentTime
   }
-  var requestRes
-  if(filter){
-    console.log("filter")
-    requestRes = await requestWithToken('/api/activity','GET',data)
+  let requestRes = await requestWithToken('/api/activity','GET',data)
+  return requestRes
+}
+
+export const getAllActivities = async function(){
+  let requestRes = await requestWithToken('/api/activity','GET')
+  return requestRes
+}
+
+export const getIncomingActivities = async function(currentTime){
+  let data={
+    startLower:currentTime
   }
-  else{
-    console.log("no filter")
-    requestRes = await requestWithToken('/api/activity','GET')
-  }
+  let requestRes = await requestWithToken('/api/activity','GET',data)
   return requestRes
 }
 
@@ -26,16 +31,33 @@ export const getActivitySlot = async function(actId){
   return requestRes
 }
 
+//get slot time for specific activity and slot(
+export const getSlotTime = async function(actId,slotID){
+  let data={
+    "activity":actId
+  }
+  let requestRes = await requestWithToken('/api/activity/slot','GET',data)
+  for (let i in requestRes){
+    if(requestRes[i].timeSlot==slotID){
+      let time={
+        'startTime':requestRes[i].startTime,
+        'endTime':requestRes[i].endTime
+      }
+      return(time)
+    } 
+  }
+  throw {"errCode":40000, "errMsg":"The activity do not have correspond time slot"}
+}
+
 //测试用的，记得删掉——
 //Edit from requestWithToken in api/user.js
-export const requestWithSAToken = async function(method, data){
+export const requestWithSAToken = async function(URL,method, data){
   let app = getApp()
   let baseURL = app.globalData.baseURL
   let requestRes = await wxp.request({
-    url: baseURL+'/api/super/activity',
+    url: baseURL+URL,
     header: {
-      //此处应有SU token
-      'token': ''
+      //此处应有SA token
     },
     method: method,
     data: data
@@ -45,4 +67,9 @@ export const requestWithSAToken = async function(method, data){
   }else{
     throw {"errCode":requestRes.data.code, "errMsg":requestRes.data.data}
   }
+}
+
+export const checkIn = async function(activityId){
+  let requestRes = await requestWithToken('/api/activity/attend?activity=' + activityId,'PUT')
+  return requestRes
 }

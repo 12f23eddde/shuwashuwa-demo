@@ -1,3 +1,95 @@
-.van-button {
-  margin-top: 20rpx;
+.userPage{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.userinfo-avatar {
+  overflow:hidden;
+  display: block;
+  width: 180rpx;
+  height: 180rpx;
+  margin: 20rpx;
+  margin-top: 120rpx;
+  border-radius: 50%;
+}
+
+.nickname {
+  align-self: center;
+}
+
+.usernickname {
+  font-size: x-large;
+  font: bold;
+  color: rgb(103, 103, 103);
+  width: 100%;
+  text-align: left;
+}
+
+.userotherinfo {
+  color: rgb(142, 142, 142);
+  width: 100%;
+}
+
+.userinfo {
+  display:flex;
+  align-items: center;
+  margin-top: 5%;
+  width: 90%;
+  height: 200rpx;
+  border-radius: 30rpx;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.detailInfo {
+  margin-top: 10%;
+  width: 90%;
+}
+
+.blank{ 
+  height: 46px;
+  clear:both; 
+  overflow:hidden; 
+  display:block; 
+  overflow:hidden;
+}
+
+.userIcon {
+  height: 120rpx;
+  width: 120rpx;
+  margin-left: 4%;
+  margin-right: 3%;
+}
+
+.userotherinfo {
+  text-align: right;
+  margin-right: 5%;
+}
+
+.uIcon {
+  height: 100%;
+  width: 100%;
+}
+
+
+.mapbuttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.van-button--buttonSubmit {
+  align-self: center;
+  display: inline-block;
+  --button-default-height: 80%;
+  width: 100%;
+}
+
+.buttons_ {
+  margin-top: 7%;
+  display: block;
+  width: 45%;
+  border-radius: 50%;
 }

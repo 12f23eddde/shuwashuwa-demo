@@ -8,6 +8,8 @@ Page({
   // 由于微信对双向绑定的支持非常狗屎, 因此只能把userinfo给拆了
   // 微信文档, 永远的谜语人
   data: {
+    role: '',
+    userInfo: {},
     userName: '',
     studentId: '',
     phoneNumber: '',
@@ -105,6 +107,7 @@ Page({
   // 提交更改，并重新加载用户信息
   onSubmit: async function(){
     this.clearErrMsg()
+    console.log(this)
     if(!this.validator.checkData(this.data)) return
     // [后期可能需要更改] 尝试直接传this.data(可能有数据用不到?)
     await updateUserInfo(this.data)

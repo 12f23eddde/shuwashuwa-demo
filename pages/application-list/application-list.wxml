@@ -1,0 +1,49 @@
+<!--pages/application-list/application-list.wxml-->
+<!--以service-list为蓝本修改,感谢hrz shn-->
+<view>
+  <view wx-if="{{pageLoading}}">
+    <van-loading> 正在加载申请表... </van-loading>
+  </view>
+  
+  <!-- 没有未审核申请表 -->
+  <view wx-if="{{!pageLoading && application.length == 0}}">
+    没有未审核申请表
+  </view>
+  <!-- 有未审核申请表 -->
+    <van-swipe-cell 
+      wx:for="{{ application }}"
+      class="titileOrder"
+      right-width="{{ 120 }}" 
+      async-close
+    >
+      <van-cell title="{{item.userName}}" >
+        <div style="display:block;">
+          <span style="display:block;">{{(item.department?item.department:'')}}</span>
+        </div>
+        <div style="display:block;">
+          <span style="display:block;">年级: {{(item.grade?item.grade:'未填写年级')}}</span>
+        </div>
+        <div style="display:block;">
+          <span style="display:block;">学号: {{(item.studentId?item.studentId:'未填写学号')}}</span>
+        </div>
+        <div style="display:block;">
+          <span style="display:block;">邮箱: {{(item.email?item.email:'未填写邮箱')}}</span>
+        </div>
+        <div style="display:block;">
+          <span style="display:block;">手机号: {{(item.phoneNumber?item.phoneNumber:'未填写手机号')}}</span>
+        </div>
+        <van-button type="primary" size="normal" bindtap="viewPic" 
+          data-picurl="{{item.cardPicLocation}}" square>看图</van-button>
+      </van-cell> 
+        <view slot="right">
+          <van-button type="primary" size="normal" bindtap="replyApplication" 
+          data-status='1' data-id="{{item.formId}}" square>通过</van-button>
+          <van-button type="danger" size="normal" bindtap="replyApplication" 
+          data-status='2' data-id="{{item.formId}}" square>驳回</van-button>
+        </view>
+    </van-swipe-cell>
+  
+  <view class="blank"></view>
+
+  <van-dialog id="van-dialog"></van-dialog>
+</view>
