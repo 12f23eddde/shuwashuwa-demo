@@ -1,5 +1,6 @@
 import { requestWithToken } from '../../api/user'
 import { whoAmI } from '../../utils/util'
+import Dialog from '@vant/weapp/dialog/dialog'
 // pages/application-list/application-list.js
 Page({
 
@@ -86,6 +87,22 @@ Page({
   onShareAppMessage: function () {
 
   },
+
+  onConfirm: function(event){
+    let status=event.currentTarget.dataset.status
+    let _message = status==1?"确定要通过志愿者申请吗？":"确定要拒绝志愿者申请吗？"
+    Dialog.confirm({
+      title: '确认',
+      message: _message,
+    })
+      .then(() => {
+        this.replyApplication(event)
+      })
+      .catch(() => {
+        // on cancel
+      });
+  },
+
   replyApplication: async function(event){
     let applicationId = event.currentTarget.dataset.id
     let status=event.currentTarget.dataset.status

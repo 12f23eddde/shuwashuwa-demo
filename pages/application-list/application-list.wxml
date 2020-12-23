@@ -30,7 +30,7 @@
               type="primary" 
               sqaure
               size="small"
-              bindtap="replyApplication" data-status='1' data-id="{{item.formId}}"
+              bindtap="onConfirm" data-status='1' data-id="{{item.formId}}"
               data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">通过</van-button>
           </view>
           <view class="bottons">
@@ -38,13 +38,12 @@
               type="danger" 
               square
               size="small"
-              bindtap="replyApplication" data-status='2' data-id="{{item.formId}}"
+              bindtap="onConfirm" data-status='2' data-id="{{item.formId}}"
               data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">拒绝</van-button>
           </view>
         </view>
     </van-cell>
   </view>
-
     
   <view class="blank"></view>
 
