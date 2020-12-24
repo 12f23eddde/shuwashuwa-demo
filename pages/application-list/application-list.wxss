@@ -22,7 +22,7 @@
 .buttons_ {
   margin-top: 7%;
   display: block;
-  width: 40%;
+  width: 100%;
   border-radius: 50%;
   box-shadow: 5rpx 5rpx 10rpx rgba(0, 0, 0, 0.2);
 }
@@ -60,9 +60,8 @@
   align-items: center;
 }
 
-.buttons {
+.bottons {
   display: block;
-  justify-content: center;
   width: 40%;
 }
 
@@ -72,4 +71,30 @@
   overflow:hidden; 
   display:block; 
   overflow:hidden;
+}
+
+.viewTitle {
+  margin-top: 2.8%;
+}
+
+.viewValue {
+  margin-top: 2.8%;
+}
+
+.title {
+  width: 90%;
+  font-size: x-large;
+  font-weight: bold;
+  text-align: left;
+  color: rgb(101, 101, 101);
+  margin-top: 2%;
+  margin-bottom: 3%;
+}
+
+.maptitle {
+  width: 100%;
+  height: 120rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }

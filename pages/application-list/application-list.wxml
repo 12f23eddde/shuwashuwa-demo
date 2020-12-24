@@ -9,13 +9,22 @@
   <view class="centerTitle" wx-if="{{!pageLoading && application.length == 0}}">
     没有未审核申请表
   </view>
+  <view class="maptitle" wx:if="{{ !pageLoading && application.length > 0}}">
+    <view wx-if="{{pageLoading}}">
+      <van-loading/>
+    </view>
+    <view class="title">
+      待审核志愿者申请
+    </view>
+  </view>
   <!-- 有未审核申请表 -->
   <view>
     <van-collapse value="{{ activeNames }}"  bind:change="onChange">    
     <van-collapse-item wx:for="{{ application }}"
-      title="{{(item.userName?item.userName:'未填写姓名')}}"
-      value="学号: {{(item.studentId?item.studentId:'未填写学号')}}"
+      icon="/res/icons/verifyingOrder.png"
     >
+      <view slot="title" class="viewTitle"> {{(item.userName?item.userName:'未填写姓名')}} </view>
+      <view slot="value" class="viewValue"> 学号: {{(item.studentId?item.studentId:'未填写学号')}} </view>
       <view class="infoRow">
         <view class="left">年级 </view>
         <view class="right">{{(item.grade?item.grade:'未填写')}}</view>
@@ -44,16 +53,18 @@
           <view class="bottons">
             <van-button 
               type="primary" 
-              sqaure
-              size="small"
+              size="large"
+              plain
+              round
               bindtap="onConfirm" data-status='1' data-id="{{item.formId}}"
               data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">通过</van-button>
           </view>
           <view class="bottons">
             <van-button 
               type="danger" 
-              square
-              size="small"
+              size="large"
+              plain
+              round
               bindtap="onFeedBack" data-status='2' data-id="{{item.formId}}"
               data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">拒绝</van-button>
           </view>

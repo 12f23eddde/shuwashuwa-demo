@@ -90,7 +90,7 @@
       待审核志愿者申请
     </view>
   </view>
-  <view class="mapbuttons" wx:if="{{ inAuditApplication.length>0 && admin }}">
+  <view class="mapbuttons" wx:if="{{ inAuditApplication.length>0 && admin && !pageLoading }}">
     <van-cell-group class="activityCell" bindtap="gotoApplicationList">
       <van-cell title="你有{{inAuditApplication.length}}份待审核志愿者申请" value="点击跳转">
       </van-cell>
