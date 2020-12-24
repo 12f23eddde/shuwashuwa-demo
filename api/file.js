@@ -65,7 +65,7 @@ export const uploadImage = async function(filePath){
 
 // 删除一张图片
 export const deleteImage= async function(filePath){
-  return requestWithToken('/api/image?path=' + filePath)
+  return requestWithToken('/api/image?fileName=' + filePath, 'DELETE')
 }
 
 // 获取一个markdown文件，并通过<towxml>将其渲染为wxml

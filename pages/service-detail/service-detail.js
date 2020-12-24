@@ -3,7 +3,7 @@ import {
   cancelService, auditService, completeService, feedbackService, 
   workService, cancelWorkService, getHelpMessage
 } from '../../api/service'
-import {uploadImage, getHtmlWxml} from '../../api/file'
+import {uploadImage, deleteImage, getHtmlWxml} from '../../api/file'
 import {getIncomingActivities, getCurrentActivities, getActivitySlot} from '../../api/activity'
 import {getTemplateIDs, requestSubscription} from '../../api/subscription'
 import {formatTime} from '../../utils/util'
@@ -71,9 +71,9 @@ Page({
     submitLoading: false,
 
     disableEdit: true,
-    editable: true,
-    auditable: true,
-    workable: true,
+    editable: false,
+    auditable: false,
+    workable: false,
 
     tmplIDs: []
   },
@@ -406,6 +406,7 @@ Page({
     this.setData({ imagesToUpload });
     // 更新imageList
     const { imageList = [] } = this.data;
+    await deleteImage(imageList[imageToDelete])  // 删除图片
     imageList.splice(imageToDelete, 1)
     this.setData({ imageList });
   },
@@ -568,8 +569,8 @@ Page({
     if (curr_service.userId === app.globalData.userId){
       this.setData({
         editable: true,
-        // auditable: false,
-        // workable: false
+        auditable: false,
+        workable: false
       })
     }
     // 可以接单,不能自己接自己
