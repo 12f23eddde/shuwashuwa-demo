@@ -48,6 +48,7 @@ export const getCurrentPage = () => {
 
 // 用户身份（为了方便调试，直接用中文力）
 // ['普通用户','管理员','志愿者']
+// whoAmI能保证login()一定执行完毕，且在大多数情况下不会login()两次
 export const whoAmI = async function(){
   const app = getApp()
   if(!app.globalData.userInfo){
