@@ -49,11 +49,11 @@
 }
 
 .viewTitle {
-  margin-top: 2.7%;
+  margin-top: 10rpx;
 }
 
 .viewValue {
-  margin-top: 2.7%;
+  margin-top: 10rpx;
 }
 
 .noActivity {

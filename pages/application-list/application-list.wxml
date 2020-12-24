@@ -6,7 +6,7 @@
   </view>
   
   <!-- 没有未审核申请表 -->
-  <view class="centerTitle" wx-if="{{!pageLoading && application.length == 0}}">
+  <view class="centerTitle" wx-if="{{!pageLoading && application.length == 0}}" class="noApplication">
     没有未审核申请表
   </view>
   <view class="maptitle" wx:if="{{ !pageLoading && application.length > 0}}">

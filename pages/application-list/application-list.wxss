@@ -77,12 +77,12 @@
 
 .viewTitle {
   font: large;
-  margin-top: 2.7%;
+  margin-top: 10rpx;
 }
 
 .viewValue {
   font: large;
-  margin-top: 2.7%;
+  margin-top: 10rpx;
 }
 
 .title {
@@ -101,4 +101,11 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.noApplication {
+  height: 900rpx;
+  text-align: center;
+  transform:translateY(50%);
+  color: gray;
 }
