@@ -225,6 +225,10 @@ Page({
   },
 
   onFeedBack: async function(){
+    if(!this.data.userMessage){
+      Notify({type:'danger', message:'请填写反馈消息'})
+      return
+    }
     this.setData({ submitLoading: true })
     await feedbackService(this.data.serviceEventId, this.data.userMessage)
     .catch((err)=>{
@@ -233,6 +237,7 @@ Page({
     })
     this.loadService(this.data.serviceEventId)
     this.setData({ submitLoading: false })
+    Notify({type:'success', message:'反馈成功'})
   },
 
   activityClick: async function(){

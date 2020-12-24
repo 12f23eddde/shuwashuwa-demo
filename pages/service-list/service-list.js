@@ -116,9 +116,12 @@ Page({
       this.setData({
         serviceList: res
       })
-      
     }else if (val===6) {  // 活动中维修单需要多次请求
-
+      let i = 0;
+      for (i = 2; i <= 4; i++) {
+        let temp = await this.loadServicebyVal(i)
+        res.push(...temp)  // Nice ES6
+      }
     }else if (val===7) {
       let i = 0;
       for (i = 0; i <= 5; i++) {

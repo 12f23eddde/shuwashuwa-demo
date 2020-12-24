@@ -141,7 +141,7 @@ Page({
     }
     let myApplication = await getMyApplication()
     console.log('[myApplication]', myApplication)
-    if(!myApplication) return -1;
+    if(!myApplication || myApplication.length == 0) return -1;
     this.setData({
       myApplicationStatus: myApplication.slice(-1)[0].status,
       myApplicationMessage: myApplication.slice(-1)[0].replyByAdmin

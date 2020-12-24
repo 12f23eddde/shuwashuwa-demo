@@ -14,17 +14,13 @@ Component({
     // For all icons:
     // https://youzan.github.io/vant-weapp/#/icon
     list: [{
-      pagePath: "/pages/index/index",
+      pagePath: "/pages/activity/activity",
       iconPath: "home-o",
-      text: "首页"
+      text: "主页"
     }, {
       pagePath: "/pages/service-list/service-list",
       iconPath: "todo-list-o",
       text: "维修单"
-    }, {
-      pagePath: "/pages/activity/activity",
-      iconPath: "medal-o",
-      text: "活动"
     }, {
       pagePath: "/pages/my-info/my-info",
       iconPath: "user-o",
