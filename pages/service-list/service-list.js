@@ -156,9 +156,9 @@ Page({
       else {option.draft = 'false'}
       // 只是志愿者不是管理员，不能看到别人的维修单
       if((this.data.volunteer && !this.data.admin) && (val === 4 || val == 5)) {
-        option.volunteer = app.globalData.userId
+        option.volunteer = app.globalData.volunteerId
       }
-      // console.log('[loadservices] val=' + val + ' user='+ this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
+      console.log('[loadservices] val=' + val + ' user='+ this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
       let res = await listServices(option)
       let i = 0
       for (i = 0; i < res.length; i++) {
@@ -234,10 +234,10 @@ Page({
     if(!app.globalData.userInfo){  // 避免userInfo不存在
       await getUserInfo()
     }
-    this.setData({
+    this.setData({  // 注意,这里的定义修改了
       addIconSrc: '/res/icons/addOrder.png',
       user: !app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer,
-      volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,
+      volunteer: app.globalData.userInfo.volunteer,
       admin: app.globalData.userInfo.admin
     })
     this.initMenu()  // 不需要网络请求，好耶

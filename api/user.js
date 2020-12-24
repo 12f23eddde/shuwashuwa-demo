@@ -119,6 +119,10 @@ export const getUserInfo = async function(){
   // 设置全局变量的值
   let app = getApp()
   app.globalData.userInfo = userinfo
+  // 查询自己的volunteerId
+  if(userinfo.volunteer){
+    app.globalData.volunteerId = await requestWithToken('/api/volunteer/id')
+  }
   return userinfo
 }
 

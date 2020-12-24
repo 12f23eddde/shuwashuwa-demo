@@ -26,6 +26,7 @@ App({
     userToken: null,
     userInfo: null,
     userId: null,
+    volunteerId: null,
     wechatUserInfo: null,
   }
 })
