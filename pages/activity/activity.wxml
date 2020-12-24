@@ -14,20 +14,21 @@
 <view class="actvityPage">
   <!--当前活动-->
   <view class="maptitle">
-    <view wx-if="{{pageLoading}}">
-      <van-loading> 正在加载活动... </van-loading>
+    <view wx-if="{{pageLoading}}" class="noActivity">
+      <van-loading size="24px"> 正在加载活动... </van-loading>
     </view>
-    <view class="title" wx:if="{{ currentActivity.length>0 }}">
+    <view class="title" wx:if="{{ currentActivity.length>0 && !pageLoading }}">
       当前活动
     </view>
     <view class="titleNa" wx:elif="{{!pageLoading}}">
       没有正在进行的活动
     </view>
   </view>
-  <view wx:if="{{ currentActivity.length>0 }}" class="mapbuttons">
+  <view wx:if="{{ currentActivity.length>0 && !pageLoading }}" class="mapbuttons">
     <van-cell-group class="activityCell">
-      <van-cell wx:for="{{ currentActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}">
-        <view slot="">
+      <van-cell wx:for="{{ currentActivity }}" wx:key="id" label="{{item.statusString}}" icon="/pages/service-list/comfirmedOrder.png">
+        <view slot="title" class="viewTitle"> {{item.activityName}} </view>
+        <view slot="" class="viewValue">
           <div style="display:block;">
             <span style="display:block;">地点: {{item.location}}</span>
           </div>
@@ -73,7 +74,9 @@
   </view>
   <view wx:if="{{ inEditService.length>0 }}" class="mapbuttons">
     <van-cell-group class="activityCell" bindtap="gotoOrder">
-      <van-cell title="你有{{inEditService.length}}张待填写维修单" value="点击跳转">
+      <van-cell icon="/pages/service-list/rejectedOrder.png">
+        <view slot="title" class="viewTitle">你有{{inEditService.length}}张待填写维修单 </view>
+        <view slot="" class="viewValue"> 点击跳转 </view>
       </van-cell>
     </van-cell-group>
   </view>
@@ -85,8 +88,9 @@
   </view>
   <view wx:if="{{ incomingActivity.length>0 }}" class="mapbuttons">
     <van-cell-group class="activityCell">
-      <van-cell wx:for="{{ incomingActivity }}" wx:key="id" title="{{item.activityName}}" label="{{item.statusString}}">
-        <view slot="">
+      <van-cell wx:for="{{ incomingActivity }}" wx:key="id" label="{{item.statusString}}" icon="/pages/service-list/verifyingOrder.png">
+        <view slot="title" class="viewTitle"> {{item.activityName}} </view>
+        <view slot="" class="viewValue">
           <div style="display:block;">
             <span style="display:block;">地点: {{item.location}}</span>
           </div>
