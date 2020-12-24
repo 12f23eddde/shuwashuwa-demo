@@ -175,7 +175,13 @@ Page({
       throw err
     })
     Notify({type:'success', message: '申请上传成功'})
-    this.setData({ applicationShow: false, submitLoading: false})
+    // 上传完毕后清空信息
+    this.setData({ 
+      applicationShow: false, 
+      submitLoading: false,
+      cardPicLocation:'',
+      reasonForApplication:''
+    })
   },
   uploadConfirm: async function(event){
     console.log(event.detail)

@@ -147,6 +147,13 @@ Page({
   onSave: async function (){
     this.setData({ submitLoading: true })
     await submitDraft(this.data)
+    .catch((err)=>{
+      Notify({type:"danger", message:err.errMsg})
+      this.setData({
+        submitLoading: false
+      })
+      throw err
+    })
     this.setData({ submitLoading: false })
   },
 
@@ -187,6 +194,10 @@ Page({
   onWork: async function(){
     this.setData({ submitLoading: true })
     await workService(this.data.serviceEventId)
+    .catch((err)=>{
+      this.setData({ submitLoading: false })
+      throw err
+    })
     this.loadService(this.data.serviceEventId)
     this.setData({ submitLoading: false })
   },
@@ -194,6 +205,10 @@ Page({
   onCancelWork: async function(){
     this.setData({ submitLoading: true })
     await cancelWorkService(this.data.serviceEventId)
+    .catch((err)=>{
+      this.setData({ submitLoading: false })
+      throw err
+    })
     this.loadService(this.data.serviceEventId)
     this.setData({ submitLoading: false })
   },
@@ -201,6 +216,10 @@ Page({
   onComplete: async function(){
     this.setData({ submitLoading: true })
     await completeService(this.data.serviceEventId, this.data.volunteerMessage)
+    .catch((err)=>{
+      this.setData({ submitLoading: false })
+      throw err
+    })
     this.loadService(this.data.serviceEventId)
     this.setData({ submitLoading: false })
   },
@@ -208,6 +227,10 @@ Page({
   onFeedBack: async function(){
     this.setData({ submitLoading: true })
     await feedbackService(this.data.serviceEventId, this.data.userMessage)
+    .catch((err)=>{
+      this.setData({ submitLoading: false })
+      throw err
+    })
     this.loadService(this.data.serviceEventId)
     this.setData({ submitLoading: false })
   },
@@ -642,14 +665,14 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    this.onSave()
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    this.onSave()
   },
 
   /**
