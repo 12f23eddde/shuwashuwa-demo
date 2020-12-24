@@ -1,7 +1,7 @@
 import {listServices, cancelService, workService, getService} from '../../api/service'
 import {getCurrentActivities} from '../../api/activity'
 import {getUserInfo} from '../../api/user'
-import {checkUserInfo} from '../../utils/util'
+import {checkUserInfo, whoAmI} from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
 
 const app = getApp()
@@ -154,7 +154,10 @@ Page({
         option.client = app.globalData.userId
       }
       else {option.draft = 'false'}
-      if(this.data.volunteer && val === 3) {option.volunteer = app.globalData.userId}
+      // 只是志愿者不是管理员，不能看到别人的维修单
+      if((this.data.volunteer && !this.data.admin) && (val === 4 || val == 5)) {
+        option.volunteer = app.globalData.userId
+      }
       // console.log('[loadservices] val=' + val + ' user='+ this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
       let res = await listServices(option)
       let i = 0

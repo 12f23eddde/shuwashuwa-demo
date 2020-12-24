@@ -1,6 +1,6 @@
 import {getUserInfo, updateUserInfo} from '../../api/user'
 import {uploadImage} from '../../api/file'
-import {postApplication} from '../../api/application'
+import {postApplication, getMyApplication} from '../../api/application'
 import {whoAmI, checkUserInfo} from '../../utils/util'
 
 import Notify from '@vant/weapp/notify/notify'
@@ -134,8 +134,27 @@ Page({
     Notify({type:'success', message: '用户信息更新成功'})
   },
 
+  loadMyApplication: async function(){
+    await whoAmI()
+    if (app.globalData.userInfo.volunteer){  // 已经是志愿者了,爬
+      return 1;
+    }
+    let myApplication = await getMyApplication()
+    console.log('[myApplication]', myApplication)
+    if(!myApplication) return -1;
+    this.setData({
+      myApplicationStatus: myApplication.slice(-1)[0].status,
+      myApplicationMessage: myApplication.slice(-1)[0].replyByAdmin
+    })
+    return myApplication.slice(-1)[0].status
+  },
   applicationClick: async function(){
     if (!await checkUserInfo()) return;
+    let applicationStatus = await this.loadMyApplication()
+    if (applicationStatus == 0 || this.data.volunteer){
+      Notify({type: 'success', message: '您有正在审核的申请或您已经是志愿者'})
+      return
+    }
     this.clearErrMsg()
     this.setData({ applicationShow: true })
   },

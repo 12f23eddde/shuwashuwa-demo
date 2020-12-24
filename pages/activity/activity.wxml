@@ -58,9 +58,11 @@
       待审核维修单
     </view>
   </view>
-  <view class="mapbuttons" wx:if="{{ inAuditService.length>0 && admin && !pageLoading }}">
+  <view class="mapbuttons" wx:if="{{ inEditService.length>0 && admin && !pageLoading }}">
     <van-cell-group class="activityCell" bindtap="gotoOrder">
-      <van-cell title="你有{{inAuditService.length}}张待审核维修单" value="点击跳转">
+      <van-cell icon="/pages/service-list/rejectedOrder.png">
+        <view slot="title" class="viewTitle">你有{{inEditService.length}}张待审核维修单 </view>
+        <view slot="" class="viewValue"> 点击跳转 </view>
       </van-cell>
     </van-cell-group>
   </view>
@@ -73,11 +75,11 @@
       我的志愿者申请
     </view>
   </view>
-  <view class="mapbuttons" wx:if="{{ myApplicationStatus != -1 }}">
+  <view class="mapbuttons" wx:if="{{ myApplicationStatus != -1 && !pageLoading }}">
     <van-cell-group class="activityCell">
-      <van-cell icon="../../res/icons/verifyingOrder.png" title="志愿者申请正在审核" wx:if="{{ myApplicationStatus == 0 }}"/>
-      <van-cell icon="../../res/icons/comfirmedOrder.png" title="志愿者申请已经通过" wx:if="{{ myApplicationStatus == 1 }}"/>
-      <van-cell icon="../../res/icons/rejectedOrder.png" title="志愿者申请被拒绝" wx:if="{{ myApplicationStatus == 2 }}" value="{{myApplicationMessage}}"/>
+      <van-cell icon="/pages/service-list/verifyingOrder.png" title="志愿者申请正在审核" wx:if="{{ myApplicationStatus == 0 }}"/>
+      <van-cell icon="/pages/service-list/comfirmedOrder.png" title="志愿者申请已经通过" wx:if="{{ myApplicationStatus == 1 }}"/>
+      <van-cell icon="/pages/service-list/rejectedOrder.png" title="志愿者申请被拒绝" wx:if="{{ myApplicationStatus == 2 }}" value="{{myApplicationMessage}}"/>
     </van-cell-group>
   </view>
 
