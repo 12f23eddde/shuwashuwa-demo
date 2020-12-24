@@ -92,6 +92,9 @@ Page({
   // 提交
   onSubmit: async function (){
     if(!this.validator.checkData(this.data)) return;
+    Notify({type:'success', message:'为了便于您获知维修的进展情况，我们需要向您发送消息'})
+    // 要求微信订阅消息授权
+    await requestSubscription(this.data.tmplIDs).catch((err)=>{}) // ignore errors
     // 弹出活动前须知
     if(!this.data.helpMessage || this.data.helpMessageContent !== 'notice'){  
       Toast.loading({ // 加载并渲染为wxml可能需要一些时间，因此采用Toast避免用户误操作
@@ -107,8 +110,6 @@ Page({
     } else {
       this.setData({helpShow: true})
     }
-    // 要求微信订阅消息授权
-    await requestSubscription(this.data.tmplIDs).catch((err)=>{}) // ignore errors
     this.setData({
       submitLoading: true
     })
@@ -145,6 +146,8 @@ Page({
   },
 
   onSave: async function (){
+    // 尝试解决维修单神秘消失的问题
+    if(this.data.status) return;
     this.setData({ submitLoading: true })
     await submitDraft(this.data)
     .catch((err)=>{

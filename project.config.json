@@ -46,12 +46,6 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
-      "list": []
-    },
     "plugin": {
       "list": []
     },
@@ -64,9 +58,8 @@
     "miniprogram": {
       "list": [
         {
-          "id": 0,
           "name": "签到",
-          "pathName": "pages/activity/activity",
+          "pathName": "pages/index/index",
           "query": "activity=2",
           "scene": null
         }

@@ -140,7 +140,7 @@
 <!-- 用户功能 -->
   <view class="mapbuttons" wx-if="{{ editable && !disableEdit && status <= 2}}">
     <view class="buttons" >
-      <van-button type="primary" size="large" bind:click="onSubmit" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button type="primary" size="large" bindtap="onSubmit" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         提交
       </van-button>
     </view>
