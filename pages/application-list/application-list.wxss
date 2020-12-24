@@ -36,6 +36,21 @@
 
 .test{
   display: flex;   
+  float: right;
+}
+
+.left{
+  text-align:left;
+}
+
+.right{
+  text-align:right;
+}
+
+.infoRow{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
 }
 
 .mapbuttons {
@@ -45,7 +60,8 @@
   align-items: center;
 }
 
-.bottons {
+.buttons {
   display: block;
+  justify-content: center;
   width: 40%;
 }

@@ -138,7 +138,7 @@ Page({
       return '/pages/service-list/verifyingOrder.png'
     }
     else {
-      return '/pages/service-list/comfirmededOrder.png'
+      return '/pages/service-list/comfirmedOrder.png'
     }
   },
 
