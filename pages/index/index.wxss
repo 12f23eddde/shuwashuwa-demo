@@ -49,16 +49,16 @@
 }
 
 .viewTitle {
-  margin-top: 2.7%;
+  margin-top: 10rpx;
 }
 
 .viewValue {
-  margin-top: 2.7%;
+  margin-top: 10rpx;
 }
 
 .noActivity {
   width: 750rpx;
-  height: 1200rpx;
+  height: 900rpx;
   text-align: center;
   transform:translateY(50%);
   color: gray;
