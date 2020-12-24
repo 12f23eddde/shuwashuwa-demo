@@ -123,6 +123,9 @@ Page({
     })
       .then(() => {
         this.replyApplication(event)
+        this.setData({
+          feedBackShow: false,
+        });
       })
       .catch(() => {
         // on cancel
@@ -185,7 +188,6 @@ Page({
     form.replyByAdmin=this.data.adminFeedBack
     console.log(form)
     await requestWithToken('/api/volunteer/application', 'PUT',form)
-    console.log("delete")
     let data={"status":0}
     let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
     console.log(applicationList)
