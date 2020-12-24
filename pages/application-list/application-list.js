@@ -12,7 +12,14 @@ Page({
 
     ],
     activeNames: ['1'],
-    pageLoading: false
+    adminFeedBack: '',
+    pageLoading: false,
+    feedBackShow: false,
+    appDataSet:{
+      id: null,
+      status: "",
+      url: ""
+    }
   },
 
   /**
@@ -88,6 +95,7 @@ Page({
 
   },
 
+  //确认通过，没有什么特殊的操作，只是把event作为参数传过去
   onConfirm: function(event){
     Dialog.confirm({
       title: '确认页面',
@@ -101,6 +109,13 @@ Page({
       });
   },
 
+  /*
+  与onConfirm不同，onReject对应的是popup里面的那个按钮，所以event和onCorfirm的event有很大不同
+  也不能直接用wxfor的item的数据
+  因此虽然代码和onconfirm相似但是逻辑其实不一样
+  从这里调replyApplication的话，event的dataset是空的，因此三目运算符会选择data里的数据作为参数
+  数据是popup弹出时设置的
+  */
   onReject: function(event){
     Dialog.confirm({
       title: '确认页面',
@@ -114,16 +129,44 @@ Page({
       });
   },
 
+  /*
+  以下两个函数都是弹出窗口用到的
+  有一个field可以输入反馈信息
+  弹出时设置全局变量，关闭弹窗时再把全局变量清空
+  保证appDataSet的有效声明周期与弹窗相同
+  否则反馈信息可能会附加到其他的申请单上
+   */
+  onFeedBack: function(event){
+    console.log(event.currentTarget.dataset)
+    this.setData({
+      feedBackShow: true,
+      appDataSet: event.currentTarget.dataset
+    });
+  },
 
+  feedBackClose: function(){
+    let over_write = {
+      id: null,
+      status: "",
+      url: ""
+    }
+    this.setData({
+      feedBackShow: false,
+      appDataSet: over_write
+    });
+  },
+
+  //这个是vant的collapse展开需要的函数
   onChange(event) {
     this.setData({
       activeNames: event.detail,
     });
   },
   
+  //大部分是pjy写的，改了一点不知道有没有bug
   replyApplication: async function(event){
-    let applicationId = event.currentTarget.dataset.id
-    let status=event.currentTarget.dataset.status
+    let applicationId = event.currentTarget.dataset.id? event.currentTarget.dataset.id : this.data.appDataSet.id;
+    let status = event.currentTarget.dataset.status? event.currentTarget.dataset.status : this.data.appDataSet.status;
     console.log(applicationId,status)
     let form
     for(let i of this.data.application){
@@ -138,16 +181,22 @@ Page({
     form.email=form.email?form.email:""
     form.status=status-'0'
     form.userName=form.userName?form.userName:"";
-    //回头再加留言功能  
-    form.replyByAdmin=""
+    //留言可能能用了
+    form.replyByAdmin=this.data.adminFeedBack
     console.log(form)
     await requestWithToken('/api/volunteer/application', 'PUT',form)
     console.log("delete")
     let data={"status":0}
     let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
     console.log(applicationList)
+    let over_write = {
+      id: null,
+      status: "",
+      url: ""
+    }
     this.setData({
-      application:applicationList
+      application:applicationList,
+      appDataSet: over_write
     })
   },
   viewPic: async function(event){
