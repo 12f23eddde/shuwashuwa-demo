@@ -28,7 +28,7 @@ export const login = async function(){
   .catch((err)=>{
     console.log('[getToken] request ', err.errMsg)
     wx.showToast({
-      title: '获取Token失败:' + err.errMsg,
+      title: '获取Token失败:' + err.errMsg + ' 服务器可能正在维护，请耐心等待',
       icon: 'none'
     })
     throw err
@@ -59,7 +59,7 @@ export const login = async function(){
   }else{
     console.log('[getToken] ErrorCode=', requestRes.data.code, requestRes.data.data, requestRes)
     wx.showToast({
-      title: '获取Token失败:' + requestRes.data.data,
+      title: '获取Token失败:' + err.errMsg + ' 服务器可能正在维护，请耐心等待',
       icon: "none"
     })
     throw {"errCode":requestRes.data.code, "errMsg":requestRes.data.data}
