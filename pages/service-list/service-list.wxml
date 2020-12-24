@@ -65,7 +65,7 @@
   </van-collapse>
 
   <view class='iconorder'>
-    <cover-image class='fixedIcon' bindtap="goToDetail" src="/res/icons/addOrder.png" />
+    <cover-image class='fixedIcon' bindtap="goToDetail" src="{{ addIconSrc }}" />
   </view>
   
   <view class="blank"></view>

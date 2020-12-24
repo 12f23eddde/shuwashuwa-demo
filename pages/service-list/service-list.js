@@ -28,7 +28,9 @@ Page({
     userName: '',
 
     activeNames: ['1'],
-    pageLoading: false
+    pageLoading: false,
+
+    addIconSrc: '/res/icons/addOrder.png',
   },
 
   initMenu: function (){
@@ -175,10 +177,20 @@ Page({
   },
 
   goToDetail: async function(event) {
+    this.setData({
+      addIconSrc: '/res/icons/addOrderTouched.png'
+    })
+    wx.vibrateShort({
+      type: 'medium',
+      success: (res) => {},
+    })
     if(!await checkUserInfo()) return;
     let id = event.currentTarget.dataset.id;
     wx.navigateTo({
       url: '/pages/service-detail/service-detail?id=' + id
+    })
+    this.setData({
+      addIconSrc: '/res/icons/addOrder.png'
     })
   },
 
@@ -220,6 +232,7 @@ Page({
       await getUserInfo()
     }
     this.setData({
+      addIconSrc: '/res/icons/addOrder.png',
       user: !app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer,
       volunteer: !app.globalData.userInfo.admin && app.globalData.userInfo.volunteer,
       admin: app.globalData.userInfo.admin
