@@ -60,7 +60,7 @@
 }
 
 .collTitle {
-  margin-top: 10rpx;
+  margin-top: 9rpx;
   font-weight: bold;
   font-size: x-large;
 }

@@ -77,12 +77,12 @@
 
 .viewTitle {
   font: large;
-  margin-top: 10rpx;
+  margin-top: 9rpx;
 }
 
 .viewValue {
   font: large;
-  margin-top: 10rpx;
+  margin-top: 9rpx;
 }
 
 .title {
