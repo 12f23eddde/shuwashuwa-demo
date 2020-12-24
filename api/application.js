@@ -1,9 +1,13 @@
 import {requestWithToken} from "./user";
+import { whoAmI } from "../utils/util";
 
-export const getApplication = async function(id){
-  let requestData = await requestWithToken('/api/volunteer/application/detail?id=' + id)
-  console.log('getMyApplication:', requestData)
-  return requestData
+export const getMyApplication = async function(){
+  const app = getApp()
+  await whoAmI()
+  let options = {
+    userId: app.globalData.userId
+  }
+  return listApplications(options)
 }
 
 /*

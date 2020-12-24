@@ -71,9 +71,9 @@ Page({
     submitLoading: false,
 
     disableEdit: true,
-    editable: true,
-    auditable: true,
-    workable: true,
+    editable: false,
+    auditable: false,
+    workable: false,
 
     tmplIDs: []
   },
@@ -568,8 +568,8 @@ Page({
     if (curr_service.userId === app.globalData.userId){
       this.setData({
         editable: true,
-        // auditable: false,
-        // workable: false
+        auditable: false,
+        workable: false
       })
     }
     // 可以接单,不能自己接自己

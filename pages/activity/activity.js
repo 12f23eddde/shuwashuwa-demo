@@ -5,6 +5,7 @@ import {
 import { listServices } from '../../api/service'
 import { requestWithToken } from '../../api/user'
 import { whoAmI } from '../../utils/util'
+import { listApplications, getMyApplication } from '../../api/application'
 import Toast from '@vant/weapp/toast/toast'
 import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator/index'
@@ -18,26 +19,22 @@ Page({
    * 页面的初始数据
    */
   data: {
-    inEditService:[
-
-    ],
-    inQueueService:[
-
-    ],
-    currentActivity:[
-
-    ],
-    incomingActivity:[
-
-    ],
-    'auditable': false,
-    'pageLoading': true
+    inEditService:[],
+    inQueueService:[],
+    currentActivity:[],
+    incomingActivity:[],
+    inAuditService: [],
+    inAuditApplication: [],
+    myApplicationStatus: -1,
+    myApplicationMessage: '',
+    admin: false,
+    volunteer: false,
+    pageLoading: true,
   },
 
   loadCurrentServices: async function(){
-    let app=getApp()
-    let client=util.parseToken(app.globalData.userToken).userid
-    let option={
+    let client = app.globalData.userId
+    let option = {
       'client':client,
       'status':0,
       'closed':'false'
@@ -54,14 +51,51 @@ Page({
     })
   },
 
+  // 只有管理员能调用接口
+  loadAuditableServices: async function(){
+    if ((await whoAmI() !== '管理员')) return;
+    let options = {
+      status: 1,
+      closed: false
+    }
+    this.setData({
+      inAuditService: await listServices(options)
+    })
+  },
+
+  loadMyApplication: async function(){
+    await whoAmI()
+    if (app.globalData.userInfo.volunteer){  // 已经是志愿者了,爬
+      return -1;
+    }
+    let lastApplication = await getMyApplication()
+    console.log(lastApplication)
+    // isIterable Credit:https://stackoverflow.com/questions/18884249/checking-whether-something-is-iterable
+    if(typeof(auth_subscribe.itemSettings[Symbol.iterator]) !== 'function') return -1;
+    this.setData({
+      myApplicationStatus: lastApplication.slice(-1).status,
+      myApplicationMessage: lastApplication.slice(-1).replyByAdmin
+    })
+    return lastApplication.status
+  },
+
+  // 只有管理员能调用此函数
+  loadAuditableApplications: async function(){
+    if ((await whoAmI() !== '管理员')) return;
+    let options = {
+      status: 0
+    }
+    this.setData({
+      inAuditApplication: await listApplications(options)
+    })
+    console.log(this.data.inAuditApplication)
+  },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    if (await whoAmI()=='管理员'){
-      this.setData({auditable:true})
-    }
+    await whoAmI()  // 需要先获得Token
     if (typeof(options.activity) != "undefined" && options.activity != "undefined"){  // 加载维修单, 默认不开启编辑
       let res = await checkIn(options.activity)
       .catch((res)=>{
@@ -84,9 +118,19 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: async function () {
+    await whoAmI() // 这里先执行一次whoAmI(), 保证login()先执行完成
+    // 我们考虑到在login()之前就执行onShow(), userID还不存在, 显然不合理
+    this.setData({
+      admin: app.globalData.userInfo.admin,
+      volunteer: app.globalData.userInfo.volunteer
+    })
+    // 以下并发执行
     this.loadCurrentServices()
+    this.loadAuditableServices()
     this.loadCurrentActivities()
+    this.loadAuditableApplications()
+    this.loadMyApplicationStatus()
   },
 
   /**
@@ -127,6 +171,12 @@ Page({
   gotoOrder(event){
     wx.switchTab({
       url: '../service-list/service-list',
+    })
+  },
+
+  gotoApplicationList(event){
+    wx.navigateTo({
+      url: '/pages/application-list/application-list',
     })
   },
 
