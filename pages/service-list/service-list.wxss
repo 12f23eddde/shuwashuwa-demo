@@ -60,12 +60,12 @@
 }
 
 .collTitle {
-  display: block;
+  margin-top: 2.1%;
   font-weight: bold;
   font-size: x-large;
 }
 
-.dateView{
+.dateView {
   text-decoration: underline;
   font-size: large;
   font-style: oblique;
@@ -135,4 +135,11 @@
   overflow:hidden; 
   display:block; 
   overflow:hidden;
+}
+
+.noService {
+  height: 1200rpx;
+  text-align: center;
+  transform:translateY(50%);
+  color: gray;
 }
