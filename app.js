@@ -21,7 +21,7 @@ App({
   },
 
   globalData: {
-    baseURL:"http://shuwashuwa.kinami.cc",
+    baseURL:"https://shuwashuwa.kinami.cc",
     tmplID: 'DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q',
     userToken: null,
     userInfo: null,
