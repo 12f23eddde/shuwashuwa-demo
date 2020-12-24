@@ -15,8 +15,8 @@ Component({
     // https://youzan.github.io/vant-weapp/#/icon
     list: [{
       pagePath: "/pages/activity/activity",
-      iconPath: "medal-o",
-      text: "活动"
+      iconPath: "home-o",
+      text: "主页"
     }, {
       pagePath: "/pages/service-list/service-list",
       iconPath: "todo-list-o",

@@ -120,15 +120,15 @@
     </van-cell-group>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ editable && status == 5 }}">
-    <van-cell-group title="维修反馈" class="serviceDetailCell_">
-      <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="维修后暂时还没出什么问题"  autosize required />
+  <view class="mapbuttons" wx-if="{{ (workable && status == 4)||(volunteerMessage && (workable || auditable) &&status == 5) }}">
+    <van-cell-group title="维修留言" class="serviceDetailCell_">
+      <van-field model:value="{{ volunteerMessage }}" label="志愿者留言" type="textarea" placeholder="记得先拆键盘"  autosize required />
     </van-cell-group>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ workable && status == 4 }}">
+  <view class="mapbuttons" wx-if="{{ (editable || userMessage) && status == 5 }}">
     <van-cell-group title="维修反馈" class="serviceDetailCell_">
-      <van-field model:value="{{ volunteerMessage }}" label="志愿者留言" type="textarea" placeholder="记得先拆键盘"  autosize required />
+      <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="维修后暂时还没出什么问题"  autosize required />
     </van-cell-group>
   </view>
 
@@ -156,7 +156,7 @@
 
   <view class="mapbuttons" wx-if="{{ editable && status == 5 }}">
     <view class="buttons" >
-      <van-button type="primary" size="large" bind:click=" onFeedBack" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button type="primary" size="large" bind:click="onFeedBack" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         反馈
       </van-button>
     </view>
