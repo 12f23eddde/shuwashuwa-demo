@@ -119,6 +119,12 @@
 </view>
     
   <van-popup show="{{ applicationShow }}" bind:close="applicationClose" position="bottom">
+    <view class="maptitle">
+      <view class="title">
+        申请成为志愿者
+      </view>
+    </view>
+    
     <van-cell-group>
       <van-field 
         id="department" 

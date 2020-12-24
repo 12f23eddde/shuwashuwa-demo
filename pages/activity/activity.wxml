@@ -178,5 +178,7 @@
   </van-popup>
   
   <view class="blank"></view>
+  <view class="blank"></view>
+  <view class="blank"></view>
 
 </view>
