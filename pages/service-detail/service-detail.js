@@ -5,6 +5,7 @@ import {
 } from '../../api/service'
 import {uploadImage, getHtmlWxml} from '../../api/file'
 import {getIncomingActivities, getCurrentActivities, getActivitySlot} from '../../api/activity'
+import {getTemplateIDs, requestSubscription} from '../../api/subscription'
 import {formatTime} from '../../utils/util'
 import Notify from '@vant/weapp/notify/notify'
 import Dialog from '@vant/weapp/dialog/dialog'
@@ -73,19 +74,24 @@ Page({
     editable: true,
     auditable: true,
     workable: true,
+
+    tmplIDs: []
   },
 
-  onSubmit: async function (){
-    // 编辑
+  // 编辑
+  onEdit: function(){
     if(this.data.disableEdit){
       this.setData({
         disableEdit: false,
       })
       return
     }
+  },
 
-    // 提交
-    if(!this.validator.checkData(this.data)) return
+  // 提交
+  onSubmit: async function (){
+    if(!this.validator.checkData(this.data)) return;
+    await requestSubscription(this.data.tmplIDs).catch((err)=>{}) // ignore errors
     this.setData({
       submitLoading: true
     })
@@ -593,6 +599,10 @@ Page({
     } else {  // id 为空 新建维修单,默认开启编辑
       this.loadService(-1)
     }
+    // 如果在订阅时加载模板列表，无法调用订阅(认为不是由tap触发的,不知道为啥)
+    this.setData({
+      tmplIDs: await getTemplateIDs()
+    })
   },
 
   /**
