@@ -11,6 +11,11 @@
   <!-- 可以通过 custom-style="height: 20%" 控制弹出层尺寸 -->
   <van-popup show="{{ helpShow }}" position="bottom" closeable bind:close="helpClose">
     <towxml nodes="{{ helpMessage }}"/>
+    <view class="mapbuttons">
+      <view class="buttonsUnder" >
+        <van-button type="primary" size="large" bindtap="helpClose" round> 确认 </van-button>
+      </view>
+    </view>
   </van-popup>
 
   <view class="maptitle" >

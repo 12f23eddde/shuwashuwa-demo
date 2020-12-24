@@ -72,7 +72,6 @@
   width: 100%;
 }
 
-
 .mapbuttons {
   width: 100%;
   display: flex;
