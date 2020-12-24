@@ -137,8 +137,12 @@
         />
       </van-cell>
       <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="暂无反馈"  autosize readonly/>
-      <van-button type="primary" size="large" bindtap="applicationSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}"> 提交 </van-button>
     </van-cell-group>
+    <view class="mapbuttons">
+      <view class="buttons" >
+        <van-button type="primary" size="large" bindtap="applicationSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round> 提交 </van-button>
+      </view>
+    </view>
   </van-popup>
 
   <tab-bar active='3'></tab-bar>
