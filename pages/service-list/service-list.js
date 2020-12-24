@@ -195,9 +195,6 @@ Page({
     wx.navigateTo({
       url: '/pages/service-detail/service-detail?id=' + id
     })
-    this.setData({
-      addIconSrc: '/res/icons/addOrder.png'
-    })
   },
 
   onCancel: async function(event){
