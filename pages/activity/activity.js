@@ -68,15 +68,14 @@ Page({
     if (app.globalData.userInfo.volunteer){  // 已经是志愿者了,爬
       return -1;
     }
-    let lastApplication = await getMyApplication()
-    console.log(lastApplication)
-    // isIterable Credit:https://stackoverflow.com/questions/18884249/checking-whether-something-is-iterable
-    if(typeof(auth_subscribe.itemSettings[Symbol.iterator]) !== 'function') return -1;
+    let myApplication = await getMyApplication()
+    if(!myApplication) return -1;
+    console.log('[myApplication]', myApplication)
     this.setData({
-      myApplicationStatus: lastApplication.slice(-1).status,
-      myApplicationMessage: lastApplication.slice(-1).replyByAdmin
+      myApplicationStatus: myApplication.slice(-1)[0].status,
+      myApplicationMessage: myApplication.slice(-1)[0].replyByAdmin
     })
-    return lastApplication.status
+    return myApplication.slice(-1)[0].status
   },
 
   // 只有管理员能调用此函数

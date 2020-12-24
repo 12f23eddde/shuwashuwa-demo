@@ -3,7 +3,7 @@ import {
   cancelService, auditService, completeService, feedbackService, 
   workService, cancelWorkService, getHelpMessage
 } from '../../api/service'
-import {uploadImage, deleteImage, getHtmlWxml} from '../../api/file'
+import {uploadImage, deleteImage, getHtmlWxml, getMarkdownWxml} from '../../api/file'
 import {getIncomingActivities, getCurrentActivities, getActivitySlot} from '../../api/activity'
 import {getTemplateIDs, requestSubscription} from '../../api/subscription'
 import {formatTime} from '../../utils/util'
@@ -68,6 +68,7 @@ Page({
 
     helpShow: false,
     helpMessage: '',
+    helpMessageContent: '',  // 标识helpMessage里放了什么
     submitLoading: false,
 
     disableEdit: true,
@@ -91,6 +92,22 @@ Page({
   // 提交
   onSubmit: async function (){
     if(!this.validator.checkData(this.data)) return;
+    // 弹出活动前须知
+    if(!this.data.helpMessage || this.data.helpMessageContent !== 'notice'){  
+      Toast.loading({ // 加载并渲染为wxml可能需要一些时间，因此采用Toast避免用户误操作
+        message: '加载中...',
+        forbidClick: true,
+      });
+      const helpMsg = await getMarkdownWxml('https://shuwashuwa.kinami.cc/notice.md')
+      this.setData({
+        helpShow: true,
+        helpMessage: helpMsg,
+        helpMessageContent: 'notice'
+      })
+    } else {
+      this.setData({helpShow: true})
+    }
+    // 要求微信订阅消息授权
     await requestSubscription(this.data.tmplIDs).catch((err)=>{}) // ignore errors
     this.setData({
       submitLoading: true
@@ -416,15 +433,16 @@ Page({
 
   // helpClick在模拟器上的结果和真机区别很大，建议以真机为准
   helpClick: async function(event){
-    if(!this.data.helpMessage){  
+    if(!this.data.helpMessage || this.data.helpMessageContent !== 'help'){  
       Toast.loading({ // 加载并渲染为wxml可能需要一些时间，因此采用Toast避免用户误操作
         message: '加载中...',
         forbidClick: true,
       });
-      const helpMsg = await getHtmlWxml('https://shuwashuwa.kinami.cc')
+      const helpMsg = await getMarkdownWxml('https://shuwashuwa.kinami.cc/help.md')
       this.setData({
         helpShow: true,
-        helpMessage: helpMsg
+        helpMessage: helpMsg,
+        helpMessageContent: 'help'
       })
     } else {
       this.setData({helpShow: true})
