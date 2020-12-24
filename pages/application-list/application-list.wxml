@@ -79,8 +79,6 @@
         id="department" 
         model:value="{{ adminFeedBack }}" 
         label="反馈信息" 
-        type="textarea"
-        autosize
         placeholder="学生证照片不清晰" 
       />
       <van-button type="danger" size="large" bindtap="onReject"> 确认 </van-button>
