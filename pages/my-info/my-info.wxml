@@ -151,5 +151,5 @@
     </view>
   </van-popup>
 
-  <tab-bar active='3'></tab-bar>
+  <tab-bar active='2'></tab-bar>
 </view>

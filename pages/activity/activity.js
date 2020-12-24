@@ -69,7 +69,7 @@ Page({
       return -1;
     }
     let myApplication = await getMyApplication()
-    if(!myApplication) return -1;
+    if(!myApplication || myApplication.length == 0) return -1;
     console.log('[myApplication]', myApplication)
     this.setData({
       myApplicationStatus: myApplication.slice(-1)[0].status,
