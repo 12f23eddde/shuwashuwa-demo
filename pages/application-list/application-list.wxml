@@ -45,6 +45,58 @@
     </van-cell>
   </view>
     
+  <view>
+    <van-collapse value="{{ activeNames }}"  bind:change="onChange">    
+    <van-collapse-item wx:for="{{ application }}"
+      title="{{(item.userName?item.userName:'未填写姓名')}}"
+      value="学号: {{(item.studentId?item.studentId:'未填写学号')}}"
+    >
+      <view class="infoRow">
+        <view class="left">年级 </view>
+        <view class="right">{{(item.grade?item.grade:'未填写')}}</view>
+      </view>
+      <view class="infoRow">
+        <view class="left">邮箱 </view>
+        <view class="right">{{(item.email?item.email:'未填写')}}</view>
+      </view>
+      <view class="infoRow">
+        <view class="left">手机号 </view>
+        <view class="right">{{(item.phoneNumber?item.phoneNumber:'未填写')}}</view>
+      </view>
+      <view class="infoRow">
+        <view class="left">部门 </view>
+        <view class="right">{{(item.department?item.department:'未填写')}}</view>
+      </view>
+      <view class="infoRow">
+        <view class="left">申请原因 </view>
+        <view class="right">{{(item.reasonForApplication?item.reasonForApplication:'未填写')}}</view>
+      </view>
+      <view class="test">
+        <van-image fit="cover" width="162" height="100" src="{{item.imageURL}}" 
+        bind:click="viewPic" data-picurl="{{item.cardPicLocation}}"></van-image>
+      </view>
+      <view class="mapbuttons">
+          <view class="bottons">
+            <van-button 
+              type="primary" 
+              sqaure
+              size="small"
+              bindtap="onConfirm" data-status='1' data-id="{{item.formId}}"
+              data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">通过</van-button>
+          </view>
+          <view class="bottons">
+            <van-button 
+              type="danger" 
+              square
+              size="small"
+              bindtap="onConfirm" data-status='2' data-id="{{item.formId}}"
+              data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">拒绝</van-button>
+          </view>
+        </view>
+      </van-collapse-item>
+    </van-collapse>
+  </view>
+
   <view class="blank"></view>
 
   <van-dialog id="van-dialog"></van-dialog>

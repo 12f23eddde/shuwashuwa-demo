@@ -114,6 +114,13 @@ Page({
       });
   },
 
+
+  onChange(event) {
+    this.setData({
+      activeNames: event.detail,
+    });
+  },
+  
   replyApplication: async function(event){
     let applicationId = event.currentTarget.dataset.id
     let status=event.currentTarget.dataset.status
