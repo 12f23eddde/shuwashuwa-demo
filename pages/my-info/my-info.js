@@ -151,7 +151,7 @@ Page({
   applicationClick: async function(){
     if (!await checkUserInfo()) return;
     let applicationStatus = await this.loadMyApplication()
-    if (applicationStatus == 0 || applicationStatus == 1){
+    if (applicationStatus == 0 || this.data.volunteer){
       Notify({type: 'success', message: '您有正在审核的申请或您已经是志愿者'})
       return
     }
