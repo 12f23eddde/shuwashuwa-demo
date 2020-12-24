@@ -9,7 +9,6 @@
   <van-button type="warning" bindtap="clearStorage">清除缓存并重启</van-button>
   <van-button type="danger" bindtap="deleteUser">删除当前用户</van-button>
   <van-field label="baseURL" bind:change="onChange" model:value="{{currURL}}" />
-  <van-field label="templateID" bind:change="onChange" model:value="{{currTID}}" />
   <van-field label="navigateURL" bind:change="onChange" model:value="{{navigateURL}}" />
   <van-cell label="{{myRole}}" />
   <van-checkbox model:value="{{ volunteer }}" bind:change="updateRole">志愿者</van-checkbox>

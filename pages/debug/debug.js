@@ -1,7 +1,7 @@
 // pages/debug/debug.js
 
 import {login, deleteCurrentUser, requestWithToken} from '../../api/user'
-import {requestSubscription} from '../../api/service'
+import {getTemplateIDs, requestSubscription} from '../../api/subscription'
 import {uploadWithToken, chooseImage} from '../../api/file'
 import {parseToken, whoAmI} from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
@@ -17,11 +17,12 @@ Page({
     currResCode: "复制res.code",
     currToken: "复制Token",
     currURL: "http://shuwashuwa.kinami.cc:8848",
-    currTID: "DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q",
+    currTID: [],
     navigateURL: "/pages/user/user",
     admin:false,
     volunteer: false,
-    myRole: ''
+    myRole: '',
+    tmplIDs: []
   },
 
   updateRole: async function(){
@@ -51,10 +52,10 @@ Page({
   onShow: async function () {
     this.setData({
       currURL: app.globalData.baseURL,
-      currTID: app.globalData.tmplID,
+      currTID: await getTemplateIDs(),
       volunteer: app.globalData.userInfo.volunteer,
       admin: app.globalData.userInfo.admin,
-      myRole: await whoAmI()
+      myRole: await whoAmI(),
     })
   },
 
@@ -146,7 +147,6 @@ Page({
 
   onChange: function(){
     app.globalData.baseURL = this.data.currURL
-    app.globalData.tmplID = this.data.currTID
   },
 
   clearStorage: async function(){
@@ -157,8 +157,7 @@ Page({
   },
 
   requestSub: async function(){
-    let tmplIDs = [app.globalData.tmplID]
-    requestSubscription(tmplIDs)
+    requestSubscription(this.data.currTID)
   },
 
   uploadPic: async function(){
