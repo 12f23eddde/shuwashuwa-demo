@@ -23,7 +23,7 @@
     <van-popup show="{{ activityShow }}" position="bottom">
       <van-picker show-toolbar title="活动" columns="{{ activityNames }}" default-index="{{ 2 }}" loading="{{ activityLoading }}" bind:confirm="activityConfirm" bind:cancel="activityClose" />
     </van-popup>
-    <van-cell title="时段" required="{{! disableEdit }}" value="{{ startTime + ' - ' + endTime  }}" bind:click="timeslotClick" is-link />
+    <van-cell title="时段" required="{{! disableEdit }}" value="{{ startTime? startTime + ' - ' + endTime : '' }}" bind:click="timeslotClick" is-link />
     <van-popup show="{{ timeslotShow }}" position="bottom">
       <van-picker show-toolbar title="活动" columns="{{ timeslotNames }}" default-index="{{ 2 }}" loading="{{ timeslotLoading }}" bind:confirm="timeslotConfirm" bind:cancel="timeslotClose" />
     </van-popup>

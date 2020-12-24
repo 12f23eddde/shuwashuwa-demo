@@ -58,10 +58,10 @@
       待审核维修单
     </view>
   </view>
-  <view class="mapbuttons" wx:if="{{ inEditService.length>0 && admin && !pageLoading }}">
+  <view class="mapbuttons" wx:if="{{ inAuditService.length>0 && admin && !pageLoading }}">
     <van-cell-group class="activityCell" bindtap="gotoOrder">
       <van-cell icon="/pages/service-list/rejectedOrder.png">
-        <view slot="title" class="viewTitle">你有{{inEditService.length}}张待审核维修单 </view>
+        <view slot="title" class="viewTitle">你有{{inAuditService.length}}张待审核维修单 </view>
         <view slot="" class="viewValue"> 点击跳转 </view>
       </van-cell>
     </van-cell-group>
