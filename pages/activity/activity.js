@@ -130,7 +130,7 @@ Page({
     this.loadAuditableServices()
     this.loadCurrentActivities()
     this.loadAuditableApplications()
-    this.loadMyApplicationStatus()
+    this.loadMyApplication()
   },
 
   /**

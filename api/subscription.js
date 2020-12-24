@@ -2,6 +2,8 @@ import {requestWithToken} from "./user";
 import {wxp} from '../utils/wxp';
 
 export const requestSubscription = async function(tmplIds){
+  // 修复tmplIds为空的问题
+  if(tmplIds.length === 0) return;
   let requestData = await wxp.requestSubscribeMessage({
     tmplIds: tmplIds
   })

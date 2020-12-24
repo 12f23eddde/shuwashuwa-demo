@@ -28,7 +28,7 @@
       async-close
       bind:close="onClose"
       data-id="{{item.serviceEventId}}"
-      wx:if="{{ !item.closed }}"
+      disabled="{{ item.status != 0 }}"
     >
       <van-collapse-item icon="{{ item.iconPath }}">
         <view slot="title" class="collTitle"> {{ item.serviceEventId }} </view>
