@@ -1,20 +1,186 @@
-<!--index.wxml-->
-<view class="container">
-  <view class="userinfo">
-    <van-button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </van-button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+<!--pages/activity/activity.wxml-->
+
+<van-notify id="van-notify" />
+<van-toast id="van-toast" />
+
+<tab-bar active='0'></tab-bar>
+<view class="actvityPage">
+  <!--排队中维修单-->
+  <view class="maptitle" wx:if="{{ inQueueService.length>0 }}">
+    <view wx-if="{{pageLoading}}">
+      <van-loading/>
+    </view>
+    <view class="title">
+      排队中维修单
+    </view>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view wx:if="{{ inQueueService.length>0 && !pageLoading }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ inQueueService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
+        label="{{item.statusString}}">
+        <van-swipe-cell right-width="{{ 65 }}">
+          <view slot="right"><van-button type="danger">删除</van-button></view>
+          <view slot="">
+            <div style="display:block;">
+              <span style="display:block;"> {{item.computerModel}}</span>
+            </div>
+            <div style="display:block;">
+              <span style="display:block;"> {{item.problemSummary}}</span>
+            </div>
+          </view>
+        </van-swipe-cell>
+      </van-cell>
+    </van-cell-group>
   </view>
-  <view class="gotoLog">
-    <van-button bindtap="gotoLog">查看日志</van-button>
+  <!--待填维修单-->
+  <view class="maptitle" wx:if="{{ inEditService.length>0 }}">
+    <view wx-if="{{pageLoading}}">
+      <van-loading/>
+    </view>
+    <view class="title">
+      待填维修单
+    </view>
   </view>
-  <view class="gotoDebug">
-    <van-button bindtap="gotoDebug">进入调试页</van-button>
+  <view class="mapbuttons" wx:if="{{ inEditService.length>0 && !pageLoading }}">
+    <van-cell-group class="activityCell" bindtap="gotoOrder">
+      <van-cell icon="/pages/service-list/rejectedOrder.png">
+        <view slot="title" class="viewTitle">你有{{inEditService.length}}张待填写维修单 </view>
+        <view slot="" class="viewValue"> 点击跳转 </view>
+      </van-cell>
+    </van-cell-group>
   </view>
-  <tab-bar active='0'></tab-bar>
+  <!--待审核维修单-->
+  <view class="maptitle" wx:if="{{ inAuditService.length>0 && admin }}">
+    <view wx-if="{{pageLoading}}">
+      <van-loading/>
+    </view>
+    <view class="title">
+      待审核维修单
+    </view>
+  </view>
+  <view class="mapbuttons" wx:if="{{ inAuditService.length>0 && admin && !pageLoading }}">
+    <van-cell-group class="activityCell" bindtap="gotoOrder">
+      <van-cell icon="/pages/service-list/rejectedOrder.png">
+        <view slot="title" class="viewTitle">你有{{inAuditService.length}}张待审核维修单 </view>
+        <view slot="" class="viewValue"> 点击跳转 </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <!--我的志愿者申请-->
+  <view class="maptitle" wx:if="{{ myApplicationStatus != -1 }}">
+    <view wx-if="{{pageLoading}}">
+      <van-loading/>
+    </view>
+    <view class="title">
+      我的志愿者申请
+    </view>
+  </view>
+  <view class="mapbuttons" wx:if="{{ myApplicationStatus != -1 && !pageLoading }}">
+    <van-cell-group class="activityCell">
+      <van-cell icon="/pages/service-list/verifyingOrder.png" title="志愿者申请正在审核" wx:if="{{ myApplicationStatus == 0 }}"/>
+      <van-cell icon="/pages/service-list/comfirmedOrder.png" title="志愿者申请已经通过" wx:if="{{ myApplicationStatus == 1 }}"/>
+      <van-cell icon="/pages/service-list/rejectedOrder.png" title="志愿者申请被拒绝" wx:if="{{ myApplicationStatus == 2 }}" value="{{myApplicationMessage}}"/>
+    </van-cell-group>
+  </view>
+
+  <!--待审核志愿者申请-->
+  <view class="maptitle" wx:if="{{ inAuditApplication.length>0 && admin }}">
+    <view wx-if="{{pageLoading}}">
+      <van-loading/>
+    </view>
+    <view class="title">
+      待审核志愿者申请
+    </view>
+  </view>
+  <view class="mapbuttons" wx:if="{{ inAuditApplication.length>0 && admin && !pageLoading }}">
+    <van-cell-group class="activityCell" bindtap="gotoApplicationList">
+      <van-cell title="你有{{inAuditApplication.length}}份待审核志愿者申请" value="点击跳转">
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <!--当前活动-->
+  <view class="maptitle">
+    <view wx-if="{{pageLoading}}">
+      <van-loading/>
+    </view>
+    <view class="title" wx:if="{{ currentActivity.length>0 }}">
+      当前活动
+    </view>
+    <view class="titleNa" wx:elif="{{!pageLoading}}">
+      没有正在进行的活动
+    </view>
+  </view>
+  <view wx:if="{{ currentActivity.length>0 && !pageLoading }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ currentActivity }}" wx:key="id" label="{{item.statusString}}" icon="/pages/service-list/comfirmedOrder.png">
+        <view slot="title" class="viewTitle"> {{item.activityName}} </view>
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  <!--未来活动-->
+  <view class="maptitle" wx:if="{{ incomingActivity.length>0 }}">
+    <view wx-if="{{pageLoading}}">
+      <van-loading/>
+    </view>
+    <view class="title">
+      未来活动
+    </view>
+  </view>
+  <view wx:if="{{ incomingActivity.length>0  && !pageLoading }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell wx:for="{{ incomingActivity }}" wx:key="id" label="{{item.statusString}}" icon="/pages/service-list/verifyingOrder.png">
+        <view slot="title" class="viewTitle"> {{item.activityName}} </view>
+        <view slot="" class="viewValue">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <van-popup show="{{ applicationShow }}" bind:close="applicationClose" position="bottom">
+    <van-cell-group>
+      <van-field 
+        id="department" 
+        model:value="{{ reasonForApplication }}" 
+        label="申请理由" 
+        placeholder="信息科学技术学院" 
+        error-message="{{ errMsg.reasonForApplication }}" 
+      />
+      <van-cell title="学生证照片" label="我们承诺您的信息只用于发放志愿证明" title-style="{{ errMsg.cardPicLocation }}">
+        <van-uploader
+          sizeType="['compressed']" 
+          file-list="{{ imagesToUpload }}" 
+          max-count="1" 
+          bind:after-read="uploadConfirm"
+          bind:delete="uploadCancel"
+        />
+      </van-cell>
+      <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="暂无反馈"  autosize readonly/>
+      <van-button type="primary" size="large" bindtap="applicationSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}"> 提交 </van-button>
+    </van-cell-group>
+  </van-popup>
+  
+  <view class="blank"></view>
+  <view class="blank"></view>
+  <view class="blank"></view>
+
 </view>

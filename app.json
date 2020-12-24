@@ -1,11 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs",
-    "pages/user/user",
-    "pages/activity/activity",
-    "pages/order/order",
-    "pages/debug/debug",
     "pages/service-detail/service-detail",
     "pages/my-info/my-info",
     "pages/service-list/service-list",
@@ -23,15 +18,11 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "主页"
       },
       {
         "pagePath": "pages/service-list/service-list",
         "text": "维修单"
-      },
-      {
-        "pagePath": "pages/activity/activity",
-        "text": "活动"
       },
       {
         "pagePath": "pages/my-info/my-info",
