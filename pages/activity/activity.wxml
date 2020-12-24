@@ -105,7 +105,29 @@
     </van-cell-group>
   </view>
 
-  <view class="blank"></view>
+  <van-popup show="{{ applicationShow }}" bind:close="applicationClose" position="bottom">
+    <van-cell-group>
+      <van-field 
+        id="department" 
+        model:value="{{ reasonForApplication }}" 
+        label="申请理由" 
+        placeholder="信息科学技术学院" 
+        error-message="{{ errMsg.reasonForApplication }}" 
+      />
+      <van-cell title="学生证照片" label="我们承诺您的信息只用于发放志愿证明" title-style="{{ errMsg.cardPicLocation }}">
+        <van-uploader
+          sizeType="['compressed']" 
+          file-list="{{ imagesToUpload }}" 
+          max-count="1" 
+          bind:after-read="uploadConfirm"
+          bind:delete="uploadCancel"
+        />
+      </van-cell>
+      <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="暂无反馈"  autosize readonly/>
+      <van-button type="primary" size="large" bindtap="applicationSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}"> 提交 </van-button>
+    </van-cell-group>
+  </van-popup>
+  
   <view class="blank"></view>
 
 </view>

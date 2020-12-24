@@ -65,3 +65,11 @@
   justify-content: center;
   width: 40%;
 }
+
+.blank{ 
+  height: 20px;
+  clear:both; 
+  overflow:hidden; 
+  display:block; 
+  overflow:hidden;
+}
