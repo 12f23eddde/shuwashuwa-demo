@@ -23,15 +23,15 @@ export const getTemplateIDs = async function(options){
   console.log(auth_subscribe)
   // 从tmplIDs移除已经同意过的通知
   // isIterable Credit:https://stackoverflow.com/questions/18884249/checking-whether-something-is-iterable
-  if (auth_subscribe.mainSwitch && typeof(auth_subscribe.itemSettings[Symbol.iterator]) === 'function'){
-    for (template of auth_subscribe.itemSettings){
-      if(auth_subscribe.itemSettings[template]!=='accept') continue;
-      let idx = tmplIDs.findIndex(template)
-      if (idx >= 0){
-        tmplIDs.splice(idx, 1)  // remove idx
-      }
-    }
-  }
+  // if (auth_subscribe.mainSwitch && typeof(auth_subscribe.itemSettings[Symbol.iterator]) === 'function'){
+  //   for (template of auth_subscribe.itemSettings){
+  //     if(auth_subscribe.itemSettings[template]!=='accept') continue;
+  //     let idx = tmplIDs.findIndex(template)
+  //     if (idx >= 0){
+  //       tmplIDs.splice(idx, 1)  // remove idx
+  //     }
+  //   }
+  // }
   console.log('[getTemplateIDs]', tmplIDs)
   return tmplIDs
 }
