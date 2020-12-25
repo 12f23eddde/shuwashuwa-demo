@@ -9,7 +9,7 @@
 
   <!-- 显示帮助信息 -->
   <!-- 可以通过 custom-style="height: 20%" 控制弹出层尺寸 -->
-  <van-popup show="{{ helpShow }}" position="bottom" closeable bind:close="helpClose">
+  <van-popup show="{{ helpShow }}" position="bottom">
     <towxml nodes="{{ helpMessage }}"/>
     <view class="mapbuttons">
       <view class="buttonsUnder" >
@@ -140,7 +140,7 @@
 <!-- 用户功能 -->
   <view class="mapbuttons" wx-if="{{ editable && !disableEdit && status <= 2}}">
     <view class="buttons" >
-      <van-button type="primary" size="large" bindtap="onSubmit" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button type="primary" size="large" bind:click="onSubmit" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
         提交
       </van-button>
     </view>

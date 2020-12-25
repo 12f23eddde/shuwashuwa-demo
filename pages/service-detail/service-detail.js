@@ -94,9 +94,6 @@ Page({
   // 提交
   onSubmit: async function (){
     if(!this.validator.checkData(this.data)) return;
-    Notify({type:'success', message:'为了便于您获知维修的进展情况，我们需要向您发送消息'})
-    // 要求微信订阅消息授权
-    await requestSubscription(this.data.tmplIDs).catch((err)=>{}) // ignore errors
     // 弹出活动前须知
     if(!this.data.helpMessage || this.data.helpMessageContent !== 'notice'){  
       Toast.loading({ // 加载并渲染为wxml可能需要一些时间，因此采用Toast避免用户误操作
@@ -137,13 +134,13 @@ Page({
     await Dialog.confirm({
       title: "取消维修",
       message:"您确定要取消当前维修吗？此操作不可逆。"
-    }).then(async ()=>{
+    })
+    .then(async ()=>{
       let res = await cancelService(this.data.serviceEventId)
       console.log(res)
+      wx.navigateBack({delta: 0})  // 返回上一页
     })
-    wx.navigateBack({
-      delta: 0,
-    })
+    .catch((err)=>{})  // 点取消啥都不做
     this.setData({ submitLoading: false })
   },
 
@@ -483,6 +480,10 @@ Page({
   },
 
   helpClose: async function(event){
+    // 提示用户点击的内容 放到popup里
+    // Notify({type:'success', message:'为了便于您获知维修的进展情况，我们需要向您发送消息'})
+    // 要求微信订阅消息授权
+    await requestSubscription(this.data.tmplIDs).catch((err)=>{}) // ignore errors
     this.setData({helpShow: false})
   },
 
@@ -565,7 +566,7 @@ Page({
     let curr_service = null;
     if (id >= 0){  // 加载维修单, 如果不是自己的维修单不开启编辑
       curr_service = await getService(id)
-      if (curr_service.userId === app.globalData.userId){this.setData({ disableEdit: false})}
+      if (curr_service.userId === app.globalData.userId && curr_service.draft){this.setData({ disableEdit: false})}
       else{this.setData({ disableEdit: true})}
     } else {  // id 为空 新建维修单,默认开启编辑
       curr_service = await createService()
