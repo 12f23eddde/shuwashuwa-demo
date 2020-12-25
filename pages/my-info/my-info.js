@@ -11,6 +11,7 @@ const app = getApp()
 Page({
   data: {
     myRole: '',
+    userId: -1,
 
     applicationShow: false,
     reasonForApplication: '',
@@ -101,7 +102,8 @@ Page({
   loadUserInfo: async function(){
     let userinfo = await getUserInfo()
     this.setData({
-      myRole: await whoAmI()
+      myRole: await whoAmI(),
+      userId: app.globalData.userId
     })
     console.log(this.data.myRole)
     // [后期可能需要更改] 直接替换this.data的全部内容

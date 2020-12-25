@@ -15,7 +15,7 @@
     </view>
     <view class="userotherinfo">
       <van-icon name="manager" />
-      <view wx:if="{{ phoneNumber }}" class="phone">{{ phoneNumber }}</view>
+      <view wx:if="{{ userId !== -1 }}" class="phone">{{ 'UID: ' + userId }}</view>
       <view stutype> {{ myRole }}</view>
     </view>
   </view>
