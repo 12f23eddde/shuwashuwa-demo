@@ -54,7 +54,6 @@
           <view class="bottons">
             <van-button 
               icon="info" 
-              type="orderBut" 
               round 
               size="large"
               bindtap="onChangeURL"

@@ -79,15 +79,10 @@
 }
 
 .bottons {
-  display: block;
-  width: 40%;
-}
-
-.van-button--orderBut {
   align-self: center;
-  display: inline-block;
-  --button-default-height: 80%;
-  width: 100%;
+  display: block;
+  width: 80%;
+  border-radius: 50%;
 }
 
 .rejectedDetails {
