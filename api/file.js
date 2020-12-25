@@ -1,6 +1,6 @@
 import {wxp} from '../utils/wxp'
 import { requestWithToken } from './user'
-import towxml from '../miniprogram_npm/towxml/index'
+import towxml from '../components/towxml/index'
 
 // 在所有请求需要在header里放token的都可用
 // 包装了wxp.upload, 在token失效时会自动更新token

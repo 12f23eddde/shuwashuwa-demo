@@ -183,7 +183,7 @@ Page({
     await auditService({
       message: this.data.descriptionAdvice,
       problemSummary: this.data.problemSummary,
-      result: true,
+      result: false,
       serviceEventId: this.data.serviceEventId,
       serviceFormId: this.data.serviceFormId
     }).catch((err)=>{

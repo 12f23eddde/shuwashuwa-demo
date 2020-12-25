@@ -32,6 +32,7 @@
   },
   "usingComponents": {
     "tab-bar": "/components/tab-bar/tab-bar",
+    "towxml":"/components/towxml/towxml",
     "van-image": "@vant/weapp/image/index",
     "van-notify": "@vant/weapp/notify/index",
     "van-toast": "@vant/weapp/toast/index",
@@ -54,8 +55,7 @@
     "van-uploader": "@vant/weapp/uploader/index",
     "van-loading": "@vant/weapp/loading/index",
     "van-checkbox": "@vant/weapp/checkbox/index",
-    "van-checkbox-group": "@vant/weapp/checkbox-group/index",
-    "towxml":"/miniprogram_npm/towxml/towxml"
+    "van-checkbox-group": "@vant/weapp/checkbox-group/index"
   },
   "networkTimeout": {
     "request": 3000
