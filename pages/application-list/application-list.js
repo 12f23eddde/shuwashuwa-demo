@@ -27,19 +27,8 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad:async function (options) {
-    this.setData({pageLoading: true})
-    let data = {"status":0}
-    let applicationList = await requestWithToken('/api/volunteer/application','GET',data)
-    console.log(applicationList)
-    for(var i in applicationList){
-      applicationList[i].imageURL = app.globalData.baseURL + '/img/' + applicationList[i].cardPicLocation;
-    }
-    console.log(applicationList)
-    this.setData({
-      pageLoading: false,
-      application: applicationList
-    })
+  onLoad: function (options) {
+
   },
 
   /**
@@ -52,8 +41,20 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    console.log("mow in application list")
+  onShow: async function () {
+    this.setData({pageLoading: true})
+    let data = {"status":0}
+    let applicationList = await requestWithToken('/api/volunteer/application','GET',data)
+    console.log(applicationList)
+    for(var i in applicationList){
+      // 加载缩略图, 减少流量消耗
+      applicationList[i].imageURL = app.globalData.baseURL + '/img/100_' + applicationList[i].cardPicLocation;
+    }
+    console.log(applicationList)
+    this.setData({
+      pageLoading: false,
+      application: applicationList
+    })
   },
 
   /**
@@ -206,8 +207,8 @@ Page({
   viewPic: async function(event){
     console.log(event.currentTarget.dataset)
     wx.previewImage({
-      current: 'http://shuwashuwa.kinami.cc:8848/img/'+event.currentTarget.dataset.picurl, // 当前显示图片的http链接
-      urls: ['http://shuwashuwa.kinami.cc:8848/img/'+event.currentTarget.dataset.picurl] // 需要预览的图片http链接列表
+      current: app.globalData.baseURL + '/img/'+ event.currentTarget.dataset.picurl, // 当前显示图片的http链接
+      urls: [app.globalData.baseURL + '/img/'+ event.currentTarget.dataset.picurl] // 需要预览的图片http链接列表
     })
   }
 })
