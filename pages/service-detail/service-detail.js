@@ -16,6 +16,8 @@ const app = getApp()
 
 Page({
   data: {
+    draft: null,
+
     activityId: 0,
     activityName: "",
     boughtTime: "1919-08-10",
@@ -147,7 +149,7 @@ Page({
 
   onSave: async function (){
     // 尝试解决维修单神秘消失的问题
-    if(this.data.status) return;
+    if(this.data.draft === false) return;
     this.setData({ submitLoading: true })
     await submitDraft(this.data)
     .catch((err)=>{
@@ -561,9 +563,9 @@ Page({
   // id < 0 创建service
   loadService: async function (id) {
     let curr_service = null;
-    if (id >= 0){  // 加载维修单, 如果不是草稿不开启编辑
+    if (id >= 0){  // 加载维修单, 如果不是自己的维修单不开启编辑
       curr_service = await getService(id)
-      if (curr_service.draft){this.setData({ disableEdit: false})}
+      if (curr_service.userId === app.globalData.userId){this.setData({ disableEdit: false})}
       else{this.setData({ disableEdit: true})}
     } else {  // id 为空 新建维修单,默认开启编辑
       curr_service = await createService()
@@ -580,6 +582,7 @@ Page({
     })
     // 解决没有独显型号的问题
     this.setData({
+      draft: curr_service.draft,
       serviceEventId: curr_service.id,
       activityId: curr_service.activityId,
       activityName: curr_service.activityName,

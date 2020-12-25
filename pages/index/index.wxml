@@ -77,9 +77,18 @@
   </view>
   <view class="mapbuttons" wx:if="{{ myApplicationStatus != -1 && !pageLoading }}">
     <van-cell-group class="activityCell">
-      <van-cell icon="/pages/service-list/verifyingOrder.png" title="志愿者申请正在审核" wx:if="{{ myApplicationStatus == 0 }}"/>
-      <van-cell icon="/pages/service-list/comfirmedOrder.png" title="志愿者申请已经通过" wx:if="{{ myApplicationStatus == 1 }}"/>
-      <van-cell icon="/pages/service-list/rejectedOrder.png" title="志愿者申请被拒绝" wx:if="{{ myApplicationStatus == 2 }}" value="{{myApplicationMessage}}"/>
+      <van-cell icon="/pages/service-list/verifyingOrder.png" wx:if="{{ myApplicationStatus == 0 }}">
+        <view slot="title" class="viewTitle"> 志愿者申请正在审核 </view>
+      </van-cell>
+      <van-cell icon="/pages/service-list/comfirmedOrder.png" wx:if="{{ myApplicationStatus == 1 }}">
+        <view slot="title" class="viewTitle"> 志愿者申请已经通过 </view>
+      </van-cell>
+      <van-cell icon="/pages/service-list/rejectedOrder.png" wx:if="{{ myApplicationStatus == 2 }}">
+        <view slot="title" class="viewTitle"> 志愿者申请被拒绝 </view>
+        <view slot="" class="viewValue"> {{myApplicationMessage}} </view>
+      </van-cell>
+      <!-- <van-cell icon="/pages/service-list/comfirmedOrder.png" class="viewTitle" title="志愿者申请已经通过" wx:if="{{ myApplicationStatus == 1 }}"/>
+      <van-cell icon="/pages/service-list/rejectedOrder.png" class="viewTitle" title="志愿者申请被拒绝" wx:if="{{ myApplicationStatus == 2 }}" value="{{myApplicationMessage}}"/> -->
     </van-cell-group>
   </view>
 
@@ -94,7 +103,9 @@
   </view>
   <view class="mapbuttons" wx:if="{{ inAuditApplication.length>0 && admin && !pageLoading }}">
     <van-cell-group class="activityCell" bindtap="gotoApplicationList">
-      <van-cell title="你有{{inAuditApplication.length}}份待审核志愿者申请" value="点击跳转">
+      <van-cell icon="/pages/service-list/rejectedOrder.png">
+        <view slot="title" class="viewTitle">你有{{inAuditApplication.length}}份待审核志愿者申请 </view>
+        <view slot="" class="viewValue"> 点击跳转 </view>
       </van-cell>
     </van-cell-group>
   </view>

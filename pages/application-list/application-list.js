@@ -1,9 +1,11 @@
 import { requestWithToken } from '../../api/user'
 import { whoAmI } from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
+
+const app = getApp()
+
 // pages/application-list/application-list.js
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -27,16 +29,16 @@ Page({
    */
   onLoad:async function (options) {
     this.setData({pageLoading: true})
-    let data={"status":0}
-    let applicationList=await requestWithToken('/api/volunteer/application','GET',data)
+    let data = {"status":0}
+    let applicationList = await requestWithToken('/api/volunteer/application','GET',data)
     console.log(applicationList)
     for(var i in applicationList){
-      applicationList[i].imageURL = 'http://shuwashuwa.kinami.cc:8848/img/'+applicationList[i].cardPicLocation;
+      applicationList[i].imageURL = app.globalData.baseURL + '/img/' + applicationList[i].cardPicLocation;
     }
     console.log(applicationList)
     this.setData({
       pageLoading: false,
-      application:applicationList
+      application: applicationList
     })
   },
 
