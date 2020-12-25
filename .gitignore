@@ -6,3 +6,9 @@
 *.iws
 *.iml
 *.ipr
+
+### Node.js ###
+node_modules/
+
+### Wechat npm ###
+miniprogram_npm/
