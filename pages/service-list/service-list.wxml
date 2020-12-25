@@ -32,15 +32,17 @@
     >
       <van-collapse-item icon="{{ item.iconPath }}">
         <view slot="title" class="collTitle"> {{ item.serviceEventId }} </view>
+        <!-- 这里啥都不显示总感觉有点怪 -->
         <view slot="value" class="dateView"> {{ (item.computerModel?item.computerModel:'未填写型号') }} </view>
         <view slot="value" class="orderUser"> {{ (item.problemType?item.problemType:'未填写问题') }} </view>
+        <!-- 如果是我发起的维修单,显示志愿者的名字 否则显示发起者的名字 -->
         <view slot="value" class="orderType"> {{ (item.userName==userName?(item.volunteerName?item.volunteerName:'未被志愿者接单'):item.userName) }} </view>
         <view class='rejectedDetails' wx:if="{{item.status == 0}}"> 等待编辑 </view>
         <view class='rejectedDetails' wx:if="{{item.status == 1}}"> 等待审核 </view>
         <view class='comfirmedDetails' wx:if="{{item.status == 2}}"> 审核通过 </view>
         <view class='orderDetails'> {{( item.problemSummary?item.problemSummary:'未填写问题') }} </view>
         <view class="mapbuttons">
-          <view class="bottons">
+          <!-- <view class="bottons">
             <van-button 
               icon="setting" 
               type="orderBut" 
@@ -48,15 +50,15 @@
               size="large"
               bindtap="onChangeURL"
               data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">修改</van-button>
-          </view>
+          </view> -->
           <view class="bottons">
             <van-button 
-              icon="comment-circle" 
+              icon="info" 
               type="orderBut" 
               round 
               size="large"
               bindtap="onChangeURL"
-              data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">反馈</van-button>
+              data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">详情</van-button>
           </view>
         </view>
       </van-collapse-item>

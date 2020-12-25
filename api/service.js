@@ -1,5 +1,6 @@
 import {requestWithToken} from './user'
 import {wxp} from '../utils/wxp'
+import { whoAmI } from '../utils/util'
 
 
 // 新建一个维修事件
@@ -110,6 +111,7 @@ options: {
 */
 // 返回符合查询条件的service简略信息 List=[{},{},{},{},{}]
 export const listServices = async function(options){
+  console.log('[listServices] called by ' + await whoAmI(), options)
   let requestData = await requestWithToken('/api/service', 'GET', options)
   return requestData
 }

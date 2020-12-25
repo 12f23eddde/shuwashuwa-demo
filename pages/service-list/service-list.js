@@ -143,14 +143,14 @@ Page({
           res.push(...await listServices(options))
         }
         break;
-      case 5: // 已完成 所有人能看见自己发起的 志愿者*还*能看见自己接单的 管理员能看见所有人的
+      case 5: // 已完成 所有人能看见自己发起的 志愿者*还*能看见自己接单的 管理员能看见所有人的 !倒序
         options.status = 5
         if(!this.data.admin){ options.client = app.globalData.userId }
-        res.push(...await listServices(options))
-        if(!this.data.admin && this.data.volunteer){ // 志愿者*还*能看见自己接单的
+        res.push(...(await listServices(options)).reverse())
+        if(!this.data.admin && this.data.volunteer){ // 志愿者*还*能看见自己接单的 !倒序
           delete options.client
           options.volunteer = app.globalData.volunteerId
-          res.push(...await listServices(options))
+          res.push(...(await listServices(options)).reverse())
         }
         break;
       case 6: // 活动中 所有人能看见自己发起的 志愿者*还*能看见自己接单的
@@ -164,10 +164,10 @@ Page({
           }
         }
         break;
-      case 7: // 所有维修单/我的维修单
+      case 7: // 所有维修单/我的维修单 !倒序
         for(let i = 0; i <= 5; i++){
           options.status = i
-          res.push(...await listServices(options))
+          res.push(...(await listServices(options)).reverse())
         }
         break;
       default:

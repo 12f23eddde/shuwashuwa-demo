@@ -5,4 +5,6 @@
 
 #### Updated 25 Dec
 
-优化了目录结构，因此您可能需要重新Clone此项目。在您clone完后，请执行`npm install -s`
+本次的更新优化了目录结构, 如果您git pull之后无法运行, 可能需要重新clone此项目
+
+在您clone完后, 请在仓库文件夹内运行`npm install --save`, 然后在开发者工具内点击工具->构建npm
