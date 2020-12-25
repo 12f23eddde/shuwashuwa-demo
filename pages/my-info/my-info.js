@@ -1,5 +1,5 @@
 import {getUserInfo, updateUserInfo} from '../../api/user'
-import {uploadImage} from '../../api/file'
+import {uploadImage, deleteImage} from '../../api/file'
 import {postApplication, getMyApplication} from '../../api/application'
 import {whoAmI, checkUserInfo} from '../../utils/util'
 
@@ -182,6 +182,7 @@ Page({
       applicationShow: false, 
       submitLoading: false,
       cardPicLocation:'',
+      imagesToUpload:[],
       reasonForApplication:''
     })
   },
@@ -203,6 +204,7 @@ Page({
     imagesToUpload.splice(imageToDelete, 1)
     this.setData({ imagesToUpload });
     // 更新imageList
+    await deleteImage(this.data.cardPicLocation) // 删图
     this.setData({cardPicLocation: ''});
   },
   applicationAudit: async function(){
