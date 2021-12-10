@@ -31,6 +31,9 @@ Page({
     pageLoading: false,
 
     addIconSrc: '/res/icons/addOrder.png',
+
+    btnx: wx.getSystemInfoSync().windowWidth * 0.75,
+    btny: wx.getSystemInfoSync().windowHeight - 90,
   },
 
   initMenu: function (){
@@ -287,7 +290,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-
+    this.setData({
+      btnx: wx.getSystemInfoSync().windowWidth * 0.75,
+      btny: wx.getSystemInfoSync().windowHeight - 90,
+    })
   },
 
   /**
@@ -308,7 +314,9 @@ Page({
       addIconSrc: '/res/icons/addOrder.png',
       user: !app.globalData.userInfo.admin && !app.globalData.userInfo.volunteer,
       volunteer: app.globalData.userInfo.volunteer,
-      admin: app.globalData.userInfo.admin
+      admin: app.globalData.userInfo.admin,
+      btnx: wx.getSystemInfoSync().windowWidth * 0.75,
+      btny: wx.getSystemInfoSync().windowHeight - 90,
     })
     this.initMenu()  // 不需要网络请求，好耶
     this.loadServices()

@@ -3,22 +3,25 @@
   height: 115rpx;
   position: fixed;
   display: block;
-  right: 50rpx;
-  bottom: 300rpx;
+}
+
+.addBtnArea {
+  margin-top: 10rpx;
+  height: 85vh;
+  width: 100vw;
 }
 
 .iconorder {
+  position: fixed;
   text-align: center;
+  margin-right: 60rpx;
   width: 115rpx;
   height: 115rpx;
-  position: fixed;
-  display: block;
-  right: 50rpx;
-  bottom: 300rpx;
   border-radius: 50%;
   background-color: #22ac38;
   border-color: #22ac38;
-  box-shadow: 0px 3px 2px grey;
+  box-shadow: 2px 2px 2px grey;
+  overflow: hidden;
 }
 
 .dropdownOrder {
