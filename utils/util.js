@@ -10,7 +10,7 @@ export const formatTime = date => {
   const minute = date.getMinutes()
   const second = date.getSeconds()
 
-  //Mind this have been edited ———— as all our dates in api connected with '-'
+  // Mind this have been edited ———— as all our dates in api connected with '-'
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
