@@ -1,11 +1,11 @@
-import type { WechatResponseType } from "../models/wechatResponse";
+import type { WechatResponseType, WechatErrorType } from "../models/wechatType";
 
 import { userStore } from "../stores/user";
 import { globalStore } from "../stores/global";
 
 import { wxRequest } from "../utils/wxp";
 
-import { login } from "../api_new/login";
+import { login } from "./login";
 
 // handle login failures
 // this function throw an error
@@ -55,6 +55,7 @@ export const request = async <
         return;
     }
 
+    // http error
     if (res.statusCode !== 200) {
         console.log('[request]', res.statusCode, res.data);
         handleRequestFail(new Error(String(res.statusCode)));
@@ -99,8 +100,7 @@ export const request = async <
         return res.data.data;
     } else {
         // this is not what we expected, but works fine
-        throw { errCode: res.data.code, errMsg: res.data.data }
-        return;
+        throw { errCode: res.data.code, errMsg: res.data.data } as WechatErrorType;
     }
 }
 

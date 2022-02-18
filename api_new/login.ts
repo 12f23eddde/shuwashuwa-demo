@@ -1,4 +1,4 @@
-import type { WechatResponseType } from "../models/wechatResponse";
+import type { WechatResponseType } from "../models/wechatType";
 import type { LoginRes } from "../models/login";
 
 import { parseToken } from "../utils/token-parser";
@@ -51,7 +51,7 @@ export const login = async (): Promise<void> => {
         }
 
         // check token
-        if (loginRes.data.code !== 0 || !loginRes.data.data.token) {
+        if (loginRes.data.code !== 200 || !loginRes.data.data.token) {
             handleLoginFail(new Error('获取到的Token为空'));
             return;
         }
@@ -62,7 +62,7 @@ export const login = async (): Promise<void> => {
         // log token info
         const tokenObj = parseToken(loginRes.data.data.token);
         const expDate = new Date(tokenObj.exp * 1000);
-        console.log(`[login] token: ${loginRes.data.data.token} UserId: ${tokenObj.userid} Exp: ${expDate.toLocaleString()}`);
+        console.log(`[login] token: ${userStore.token} UserId: ${tokenObj.userid} Exp: ${expDate.toLocaleString()}`);
 
     } finally {
         // release mutex

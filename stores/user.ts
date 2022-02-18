@@ -1,4 +1,5 @@
-import observe from 'minii/src/api/observe';
+// import observe from '../miniprogram_npm/minii/api/observe'
+import { observe } from 'minii'
 import type { User } from '../models/user';
 
 class UserStore {
@@ -28,7 +29,6 @@ class UserStore {
     }
 }
 
-// minii 不支持typescript
 interface UserStoreGuarded {
     readonly user: User | null;
     readonly isLoggedIn: boolean;

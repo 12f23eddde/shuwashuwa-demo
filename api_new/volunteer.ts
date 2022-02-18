@@ -1,7 +1,7 @@
-import { request } from "../api_new/request"
+import { request } from "./request"
 import type { User } from "../models/user";
 
-import type { Application, ApplicationQuery, ApplicationSubmission } from "../models/volunteer";
+import type { Application, ApplicationQuery, ApplicationSubmission } from "../models/application";
 
 /* admin */
 

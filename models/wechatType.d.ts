@@ -3,7 +3,7 @@
 
 import type { CommonResponse } from './commonResponse';
 
-type IAnyObject = {[key: string]: any};
+export type IAnyObject = {[key: string]: any};
 
 export interface RequestOption<
 T extends string | IAnyObject | ArrayBuffer =
@@ -99,6 +99,12 @@ T extends string | IAnyObject | ArrayBuffer =
     profile: any
     /** 开发者服务器返回的 HTTP 状态码 */
     statusCode: number
+    errMsg: string
+}
+
+export type WechatErrorType = {
+    /** 错误信息 */
+    errCode: number,
     errMsg: string
 }
 

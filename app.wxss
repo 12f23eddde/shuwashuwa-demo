@@ -1,5 +1,6 @@
 @import './miniprogram_npm/@vant/weapp/common/index.wxss';
-/**app.wxss**/
+
+/** app.wxss **/
 .container {
   height: 100%;
   display: flex;
@@ -9,6 +10,7 @@
   padding: 200rpx 0;
   box-sizing: border-box;
 } 
+
 /* 让字体更好看一些 */
 /* https://vant-contrib.gitee.io/vant-weapp/#/common */
 page {

@@ -1,5 +1,5 @@
 import { getUserInfo } from '../api/user.js';
-import { Dialog } from '@vant/weapp';
+import Dialog from '@vant/weapp/dist/dialog/dialog';
 
 
 // 用户身份（为了方便调试，直接用中文力）

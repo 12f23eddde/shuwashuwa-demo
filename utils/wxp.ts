@@ -4,7 +4,7 @@
 
 import { promisifyAll, promisify } from 'miniprogram-api-promise';
 
-import type { WechatResponseType, RequestOption } from '../models/wechatResponse';
+import type { WechatResponseType, RequestOption } from '../models/wechatType';
 
 type IAnyObject = { [key: string]: any };
 
