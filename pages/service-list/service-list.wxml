@@ -1,6 +1,16 @@
 <view>
+  <!-- 选择菜单 -->
   <van-dropdown-menu class='dropdownOrder' active-color="#22ac38">
-    <van-dropdown-item model:value="{{ menuValue }}" options="{{ menuOptions }}" bind:change="loadServices" />
+    <van-dropdown-item
+      bind:value="{{ query.activity }}"
+      options="{{ activityOptions }}"
+      bind:change="setActivity"
+    />
+    <van-dropdown-item
+      bind:value="{{ query.status }}"
+      options="{{ statusOptions }}"
+      bind:change="setStatus"
+    />
   </van-dropdown-menu>
 
   <view class="blank"></view>
@@ -15,8 +25,21 @@
   </view>
   <movable-area class="addBtnArea">
     <!-- 有对应的维修单 -->
-    <van-collapse value="{{ activeNames }}" wx:if="{{ serviceList.length > 0 }}" bind:change="onChange" class="orderCollapse">
-      <van-swipe-cell wx:for="{{ serviceList }}" class="titileOrder" right-width="{{ 80 }}" async-close bind:close="onClose" data-id="{{item.serviceEventId}}" disabled="{{ item.status != 0 }}">
+    <van-collapse
+      value="{{ activeNames }}"
+      wx:if="{{ serviceList.length > 0 }}"
+      bind:change="onChange"
+      class="orderCollapse"
+    >
+      <van-swipe-cell
+        wx:for="{{ serviceList }}"
+        class="titileOrder"
+        right-width="{{ 80 }}"
+        async-close
+        bind:close="onClose"
+        data-id="{{item.serviceEventId}}"
+        disabled="{{ item.status != 0 }}"
+      >
         <van-collapse-item icon="{{ item.iconPath }}">
           <view slot="title" class="collTitle"> {{ item.serviceEventId }} </view>
           <!-- 这里啥都不显示总感觉有点怪 -->
@@ -39,7 +62,14 @@
               data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">修改</van-button>
           </view> -->
             <view class="bottons">
-              <van-button icon="info" round size="large" bindtap="onChangeURL" data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}">详情</van-button>
+              <van-button
+                icon="info"
+                round
+                size="large"
+                bindtap="onChangeURL"
+                data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}"
+              >详情
+              </van-button>
             </view>
           </view>
         </van-collapse-item>
@@ -47,12 +77,20 @@
       </van-swipe-cell>
     </van-collapse>
 
-
-    <movable-view x="{{btnx}}" y="{{btny}}" direction="all" class='iconorder'>
-      <cover-image class='fixedIcon' id='addIconBtn' bindtap="goToDetail" src="{{ addIconSrc }}" />
+    <movable-view
+      x="{{btnx}}"
+      y="{{btny}}"
+      direction="all"
+      class='iconorder'
+    >
+      <cover-image
+        class='fixedIcon'
+        id='addIconBtn'
+        bindtap="goToDetail"
+        src="{{ addIconSrc }}"
+      />
     </movable-view>
   </movable-area>
-
 
   <view class="blank"></view>
 
@@ -60,3 +98,4 @@
 
   <tab-bar active='1'></tab-bar>
 </view>
+

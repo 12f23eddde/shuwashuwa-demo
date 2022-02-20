@@ -65,7 +65,7 @@ export const checkUserInfo = async function () {
 export const serviceStatusText = (status: number) => {
     switch (status) {
         case 0:
-            return '编辑中';
+            return '待填写';
         case 1:
             return '待审核';
         case 2:

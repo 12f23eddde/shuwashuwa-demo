@@ -31,7 +31,7 @@
     ]
   },
   "usingComponents": {
-    "tab-bar": "/components/tab-bar/tab-bar",
+    "tab-bar": "/custom-tab-bar/index",
     "towxml":"/components/towxml/towxml",
     "van-image": "@vant/weapp/image/index",
     "van-notify": "@vant/weapp/notify/index",

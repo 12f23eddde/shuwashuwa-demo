@@ -3,7 +3,7 @@
 <van-notify id="van-notify" />
 <van-toast id="van-toast" />
 
-<tab-bar active='0'></tab-bar>
+<tab-bar active="{{ 0 }}"></tab-bar>
 <view class="actvityPage">
   <!--我的维修单-->
   <view class="maptitle" wx:if="{{ activeServices.length > 0 }}">

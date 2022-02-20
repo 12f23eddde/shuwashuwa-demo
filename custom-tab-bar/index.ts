@@ -7,7 +7,7 @@ Component({
     // 将active属性传递给van-tabbar
     active:{
       type: Number,
-      value: 0
+      value: -1
     }
   },
   data: {
