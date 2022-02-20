@@ -8,18 +8,7 @@ import { globalStore } from "../stores/global";
 
 import { wxRequest } from "../utils/wxp";
 
-// handle login failures
-// this function throw an error
-export const handleLoginFail = (e: { errMsg: string } | Error) => {
-    const message = e instanceof Error ? e.message : e.errMsg;
-    console.log('[getToken]', message);
-    // show toast to comfort user
-    wx.showToast({
-        title: '无法与服务器通信:' + message,
-        icon: 'none'
-    })
-    throw e
-}
+import { emitErrorToast } from "../utils/ui";
 
 /**
  * 通过微信的rescode获取token, 并保存到userStore
@@ -46,13 +35,13 @@ export const login = async (): Promise<void> => {
                 }
             });
         } catch (e) {
-            handleLoginFail(e);
+            emitErrorToast(e);
             return;
         }
 
         // check token
         if (loginRes.data.code !== 200 || !loginRes.data.data.token) {
-            handleLoginFail(new Error('获取到的Token为空'));
+            emitErrorToast(new Error('获取到的Token为空'));
             return;
         }
 

@@ -1,7 +1,9 @@
 // import stores
-require('./stores/index')
+import { userStore } from './stores/user'
+import { globalStore } from './stores/global'
 
 import { login } from './api_new/login'
+import { getCurrentUserInfo } from './api_new/user'
 
 App({
   onLaunch: function () {
@@ -9,9 +11,11 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-   
-    // 登录
-    login()
+
+    login() // 登录
+    .then(() => {
+      getCurrentUserInfo() // 获取用户信息
+    })
   },
 
   globalData: {
@@ -22,5 +26,7 @@ App({
     userId: null,
     volunteerId: null,
     wechatUserInfo: null,
+    userStore: userStore,
+    globalStore: globalStore
   }
 })

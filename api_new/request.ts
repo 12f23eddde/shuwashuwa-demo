@@ -7,18 +7,7 @@ import { wxRequest } from "../utils/wxp";
 
 import { login } from "./login";
 
-// handle login failures
-// this function throw an error
-export const handleRequestFail = (e: { errMsg: string } | Error) => {
-    const message = e instanceof Error ? e.message : e.errMsg;
-    console.log('[request]', message);
-    // show toast to comfort user
-    wx.showToast({
-        title: '请求失败:' + message,
-        icon: 'none'
-    })
-    throw e
-}
+import { emitErrorToast } from "../utils/ui";
 
 type IAnyObject = { [key: string]: any };
 type RequestMethod = "GET" | "OPTIONS" | "HEAD" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT";
@@ -51,14 +40,14 @@ export const request = async <
             }
         });
     } catch (e) {
-        handleRequestFail(e);
+        emitErrorToast(e);
         return;
     }
 
     // http error
     if (res.statusCode !== 200) {
         console.log('[request]', res.statusCode, res.data);
-        handleRequestFail(new Error(String(res.statusCode)));
+        emitErrorToast(new Error(String(res.statusCode)));
         return;
     }
 
@@ -74,7 +63,7 @@ export const request = async <
             retries--;
         }
         if (!userStore.isLoggedIn) {
-            handleRequestFail(new Error('登录失败'));
+            emitErrorToast(new Error('登录失败'));
             return;
         }
 
@@ -90,7 +79,7 @@ export const request = async <
                 }
             });
         } catch (e) {
-            handleRequestFail(e);
+            emitErrorToast(e);
             return;
         }
     }

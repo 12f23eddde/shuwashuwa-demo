@@ -9,11 +9,11 @@ export interface ApplicationSubmission {
 
 export interface ApplicationQuery {
     /** 目标申请表中的管理员id */
-    adminId: number,
+    adminId?: number,
     /** 0为待审核，1为通过，2为不通过,可用值:0,1,2 */
-    status: number,
+    status?: number,
     /** 目标申请表中的申请者用户id 若发起请求的用户无特殊权限，该项被强制赋值为本人id*/
-    userId: number,
+    userId?: number,
 }
 
 export interface Application extends User {

@@ -103,6 +103,8 @@ T extends string | IAnyObject | ArrayBuffer =
 }
 
 export type WechatErrorType = {
+    /** 从服务器返回的信息 */
+    data?: string,
     /** 错误信息 */
     errCode: number,
     errMsg: string
@@ -113,3 +115,27 @@ export type WechatResponseType <T extends string | IAnyObject | ArrayBuffer =
     | IAnyObject
     | ArrayBuffer
 > = RequestSuccessCallbackResult<CommonResponse<T>>;
+
+
+export interface UploadFileOption {
+    /** 要上传文件资源的路径 (本地路径) */
+    filePath: string
+    /** 文件对应的 key，开发者在服务端可以通过这个 key 获取文件的二进制内容 */
+    name: string
+    /** 开发者服务器地址 */
+    url: string
+    /** 接口调用结束的回调函数（调用成功、失败都会执行） */
+    complete?: any
+    /** 接口调用失败的回调函数 */
+    fail?: any
+    /** HTTP 请求中其他额外的 form data */
+    formData?: IAnyObject
+    /** HTTP 请求 Header，Header 中不能设置 Referer */
+    header?: IAnyObject
+    /** 接口调用成功的回调函数 */
+    success?: any
+    /** 超时时间，单位为毫秒
+     *
+     * 最低基础库： `2.10.0` */
+    timeout?: number
+}

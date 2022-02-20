@@ -11,6 +11,7 @@ import Notify from '@vant/weapp/notify/notify'
 import WeValidator from 'we-validator'
 
 import { getApplicationList } from '../../api_new/volunteer'
+import { getServiceEventList } from '../../api_new/service'
 
 const util = require('../../utils/util')
 const app = getApp()

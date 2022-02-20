@@ -5,79 +5,90 @@
 
 <tab-bar active='0'></tab-bar>
 <view class="actvityPage">
-  <!--排队中维修单-->
-  <view class="maptitle" wx:if="{{ inQueueService.length>0 }}">
-    <view wx-if="{{pageLoading}}">
+  <!--我的维修单-->
+  <view class="maptitle" wx:if="{{ activeServices.length > 0 }}">
+    <view wx-if="{{ myServicesLoading }}">
       <van-loading/>
     </view>
     <view class="title">
-      排队中维修单
+      我的维修单
     </view>
   </view>
-  <view wx:if="{{ inQueueService.length>0 && !pageLoading }}" class="mapbuttons">
+  <view wx:if="{{ activeServices.length > 0 && !myServicesLoading }}" class="mapbuttons">
     <van-cell-group class="activityCell">
-      <van-cell wx:for="{{ inQueueService }}" wx:key="serviceEventId" title="{{item.computerModel}}"
-        label="{{item.statusString}}">
-        <van-swipe-cell right-width="{{ 65 }}">
-          <view slot="right"><van-button type="danger">删除</van-button></view>
-          <view slot="">
-            <div style="display:block;">
-              <span style="display:block;"> {{item.computerModel}}</span>
-            </div>
-            <div style="display:block;">
-              <span style="display:block;"> {{item.problemSummary}}</span>
-            </div>
-          </view>
-        </van-swipe-cell>
+      <van-cell
+        wx:for="{{ activeServices }}"
+        wx:key="serviceEventId"
+        title="{{ item.computerModel }}"
+        label="{{item.statusString}}"
+        data-id="{{ item.serviceEventId }}"
+        bind:tap="goToServiceDetail"
+      >
+        <view>
+          <div style="display:block;">
+            <span style="display:block;"> {{item.computerModel}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;"> {{item.statusText}}</span>
+          </div>
+        </view>
       </van-cell>
     </van-cell-group>
   </view>
   <!--待填维修单-->
-  <view class="maptitle" wx:if="{{ inEditService.length>0 }}">
-    <view wx-if="{{pageLoading}}">
+  <view class="maptitle" wx:if="{{ inEditServiceCount > 0 }}">
+    <view wx-if="{{ myServicesLoading }}">
       <van-loading/>
     </view>
     <view class="title">
       待填维修单
     </view>
   </view>
-  <view class="mapbuttons" wx:if="{{ inEditService.length>0 && !pageLoading }}">
-    <van-cell-group class="activityCell" bindtap="gotoOrder">
+  <view class="mapbuttons" wx:if="{{ inEditServiceCount > 0 && !myServicesLoading }}">
+    <van-cell-group
+      class="activityCell"
+      data-status="{{ 0 }}"
+      bindtap="goToStatusServiceList"
+    >
       <van-cell icon="/pages/service-list/rejectedOrder.png">
-        <view slot="title" class="viewTitle">你有{{inEditService.length}}张待填写维修单 </view>
+        <view slot="title" class="viewTitle">你有{{ inEditServiceCount }}张待填写维修单 </view>
         <view slot="" class="viewValue"> 点击跳转 </view>
       </van-cell>
     </van-cell-group>
   </view>
   <!--待审核维修单-->
-  <view class="maptitle" wx:if="{{ inAuditService.length>0 && admin }}">
-    <view wx-if="{{pageLoading}}">
+  <view class="maptitle" wx:if="{{ inAuditServiceCount > 0 }}">
+    <view wx-if="{{ inAuditServiceCountLoading }}">
       <van-loading/>
     </view>
     <view class="title">
       待审核维修单
     </view>
   </view>
-  <view class="mapbuttons" wx:if="{{ inAuditService.length>0 && admin && !pageLoading }}">
-    <van-cell-group class="activityCell" bindtap="gotoOrder">
+  <view class="mapbuttons" wx:if="{{ inAuditServiceCount > 0  && !inAuditServiceCountLoading }}">
+    <van-cell-group
+      class="activityCell"
+      bindtap="goToStatusServiceList"
+      data-status="{{ 1}}"
+    >
       <van-cell icon="/pages/service-list/rejectedOrder.png">
-        <view slot="title" class="viewTitle">你有{{inAuditService.length}}张待审核维修单 </view>
+        <view slot="title" class="viewTitle"> 你有{{inAuditServiceCount}}张待审核维修单 </view>
         <view slot="" class="viewValue"> 点击跳转 </view>
       </van-cell>
     </van-cell-group>
   </view>
   <!--我的志愿者申请-->
-  <view class="maptitle" wx:if="{{ myApplicationStatus != -1 }}">
-    <view wx-if="{{pageLoading}}">
+  <view class="maptitle" wx:if="{{ myApplication }}">
+    <view wx-if="{{ applicationsLoading }}">
       <van-loading/>
     </view>
     <view class="title">
       我的志愿者申请
     </view>
   </view>
-  <view class="mapbuttons" wx:if="{{ myApplicationStatus != -1 && !pageLoading }}">
+  <view class="mapbuttons" wx:if="{{ myApplication && !applicationsLoading}}">
     <van-cell-group class="activityCell">
-      <van-cell icon="/pages/service-list/verifyingOrder.png" wx:if="{{ myApplicationStatus == 0 }}">
+      <van-cell icon="/pages/service-list/verifyingOrder.png" wx:if="{{ myApplication.status == 0 }}">
         <view slot="title" class="viewTitle"> 志愿者申请正在审核 </view>
       </van-cell>
       <van-cell icon="/pages/service-list/comfirmedOrder.png" wx:if="{{ myApplicationStatus == 1 }}">
@@ -93,43 +104,51 @@
   </view>
 
   <!--待审核志愿者申请-->
-  <view class="maptitle" wx:if="{{ inAuditApplication.length>0 && admin }}">
-    <view wx-if="{{pageLoading}}">
+  <view class="maptitle" wx:if="{{ inAuditApplicationCount > 0 }}">
+    <view wx-if="{{ inAuditApplicationCountLoading }}">
       <van-loading/>
     </view>
     <view class="title">
       待审核志愿者申请
     </view>
   </view>
-  <view class="mapbuttons" wx:if="{{ inAuditApplication.length>0 && admin && !pageLoading }}">
+  <view class="mapbuttons" wx:if="{{ inAuditApplicationCount > 0 && !inAuditApplicationCountLoading }}">
     <van-cell-group class="activityCell" bindtap="gotoApplicationList">
       <van-cell icon="/pages/service-list/rejectedOrder.png">
-        <view slot="title" class="viewTitle">你有{{inAuditApplication.length}}份待审核志愿者申请 </view>
+        <view slot="title" class="viewTitle">你有{{ inAuditApplicationCount }}份待审核志愿者申请 </view>
         <view slot="" class="viewValue"> 点击跳转 </view>
       </van-cell>
     </van-cell-group>
   </view>
+
   <!--当前活动-->
   <view class="maptitle">
-    <view wx-if="{{pageLoading}}">
+    <view wx-if="{{ activitiesLoading }}">
       <van-loading/>
     </view>
-    <view class="title" wx:if="{{ currentActivity.length>0 }}">
+    <view class="title" wx:if="{{ currentActivities.length }}">
       当前活动
     </view>
-    <view class="titleNa" wx:elif="{{!pageLoading}}">
+    <view class="titleNa" wx:elif="{{ !currentActivities.length }}">
       没有正在进行的活动
     </view>
   </view>
-  <view wx:if="{{ currentActivity.length>0 && !pageLoading }}" class="mapbuttons">
+  <view wx:if="{{ currentActivities.length }}" class="mapbuttons">
     <van-cell-group class="activityCell">
-      <van-cell wx:for="{{ currentActivity }}" wx:key="id" label="{{item.statusString}}" icon="/pages/service-list/comfirmedOrder.png">
+      <van-cell
+        wx:for="{{ currentActivities }}"
+        wx:key="id"
+        label="{{ item.status }}"
+        icon="/pages/service-list/comfirmedOrder.png"
+        bind:tap="goToActivityServiceList"
+        data-id="{{ item.id }}"
+      >
         <view slot="title" class="viewTitle"> {{item.activityName}} </view>
         <view slot="">
           <div style="display:block;">
             <span style="display:block;">地点: {{item.location}}</span>
           </div>
-          <div style="display:block;">
+          <div style="display:block;">å
             <span style="display:block;">开始时间: {{item.startTime}}</span>
           </div>
           <div style="display:block;">
@@ -139,59 +158,43 @@
       </van-cell>
     </van-cell-group>
   </view>
+
   <!--未来活动-->
-  <view class="maptitle" wx:if="{{ incomingActivity.length>0 }}">
-    <view wx-if="{{pageLoading}}">
+  <view class="maptitle" wx:if="{{ incomingActivities.length }}">
+    <view wx-if="{{ activitiesLoading }}">
       <van-loading/>
     </view>
     <view class="title">
       未来活动
     </view>
   </view>
-  <view wx:if="{{ incomingActivity.length>0  && !pageLoading }}" class="mapbuttons">
+  <view wx:if="{{ incomingActivities.length }}" class="mapbuttons">
     <van-cell-group class="activityCell">
-      <van-cell wx:for="{{ incomingActivity }}" wx:key="id" label="{{item.statusString}}" icon="/pages/service-list/verifyingOrder.png">
-        <view slot="title" class="viewTitle"> {{item.activityName}} </view>
+      <van-cell
+        wx:for="{{ incomingActivities }}"
+        wx:key="id"
+        label="{{ item.statusString }}"
+        icon="/pages/service-list/verifyingOrder.png"
+      >
+        <view slot="title" class="viewTitle"> {{ item.activityName }} </view>
         <view slot="" class="viewValue">
           <div style="display:block;">
-            <span style="display:block;">地点: {{item.location}}</span>
+            <span style="display:block;">地点: {{ item.location }}</span>
           </div>
           <div style="display:block;">
-            <span style="display:block;">开始时间: {{item.startTime}}</span>
+            <span style="display:block;">开始时间: {{ item.startTime }}</span>
           </div>
           <div style="display:block;">
-            <span style="display:block;">结束时间: {{item.endTime}}</span>
+            <span style="display:block;">结束时间: {{ item.endTime }}</span>
           </div>
         </view>
       </van-cell>
     </van-cell-group>
   </view>
 
-  <van-popup show="{{ applicationShow }}" bind:close="applicationClose" position="bottom">
-    <van-cell-group>
-      <van-field 
-        id="department" 
-        model:value="{{ reasonForApplication }}" 
-        label="申请理由" 
-        placeholder="信息科学技术学院" 
-        error-message="{{ errMsg.reasonForApplication }}" 
-      />
-      <van-cell title="学生证照片" label="我们承诺您的信息只用于发放志愿证明" title-style="{{ errMsg.cardPicLocation }}">
-        <van-uploader
-          sizeType="['compressed']" 
-          file-list="{{ imagesToUpload }}" 
-          max-count="1" 
-          bind:after-read="uploadConfirm"
-          bind:delete="uploadCancel"
-        />
-      </van-cell>
-      <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="暂无反馈"  autosize readonly/>
-      <van-button type="primary" size="large" bindtap="applicationSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}"> 提交 </van-button>
-    </van-cell-group>
-  </van-popup>
-  
   <view class="blank"></view>
   <view class="blank"></view>
   <view class="blank"></view>
 
 </view>
+
