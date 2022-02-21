@@ -55,7 +55,8 @@
     "van-uploader": "@vant/weapp/uploader/index",
     "van-loading": "@vant/weapp/loading/index",
     "van-checkbox": "@vant/weapp/checkbox/index",
-    "van-checkbox-group": "@vant/weapp/checkbox-group/index"
+    "van-checkbox-group": "@vant/weapp/checkbox-group/index",
+    "van-search": "@vant/weapp/search/index"
   },
   "networkTimeout": {
     "request": 3000

@@ -23,7 +23,7 @@
   },
   "include": [
     "./**/*.ts"
-  ],
+, "pages/service-detail/service-detail.bak.js"  ],
   "exclude": [
     "node_modules"
   ]

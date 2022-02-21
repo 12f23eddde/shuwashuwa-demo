@@ -12,7 +12,7 @@ class GlobalStore {
     constructor() {
         this.loginMutex = false;
         // 默认后端地址
-        this.backendUrl = "http://shuwashuwa.kinami.cc:8848";
+        this.backendUrl = "http://shuwashuwa.kinami.cc";
         this.tabParams = null;
     }
 

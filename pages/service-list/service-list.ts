@@ -8,6 +8,8 @@ import { globalStore } from '../../stores/global';
 import { ActivityInfo } from '../../models/activity';
 import { getActivityList } from '../../api_new/activity';
 
+import { Document, Index } from 'flexsearch'
+
 type MenuOption = { text: string, value: number };
 
 Page({
@@ -26,11 +28,16 @@ Page({
         query: { draft: false, closed: false } as ServiceQuery,
         serviceList: [] as ServiceEvent[],
         serviceListLoading: false,
+        /** 搜索结果 */
+        searchIndex: null as any,
+        searchText: '' as string,
+        filteredServiceList: [] as ServiceEvent[],
 
         /** 活动列表 */
         activityList: [] as ActivityInfo[],
         activityListLoading: false,
         activityOptions: [] as MenuOption[],
+        activitySelected: -1,
 
         /** 状态列表 */
         statusOptions: [] as MenuOption[],
@@ -60,6 +67,10 @@ Page({
             this.setData({
                 serviceList,
             })
+
+            // build index
+            this.buildSearchIndex()
+            this.doCancelSearch()
         } catch (e: any) {
             emitErrorToast(e)
         } finally {
@@ -82,7 +93,7 @@ Page({
                 return
             }
             // reverse sort
-            activityList.sort((a, b) => b.id - a.id)  
+            activityList.sort((a, b) => b.id - a.id)
             // compute menu options
             const activityOptions = activityList.map(activity => ({
                 text: activity.activityName,
@@ -92,6 +103,21 @@ Page({
                 activityList,
                 activityOptions,
             })
+
+            // select activity
+            if (this.data.query.activity) {
+                this.setData({
+                    activitySelected: this.data.query.activity
+                })
+            } else {
+                const lastActivity = activityList[0]
+                const newQuery = Object.assign({}, this.data.query)
+                newQuery.activity = lastActivity.id
+                this.setData({
+                    activitySelected: lastActivity.id,
+                    query: newQuery
+                })
+            }
         } catch (e: any) {
             emitErrorToast(e)
         } finally {
@@ -118,8 +144,8 @@ Page({
         console.log('setStatus', status)
 
         let newQuery: ServiceQuery = this.data.query;
-        if(status === -1){
-            const _clone = Object.assign({}, newQuery)
+        if (status === -1) {
+            const _clone = Object.assign({}, newQuery)  // deep copy
             delete _clone.status
             newQuery = _clone
         } else {
@@ -183,6 +209,64 @@ Page({
         }
     },
 
+    buildSearchIndex: function () {
+        const index = new Document({
+            charset: 'utf-8',
+            document: {
+                id: 'serviceEventId',
+                index: ['computerModel', 'problemSummary', 'userName', 'volunteerName'],
+            },
+            tokenize: 'full'
+        })
+        this.data.serviceList.forEach((serviceEvent: ServiceEvent) => {
+            index.add(serviceEvent.serviceEventId, {
+                computerModel: serviceEvent.computerModel,
+                problemSummary: serviceEvent.problemSummary,
+                userName: serviceEvent.userName,
+                volunteerName: serviceEvent.volunteerName,
+            })
+        })
+        this.setData({
+            searchIndex: index,
+        })
+    },
+
+    /** 取消搜索 */
+    doCancelSearch: function () {
+        this.setData({
+            searchText: '',
+            filteredServiceList: this.data.serviceList,
+        })
+    },
+
+    /** 搜索 */
+    doSearch: function (event: any) {
+        console.log(event)
+        const keyword = event.detail as string
+        if (keyword === '') {
+            this.doCancelSearch()
+            return
+        }
+
+        const results = this.data.searchIndex.search(keyword)
+        
+        /* concat results*/
+        const filteredServiceIds: Set<number> = new Set();
+        results.forEach(item => {
+            item.result.forEach(i => {
+                filteredServiceIds.add(i);
+            })
+        })
+
+        console.log(results)
+
+        this.setData({
+            filteredServiceList: this.data.serviceList.filter(serviceEvent => {
+                return filteredServiceIds.has(serviceEvent.serviceEventId)
+            }),
+        })
+    },
+
     loadServicebyVal: async function (val) {
         let option = {}
         option.status = val
@@ -233,6 +317,12 @@ Page({
         })
     },
 
+    onChange(event: any) {
+        this.setData({
+          activeNames: event.detail,
+        });
+      },
+
     /**
      * 生命周期函数--监听页面加载
      */
@@ -260,7 +350,7 @@ Page({
 
         // 保证用户信息存在
         await ensureUserInfo()
-        
+
         // 读取参数
         const params = globalStore.getAndUnsetTabParams() as ServiceQuery
         console.log('[onShow] params=', params)
@@ -272,9 +362,9 @@ Page({
 
         // 获取活动列表
         this.getActivityListAsync()
-        // 获取维修单列表
-        this.getServiceListAsync()
-    
+            .then(() => {// 获取维修单列表
+                this.getServiceListAsync()
+            })
     },
 
     /**
@@ -312,10 +402,10 @@ Page({
 
     },
 
-    onChangeURL: async function (event) {
-        let url = event.currentTarget.dataset.url;
+    goToServiceDetail: function (e: any) {
+        const serviceId = e.currentTarget.dataset.id as number;
         wx.navigateTo({
-            url: url,
+            url: '/pages/service-detail/service-detail?id=' + serviceId,
         })
-    }
+    },
 })
