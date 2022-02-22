@@ -8,7 +8,3 @@ export const getCurrentUserInfo = () => {
 export const updateCurrentUserInfo = (userinfo: User) => {
     return request<string>("/api/user/info", "PUT", userinfo);
 }
-
-export const getTemplateIDs = () => {
-    return request<string[]>("/api/user/notice", "GET");
-}
