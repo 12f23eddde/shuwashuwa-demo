@@ -1,26 +1,23 @@
-import {
-    createService, getService, submitForm, submitDraft,
-    cancelService, auditService, completeService, feedbackService,
-    workService, cancelWorkService, getHelpMessage
-} from '../../api/service'
-import { uploadImage, deleteImage, getHtmlWxml, getMarkdownWxml } from '../../api/file'
-import { getIncomingActivities, getCurrentActivities, getActivitySlot } from '../../api/activity'
-import { getTemplateIDs, requestSubscription } from '../../api/subscription'
-import { formatTime } from '../../utils/util'
-
-import Notify from '@vant/weapp/notify/notify'
-import Dialog from '@vant/weapp/dialog/dialog'
-import Toast from '@vant/weapp/toast/toast'
-import WeValidator from 'we-validator/index'
-
-const app = getApp()
-
-import { getServiceEventDetail } from '../../api_new/service';
+import { completeServiceEvent, feedbackServiceEvent, getServiceEventCount, getServiceEventDetail, submitServiceDraft, submitServiceEvent, createServiceEvent } from '../../api_new/service';
 import { getActivityList, getActivityTimeSlots } from '../../api_new/activity'
 
-import { formatDate } from '../../utils/date'
+import { formatDate, formatTime } from '../../utils/date'
 import { emitErrorToast } from '../../utils/ui'
-import { ActivityQuery } from '../../models/activity'
+import { auditServiceEvent, takeServiceEvent, cancelServiceEvent, returnServiceEvent } from '../../api_new/service'
+import { getTemplateIDs, requestSubscription } from '../../api_new/subscription'
+import type { ActivityInfo, ActivityQuery, TimeSlot } from '../../models/activity'
+import type { ServiceAudit, ServiceComplete, ServiceEventDetail, ServiceFeedback, ServiceForm, ServiceQuery } from '../../models/service'
+import { userStore } from '../../stores/user'
+import { ensureUserInfo } from '../../utils/shuwashuwa'
+
+import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify'
+import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog'
+import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast'
+import WeValidator from '../../miniprogram_npm/we-validator/index'
+import type { WeValidatorInstance, WeValidatorOptions, WeValidatorResult } from '../../models/weValidatorType';
+import type { WechatEventType } from '../../models/wechatType';
+import { deleteImage, uploadImage } from '../../api_new/file';
+import { globalStore } from '../../stores/global';
 
 Page({
     data: {
@@ -28,44 +25,55 @@ Page({
         draft: false,
         activityId: 0,
         activityName: "",
-        boughtTime: "1919-08-10",
-        brand: "加载中",
-        computerModel: "加载中",
-        cpuModel: "加载中",
-        graphicsModel: "加载中",
-        hasDiscreteGraphics: true,
-        imageList: [],
-        laptopType: "加载中",
-        problemDescription: "加载中",
-        problemType: "加载中",
+        boughtTime: "",
+        brand: "",
+        computerModel: "",
+        cpuModel: "",
+        graphicsModel: "",
+        hasDiscreteGraphics: false,
+        imageList: [] as string[],
+        laptopType: "",
+        problemDescription: "",
+        problemType: "",
         serviceEventId: 0,
         timeSlot: 0,
-        startTime: "加载中",
-        endTime: "加载中",
+        startTime: "",
+        endTime: "",
         underWarranty: true,
-        descriptionAdvice: "加载中",
-        problemSummary: "加载中",
-        result: true,
         serviceFormId: 0,
         status: 0,
+        userId: -1,
+        volunteerId: -1,
 
-        volunteerMessage: "",
-        userMessage: "",
+        /** 管理员回复 */
+        descriptionAdvice: "",
+        problemSummary: "",
+        /** 用户反馈 */
+        feedback: "",
+        /** 志愿者反馈 */
+        repairingResult: "",
 
-        activityList: [],
-        activityNames: [],
+        serviceLoading: false,
+        
+        // 活动列表
+        activityList: [] as ActivityInfo[],
+        activityNames: [] as string[],
         activityShow: false,
         activityLoading: false,
 
-        timeslotList: [],
-        timeslotNames: [],
+        // 时间段
+        timeslotList: [] as TimeSlot[],
+        timeslotServiceCount: {} as { [key: number]: number },
+        timeslotNames: [] as string[],
         timeslotShow: false,
         timeslotLoading: false,
 
+        // 选择购买年月
         calenderShow: false,
-        calenderMinDate: new Date(2010, 0, 1).getTime(),
-        calenderMaxDate: new Date().getTime(),
+        calenderMinDate: Date.now() - 1000 * 60 * 60 * 24 * 365 * 10, // 十年前
+        calenderMaxDate: Date.now(),
         calenderCurrDate: null,
+        boughtMonth: "",
 
         pcTypes: ['二合一/平板', '轻薄本', '游戏本', '台式机', 'Mac'],
         typeShow: false,
@@ -73,13 +81,9 @@ Page({
         problemTypes: ['软件相关', '硬件相关', '我不清楚'],
         problemShow: false,
 
-        imagesToUpload: [],
+        imagesToUpload: [] as Record<string, string | boolean>[],
 
-        helpShow: false,
-        helpMessage: '',
-        helpMessageContent: '',  // 标识helpMessage里放了什么
-        submitLoading: false,
-
+        /** 维修单权限 */
         disableEdit: true,
         editable: false,
         auditable: false,
@@ -88,32 +92,92 @@ Page({
         /** 模板ID */
         tmplIDs: [] as string[],
         templateLoading: false,
-        serviceLoading: false
+
+        submitLoading: false,
+
+        /** 显示帮助 */
+        showHelp: false,
+        /** 显示须知 */
+        showNotice: false,
+    },
+
+    /** 表单验证 */
+    serviceValidator: null as null | WeValidatorInstance,
+    feedbackValidator: null as null | WeValidatorInstance,
+    auditValidator: null as null | WeValidatorInstance,
+
+    /** 创建维修单 */
+    createServiceEventAsync: async function () {
+        this.setData({ serviceLoading: true })
+        try {
+            const res = await createServiceEvent()
+            if (!res) {
+                emitErrorToast('创建维修单失败')
+                return
+            }
+            console.log('createServiceEventAsync', res)
+            const lastForm = res.serviceForms[res.serviceForms.length - 1]
+            this.setData({
+                ...res,
+                ...lastForm,
+            })
+            // 允许编辑
+            this.setData({
+                disableEdit: false,
+                editable: true,
+            })
+        } catch (e) {
+            console.error(e)
+        } finally {
+            this.setData({ serviceLoading: false })
+        }
     },
 
     /** 获取维修单信息 */
     getServiceEventDetailAsync: async function () {
-        this.setData({
-            serviceLoading: true
-        })
+        this.setData({ serviceLoading: true })
         try {
             /** 从this.data.serviceEventId 读取serviceId */
             const res = await getServiceEventDetail(this.data.serviceEventId)
-            if (!res){
+            if (!res) {
                 emitErrorToast('获取维修单信息失败')
                 return
             }
             console.log('getServiceEventDetail', res)
+            const lastForm = res.serviceForms[res.serviceForms.length - 1]
             this.setData({
                 ...res,
+                ...lastForm,
             })
+
+            // 处理一些中间变量
+            this.setData({
+                boughtMonth: this.data.boughtTime ? this.data.boughtTime.split('-').slice(0, 2).join('-') : ''
+            })
+
+            // 加载images, 避免填写完成后图片加载两遍
+            this.setData({
+                imagesToUpload: []
+            })
+            if (this.data.imageList) {
+                for (let imagePath of this.data.imageList) {
+                    const { imagesToUpload = [] } = this.data;
+                    imagesToUpload.push({
+                        name: imagePath,
+                        thumb: globalStore.backendUrl + '/img/100_' + imagePath,
+                        url: globalStore.backendUrl + '/img/' + imagePath,
+                        isImage: true
+                    });
+                    this.setData({ 
+                        imagesToUpload,
+                    })
+                }
+            }
 
         } catch (e) {
             console.error(e)
         } finally {
-            this.setData({
-                serviceLoading: false
-            })
+            this.setData({ serviceLoading: false })
         }
     },
 
@@ -145,9 +209,7 @@ Page({
 
     /** 获取活动时间段 */
     getActivityTimeSlotsAsync: async function () {
-        this.setData({
-            timeslotLoading: true
-        })
+        this.setData({ timeslotLoading: true })
         try {
             const res = await getActivityTimeSlots(this.data.activityId)
             if (!res) {
@@ -160,17 +222,35 @@ Page({
         } catch (e) {
             console.error(e)
         } finally {
+            this.setData({ timeslotLoading: false })
+        }
+    },
+
+    /** 获取活动时间段维修单数 */
+    getActivityTimeSlotsServiceCountAsync: async function (timeSlot: number) {
+        this.setData({ timeslotLoading: true })
+        try {
+            const query: ServiceQuery = {
+                activity: this.data.activityId,
+                timeSlot: timeSlot,
+                draft: false,
+                closed: false
+            }
+            const count = await getServiceEventCount(query)
+            console.log('getActivityTimeSlotsServiceCount', timeSlot, count)
             this.setData({
-                timeslotLoading: false
+                [`timeslotServiceCount.${timeSlot}`]: count,
             })
+        } catch (e) {
+            console.error(e)
+        } finally {
+            this.setData({ timeslotLoading: false })
         }
     },
 
     /** 获取模板ID */
     getTemplateIdsAsync: async function () {
-        this.setData({
-            templateLoading: true
-        })
+        this.setData({ templateLoading: true})
         try {
             const res = await getTemplateIDs()
             if (!res) {
@@ -185,210 +265,285 @@ Page({
             console.error(e)
         }
         finally {
-            this.setData({
-                templateLoading: false
-            })
+            this.setData({ templateLoading: false })
         }
     },
 
-    // 编辑
-    onEdit: function () {
-        if (this.data.disableEdit) {
-            this.setData({
-                disableEdit: false,
-            })
-            return
+    /** 提交维修单 */
+    submitServiceAsync: async function () {
+        this.setData({ submitLoading: true })
+        try {
+            await submitServiceEvent(this.data as ServiceForm)
+            console.log('submitServiceAsync', this.data)
+        } catch (e: any) {
+            console.error(e)
+            Notify({ type: 'danger', message: e.errMsg })
+        } finally {
+            this.setData({ submitLoading: false })
         }
     },
 
-    // 提交
-    onSubmit: async function () {
-        if (!this.validator.checkData(this.data)) return;
-        // 弹出活动前须知
-        if (!this.data.helpMessage || this.data.helpMessageContent !== 'notice') {
-            Toast.loading({ // 加载并渲染为wxml可能需要一些时间，因此采用Toast避免用户误操作
-                message: '加载中...',
-                forbidClick: true,
-            });
-            const helpMsg = await getMarkdownWxml('https://shuwashuwa.kinami.cc/notice.md')
-            this.setData({
-                helpShow: true,
-                helpMessage: helpMsg,
-                helpMessageContent: 'notice'
-            })
-        } else {
-            this.setData({ helpShow: true })
+    /** 保存维修单草稿 */
+    submitDraftAsync: async function () {
+        this.setData({ submitLoading: true })
+        try {
+            await submitServiceDraft(this.data as ServiceForm)
+        } catch (e: any) {
+            console.error(e)
+            Notify({ type: 'danger', message: e.errMsg })
+        } finally {
+            this.setData({ submitLoading: false })
         }
+    },
+
+    /** 删除当前维修单 */
+    cancelServiceAsync: async function () {
+        this.setData({ submitLoading: true })
+        try {
+            await cancelServiceEvent(this.data.serviceEventId)
+        } catch (e: any) {
+            console.error(e)
+            Notify({ type: 'danger', message: e.errMsg })
+        } finally {
+            this.setData({ submitLoading: false })
+        }
+    },
+
+    /** 提交审核 */
+    auditServiceAsync: async function (result: boolean) {
+        this.setData({ submitLoading: true })
+        try {
+            const audit: ServiceAudit = {
+                message: this.data.descriptionAdvice,
+                problemSummary: this.data.problemSummary,
+                result: result,
+                serviceFormId: this.data.serviceFormId,
+                serviceEventId: this.data.serviceEventId
+            }
+            await auditServiceEvent(audit)
+        } catch (e: any) {
+            console.error(e)
+            Notify({ type: 'danger', message: e.errMsg })
+        } finally {
+            this.setData({ submitLoading: false })
+        }
+    },
+
+    /** 志愿者接单 */
+    takeServiceAsync: async function () {
+        this.setData({ submitLoading: true })
+        try {
+            await takeServiceEvent(this.data.serviceEventId)
+        } catch (e: any) {
+            console.error(e)
+            Notify({ type: 'danger', message: e.errMsg })
+        } finally {
+            this.setData({ submitLoading: false })
+        }
+    },
+
+    /** 志愿者退回维修单 */
+    returnServiceAsync: async function () {
+        this.setData({ submitLoading: true })
+        try {
+            await returnServiceEvent(this.data.serviceEventId)
+        } catch (e: any) {
+            console.error(e)
+            Notify({ type: 'danger', message: e.errMsg })
+        } finally {
+            this.setData({ submitLoading: false })
+        }
+    },
+
+    /** (志愿者) 提交反馈 */
+    completeServiceAsync: async function () {
         this.setData({
             submitLoading: true
         })
-        console.log(this.data)
-        await submitForm(this.data)
-            .catch((err) => {
-                Notify({ type: "danger", message: err.errMsg })
-                this.setData({
-                    submitLoading: false
-                })
-                throw err
+        try {
+            const complete: ServiceComplete = {
+                message: this.data.repairingResult,
+                serviceEventId: this.data.serviceEventId
+            }
+            await completeServiceEvent(complete)
+        } catch (e: any) {
+            console.error(e)
+            Notify({ type: 'danger', message: e.errMsg })
+        } finally {
+            this.setData({
+                submitLoading: false
             })
+        }
+    },
+
+    /** (用户) 提交反馈 */
+    feedbackServiceAsync: async function () {
         this.setData({
-            submitLoading: false,
+            submitLoading: true
+        })
+        try {
+            const complete: ServiceFeedback = {
+                message: this.data.feedback,
+                serviceEventId: this.data.serviceEventId
+            }
+            await feedbackServiceEvent(complete)
+        } catch (e: any) {
+            console.error(e)
+            Notify({ type: 'danger', message: e.errMsg })
+        } finally {
+            this.setData({
+                submitLoading: false
+            })
+        }
+    },
+
+    /** 更新按钮状态 */
+    updateComponentStates: function () {
+        const userId = userStore.user?.userid as number
+        const isAdmin = userStore.user?.admin as boolean
+        const isVolunteer = userStore.user?.volunteer as boolean
+        this.setData({
+            /** 没有签到前可编辑维修单 */
+            editable: this.data.userId === userId && [0, 1, 2].includes(this.data.status),
+            /** 管理员可审核非自己发起的维修单 */
+            auditable: this.data.status === 1 && isAdmin && this.data.userId != userId,
+            /** 志愿者可接单 */
+            workable: this.data.status === 3 && isVolunteer
+        })
+        console.log('updateComponentStates', this.data)
+    },
+
+
+    /** 点击修改按钮 */
+    onEditClick: function () {
+        this.setData({
+            disableEdit: false,
+        })
+    },
+
+    /** 显示帮助信息 */
+    onShowHelpPopup: function () {
+        this.setData({
+            showHelp: true
+        })
+    },
+
+    /** 隐藏帮助信息 */
+    onHideHelpPopup: function () {
+        this.setData({
+            showHelp: false
+        })
+    },
+
+    /** 显示须知 */
+    onShowNoticePopup: function () {
+        this.setData({
+            showNotice: true
+        })
+    },
+
+    /** 隐藏须知 */
+    onHideNoticePopup: async function () {
+        this.setData({
+            showNotice: false
+        })
+        // 弹出订阅提示
+        await this.getTemplateIdsAsync()
+        await requestSubscription(this.data.tmplIDs)
+    },
+
+    /** 点击提交按钮 */
+    onSubmit: async function () {
+        if (!this.serviceValidator?.checkData(this.data)) return;
+        // 弹出活动前须知
+        if (this.data.editable){
+            this.onShowNoticePopup()
+        }
+        // 提交并加载活动
+        await this.submitServiceAsync()
+        this.getServiceEventDetailAsync()
+        this.setData({
             disableEdit: true,
         })
-
-        this.loadService(this.data.serviceEventId)
     },
 
+    /** 点击删除按钮 */
     onCancel: async function () {
-        this.setData({ submitLoading: true })
-        await Dialog.confirm({
-            title: "取消维修",
-            message: "您确定要取消当前维修吗？此操作不可逆。"
-        })
-            .then(async () => {
-                let res = await cancelService(this.data.serviceEventId)
-                console.log(res)
-                wx.navigateBack({ delta: 0 })  // 返回上一页
+        try {
+            await Dialog.confirm({
+                title: "确定取消维修?",
+                message: "删除当前维修单后将无法恢复"
             })
-            .catch((err) => { })  // 点取消啥都不做
-        this.setData({ submitLoading: false })
-    },
-
-    onSave: async function () {
-        // 尝试解决维修单神秘消失的问题
-        if (this.data.draft === false) return;
-        this.setData({ submitLoading: true })
-        await submitDraft(this.data)
-            .catch((err) => {
-                Notify({ type: "danger", message: err.errMsg })
-                this.setData({
-                    submitLoading: false
-                })
-                throw err
-            })
-        this.setData({ submitLoading: false })
-    },
-
-    onAuditPass: async function () {
-        if (!this.validator2.checkData(this.data)) return;
-        this.setData({ submitLoading: true })
-        await auditService({
-            message: this.data.descriptionAdvice,
-            problemSummary: this.data.problemSummary,
-            result: true,
-            serviceEventId: this.data.serviceEventId,
-            serviceFormId: this.data.serviceFormId
-        }).catch((err) => {
-            this.setData({ submitLoading: false })
-            throw err
-        })
-        this.loadService(this.data.serviceEventId)
-        this.setData({ submitLoading: false })
-    },
-
-    onAuditFail: async function () {
-        if (!this.validator2.checkData(this.data)) return;
-        this.setData({ submitLoading: true })
-        await auditService({
-            message: this.data.descriptionAdvice,
-            problemSummary: this.data.problemSummary,
-            result: false,
-            serviceEventId: this.data.serviceEventId,
-            serviceFormId: this.data.serviceFormId
-        }).catch((err) => {
-            this.setData({ submitLoading: false })
-            throw err
-        })
-        this.loadService(this.data.serviceEventId)
-        this.setData({ submitLoading: false })
-    },
-
-    onWork: async function () {
-        this.setData({ submitLoading: true })
-        await workService(this.data.serviceEventId)
-            .catch((err) => {
-                this.setData({ submitLoading: false })
-                throw err
-            })
-        this.loadService(this.data.serviceEventId)
-        this.setData({ submitLoading: false })
-    },
-
-    onCancelWork: async function () {
-        this.setData({ submitLoading: true })
-        await cancelWorkService(this.data.serviceEventId)
-            .catch((err) => {
-                this.setData({ submitLoading: false })
-                throw err
-            })
-        this.loadService(this.data.serviceEventId)
-        this.setData({ submitLoading: false })
-    },
-
-    onComplete: async function () {
-        this.setData({ submitLoading: true })
-        await completeService(this.data.serviceEventId, this.data.volunteerMessage)
-            .catch((err) => {
-                this.setData({ submitLoading: false })
-                throw err
-            })
-        this.loadService(this.data.serviceEventId)
-        this.setData({ submitLoading: false })
-    },
-
-    onFeedBack: async function () {
-        if (!this.data.userMessage) {
-            Notify({ type: 'danger', message: '请填写反馈消息' })
+            await this.cancelServiceAsync()
+            // 删除后返回上一页
+            wx.navigateBack()
+        } catch (e) {
             return
         }
-        this.setData({ submitLoading: true })
-        await feedbackService(this.data.serviceEventId, this.data.userMessage)
-            .catch((err) => {
-                this.setData({ submitLoading: false })
-                throw err
-            })
-        this.loadService(this.data.serviceEventId)
-        this.setData({ submitLoading: false })
+    },
+
+    /** 保存编辑中的维修单草稿 */
+    onSave: async function () {
+        // 如果维修单已经提交了，则不能保存草稿
+        if (this.data.draft === false) return;
+        await this.submitDraftAsync()
+    },
+
+    /** 点击审核通过按钮 */
+    onAuditPass: async function () {
+        if (!this.auditValidator?.checkData(this.data)) return;
+        await this.auditServiceAsync(true)
+        this.getServiceEventDetailAsync() // 刷新维修单
+    },
+
+    /** 点击审核不通过按钮 */
+    onAuditFail: async function () {
+        if (!this.auditValidator?.checkData(this.data)) return;
+        await this.auditServiceAsync(false)
+        this.getServiceEventDetailAsync() // 刷新维修单
+    },
+
+    /** 点击接单按钮 */
+    onTake: async function () {
+        await this.takeServiceAsync()
+        this.getServiceEventDetailAsync() // 刷新维修单
+    },
+
+    /** 点击退回按钮 */
+    onReturn: async function () {
+        await this.returnServiceAsync()
+        this.getServiceEventDetailAsync() // 刷新维修单
+        Notify({ type: 'success', message: '维修单已退回' })
+    },
+
+    /** 点击完成维修 */
+    onComplete: async function () {
+        if(!this.feedbackValidator?.checkData({ message: this.data.repairingResult })) return;
+        await this.completeServiceAsync()
+        this.getServiceEventDetailAsync() // 刷新维修单
+        Notify({ type: 'success', message: '维修单已完成' })
+    },
+
+    /** 用户提交反馈 */
+    onFeedBack: async function () {
+        if(!this.feedbackValidator?.checkData({ message: this.data.repairingResult })) return;
+        await this.completeServiceAsync()
+        this.getServiceEventDetailAsync() // 刷新维修单
         Notify({ type: 'success', message: '反馈成功' })
     },
 
+    /** 打开活动菜单 */
     activityClick: async function () {
-        if (this.data.disableEdit) {
-            return
-        }
+        if (this.data.disableEdit) return // 无法编辑
 
-        this.setData({
-            activityShow: true,
-            activityLoading: true
-        })
-
-        // 加载activity 感谢pjy
-        let currentTime = formatTime(new Date())
-        let incomingActivityList = await getIncomingActivities(currentTime)
-            .catch((err) => {
-                this.activityClose()
-                throw err
-            })
-        let currentActivityList = await getCurrentActivities(currentTime)
-            .catch((err) => {
-                this.activityClose()
-                throw err
-            })
-        console.log(incomingActivityList, currentActivityList)
-        incomingActivityList.push(...currentActivityList)
-        this.setData({
-            activityList: incomingActivityList
-        })
-        let incomingActivityNames = []
-        for (let activity of incomingActivityList) {
-            incomingActivityNames.push(activity.activityName)
-        }
-        this.setData({
-            activityNames: incomingActivityNames,
-            activityLoading: false
-        })
+        this.setData({ activityShow: true })
+        await this.getIncomingActivitiesAsync()
+        const activityNames = this.data.activityList.map((activity) => activity.activityName)
+        this.setData({ activityNames })
     },
-    activityConfirm: async function (event) {
+
+    /** 选择活动 */
+    activityConfirm: async function (event: WechatEventType) {
         const { picker, value, index } = event.detail;
         this.setData({
             activityName: value,
@@ -396,45 +551,43 @@ Page({
             activityShow: false
         });
     },
+
+    /** 关闭活动菜单 */
     activityClose: async function () {
-        this.setData({
-            activityShow: false
-        });
+        this.setData({ activityShow: false });
     },
 
+    /** 打开时间段菜单 */
     timeslotClick: async function () {
         if (this.data.disableEdit) {
             return
         }
-
         if (!this.data.activityName) {
             Notify({ type: 'danger', message: '请先选择活动' })
             return
         }
-        this.setData({
-            timeslotShow: true,
-            timeslotLoading: true
-        })
+
+        this.setData({ timeslotShow: true })
 
         // 加载timeslot 感谢pjy
-        let incomingTimeSlots = await getActivitySlot(this.data.activityId)
-            .catch((err) => {
-                this.timeslotClose()
-                throw err
-            })
-        this.setData({
-            timeslotList: incomingTimeSlots
-        })
-        let incomingTimeSlotNames = []
-        for (let timeslot of incomingTimeSlots) {
-            incomingTimeSlotNames.push(timeslot.startTime + ' - ' + timeslot.endTime)
+        await this.getActivityTimeSlotsAsync()
+        // 加载timeSlot的维修单数
+        for (let item of this.data.timeslotList) {
+            await this.getActivityTimeSlotsServiceCountAsync(item.timeSlot)
         }
-        this.setData({
-            timeslotNames: incomingTimeSlotNames,
-            timeslotLoading: false
+
+        const timeslotNames = this.data.timeslotList.map(timeslot => {
+            const count = this.data.timeslotServiceCount[timeslot.timeSlot]
+            const startMonthTime = timeslot.startTime.substring(5)
+            const endMonthTime = timeslot.endTime.substring(5)
+            return `${startMonthTime} - ${endMonthTime} (${count}已预约)`
         })
+
+        this.setData({ timeslotNames })
     },
-    timeslotConfirm: async function (event) {
+
+    /** 选择时间段 */
+    timeslotConfirm: async function (event: WechatEventType) {
         const { picker, value, index } = event.detail;
         this.setData({
             startTime: this.data.timeslotList[index].startTime,
@@ -443,12 +596,15 @@ Page({
             timeslotShow: false
         });
     },
+
+    /** 关闭时间段菜单 */
     timeslotClose: async function () {
         this.setData({
             timeslotShow: false
         });
     },
 
+    /** 打开日期选择菜单 */
     calenderClick() {
         if (this.data.disableEdit) {
             return
@@ -458,8 +614,9 @@ Page({
         })
         console.log(this.data)
     },
-    // 日期选择相关
-    calenderConfirm: function (event) {
+
+    /** 选择日期 */
+    calenderConfirm: function (event: WechatEventType) {
         let currDate = new Date(event.detail)
         // 将currDate做了神奇的处理，输出年月
         this.setData({
@@ -468,17 +625,20 @@ Page({
             boughtMonth: formatTime(currDate).split(' ')[0].split('-').slice(0, 2).join('-')
         });
     },
+
+    /** 关闭日期选择菜单 */
     calenderClose: function () {
         this.setData({
             calenderShow: false
         });
     },
 
-    gpuSwitch: function ({ detail }) {
+    /** 有无独立显卡 */
+    gpuSwitch: function (event: WechatEventType) {
         this.setData({
-            hasDiscreteGraphics: detail,
+            hasDiscreteGraphics: event.detail,
         })
-        if (detail) {
+        if (event.detail) {
             this.setData({
                 graphicsModel: '',
             })
@@ -489,33 +649,36 @@ Page({
         }
     },
 
-    warrantySwitch: function ({ detail }) {
+    /** 是否在保修期内 */
+    warrantySwitch: function (event: WechatEventType) {
         this.setData({
-            underWarranty: detail,
+            underWarranty: event.detail,
         })
     },
 
+    /** 打开类型菜单 */
     typeClick: function () {
-        if (this.data.disableEdit) {
-            return
-        }
-        this.setData({
-            typeShow: true
-        })
+        if (this.data.disableEdit) { return }
+        this.setData({ typeShow: true })
     },
-    typeConfirm: function (event) {
+
+    /** 选择笔记本类型 */
+    typeConfirm: function (event: WechatEventType) {
         const { picker, value, index } = event.detail;
         this.setData({
             laptopType: value,
             typeShow: false
         })
     },
+
+    /** 关闭类型菜单 */
     typeClose: function () {
         this.setData({
             typeShow: false
         })
     },
 
+    /** 打开问题菜单 */
     problemClick: function () {
         if (this.data.disableEdit) {
             return
@@ -524,29 +687,34 @@ Page({
             problemShow: true
         })
     },
-    problemConfirm: function (event) {
+    
+    /** 选择问题 */
+    problemConfirm: function (event: WechatEventType) {
         const { picker, value, index } = event.detail;
         this.setData({
             problemType: value,
             problemShow: false
         })
     },
+
+    /** 关闭问题菜单 */
     problemClose: function () {
         this.setData({
             problemShow: false
         })
     },
 
-    uploadConfirm: async function (event) {
-        let imagesChosen = event.detail.file
+    /** 上传图片 */
+    uploadConfirm: async function (event: WechatEventType) {
+        const imagesChosen = event.detail.file
         if (typeof (imagesChosen) == 'undefined' || !imagesChosen) {
             throw { "errCode": 40000, "errMsg": "[uploadConfirm] event.detail contains no file" }
         }
         for (let image of imagesChosen) {
             let res = await uploadImage(image.url)
             // 更新imagesToUpload
-            const { imagesToUpload = [] } = this.data;
-            imagesToUpload.push({ ...image, url: app.globalData.baseURL + '/img/' + res });
+            const { imagesToUpload } = this.data;
+            imagesToUpload.push({ ...image, url: globalStore.backendUrl + '/img/' + res });
             this.setData({ imagesToUpload });
             console.log(imagesToUpload)
             // 更新imageList
@@ -555,10 +723,12 @@ Page({
             this.setData({ imageList });
         }
     },
-    uploadCancel: async function (event) {
+
+    /** 删除图片 */
+    uploadCancel: async function (event: WechatEventType) {
         if (this.data.disableEdit) return;
-        let imageToDelete = event.detail.index
-        const { imagesToUpload = [] } = this.data;
+        const imageToDelete = event.detail.index
+        const { imagesToUpload } = this.data;
         imagesToUpload.splice(imageToDelete, 1)
         this.setData({ imagesToUpload });
         // 更新imageList
@@ -567,52 +737,21 @@ Page({
         imageList.splice(imageToDelete, 1)
         this.setData({ imageList });
     },
+
+    /** 图片大小超出限制 */
     uploadOversize: function () {
         Notify({ type: 'danger', message: '图片大小超出限制' })
     },
 
-    // helpClick在模拟器上的结果和真机区别很大，建议以真机为准
-    helpClick: async function (event) {
-        if (!this.data.helpMessage || this.data.helpMessageContent !== 'help') {
-            Toast.loading({ // 加载并渲染为wxml可能需要一些时间，因此采用Toast避免用户误操作
-                message: '加载中...',
-                forbidClick: true,
-            });
-            const helpMsg = await getMarkdownWxml('https://shuwashuwa.kinami.cc/help.md')
-            this.setData({
-                helpShow: true,
-                helpMessage: helpMsg,
-                helpMessageContent: 'help'
-            })
-        } else {
-            this.setData({ helpShow: true })
-        }
-    },
-
-    helpClose: async function (event) {
-        // 提示用户点击的内容 放到popup里
-        // Notify({type:'success', message:'为了便于您获知维修的进展情况，我们需要向您发送消息'})
-        // 要求微信订阅消息授权
-        await requestSubscription(this.data.tmplIDs).catch((err) => { }) // ignore errors
-        this.setData({ helpShow: false })
-    },
-
+    /** 初始化表单验证 */
     initValidator: function () {
-        this.validator = new WeValidator({
-            // onMessage可以修改验证不通过时的行为，默认为toast
-            /*
-            data 参数
-            {
-                msg, // 提示文字
-                name, // 表单控件的 name
-                value, // 表单控件的值
-                param // rules 验证字段传递的参数
-            }
-            */
-            onMessage: function (data) {
-                console.log(data)
-                Notify({ type: 'danger', message: data.msg })
-            },
+        const showMsgNotify = (data: WeValidatorResult) => {
+            console.log('service validator message:', data)
+            Notify({ type: 'danger', message: data.msg })
+        }
+
+        this.serviceValidator = new WeValidator({
+            onMessage: showMsgNotify,
             rules: {
                 activityId: { required: true },
                 boughtTime: { required: true },
@@ -643,22 +782,10 @@ Page({
                 timeSlot: { required: '请选择时段' },
                 underWarranty: { required: 'Switch状态为null' },
             },
-        })
-        this.validator2 = new WeValidator({
-            // onMessage可以修改验证不通过时的行为，默认为toast
-            /*
-            data 参数
-            {
-                msg, // 提示文字
-                name, // 表单控件的 name
-                value, // 表单控件的值
-                param // rules 验证字段传递的参数
-            }
-            */
-            onMessage: function (data) {
-                console.log(data)
-                Notify({ type: 'danger', message: data.msg })
-            },
+        }) as unknown as WeValidatorInstance
+
+        this.auditValidator = new WeValidator({
+            onMessage: showMsgNotify,
             rules: {
                 descriptionAdvice: { required: true },
                 problemSummary: { required: true },
@@ -667,105 +794,41 @@ Page({
                 descriptionAdvice: { required: '请填写审核消息' },
                 problemSummary: { required: '请填写故障' },
             },
-        })
-    },
+        }) as unknown as WeValidatorInstance
 
-    // id >= 0 加载现有service
-    // id < 0 创建service
-    loadService: async function (id) {
-        let curr_service = null;
-        if (id >= 0) {  // 加载维修单, 如果不是自己的维修单不开启编辑
-            curr_service = await getService(id)
-            if (curr_service.userId === app.globalData.userId && curr_service.draft) { this.setData({ disableEdit: false }) }
-            else { this.setData({ disableEdit: true }) }
-        } else {  // id 为空 新建维修单,默认开启编辑
-            curr_service = await createService()
-            this.setData({
-                disableEdit: false
-            })
-        }
-        console.log(curr_service)
-        // 同步事件中最后一张维修单
-        let lastForm = curr_service.serviceForms[curr_service.serviceForms.length - 1]
-        this.setData(lastForm)
-        this.setData({
-            serviceFormId: lastForm.formID,
-        })
-        // 解决没有独显型号的问题
-        this.setData({
-            draft: curr_service.draft,
-            serviceEventId: curr_service.id,
-            activityId: curr_service.activityId,
-            activityName: curr_service.activityName,
-            endTime: curr_service.endTime,
-            startTime: curr_service.startTime,
-            problemSummary: curr_service.problemSummary,
-            status: curr_service.status,
-            graphicsModel: (this.data.graphicsModel ? this.data.graphicsModel : '没有独立显卡'),
-            hasDiscreteGraphics: (this.data.hasDiscreteGraphics === null ? false : this.data.hasDiscreteGraphics),
-            underWarranty: (this.data.underWarranty === null ? false : this.data.underWarranty)
-        })
-
-        // 处理一些中间变量
-        this.setData({
-            boughtMonth: this.data.boughtTime ? this.data.boughtTime.split('-').slice(0, 2).join('-') : ''
-        })
-
-        // 加载images, 避免填写完成后图片加载两遍
-        this.setData({
-            imagesToUpload: []
-        })
-        if (this.data.imageList) {
-            for (let imagePath of this.data.imageList) {
-                const { imagesToUpload = [] } = this.data;
-                imagesToUpload.push({
-                    name: imagePath,
-                    thumb: app.globalData.baseURL + '/img/100_' + imagePath,
-                    url: app.globalData.baseURL + '/img/' + imagePath,
-                    isImage: true
-                });
-                this.setData({ imagesToUpload });
+        this.feedbackValidator = new WeValidator({
+            onMessage: showMsgNotify,
+            rules: {
+                message: { required: true },
+            },
+            messages: {
+                message: { required: '请填写反馈消息' },
             }
-        }
-
-        // 可以编辑,创建新维修或者是自己的维修
-        if (curr_service.userId === app.globalData.userId) {
-            this.setData({
-                editable: true,
-                auditable: false,
-                workable: false
-            })
-        }
-        // 可以接单,不能自己接自己
-        if (app.globalData.userInfo.volunteer && curr_service.userId !== app.globalData.userId) {
-            this.setData({
-                editable: false,
-                workable: true
-            })
-        }
-        // 可以审核,不能自己审自己
-        if (app.globalData.userInfo.admin && curr_service.userId !== app.globalData.userId) {
-            this.setData({
-                editable: false,
-                auditable: true
-            })
-        }
+        }) as unknown as WeValidatorInstance
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: async function (options) {
-        console.log(options)
-        // 微信这options也太神秘了, 是string型的undefined
-        if (options.id != "undefined") {  // 加载维修单, 默认不开启编辑
-            this.loadService(options.id)
-        } else {  // id 为空 新建维修单,默认开启编辑
-            this.loadService(-1)
+    onLoad: async function (options: Record<string, string>) {
+        /** 微信神奇的'undefined' */
+        if (typeof options !== 'undefined' && typeof options.id !== 'undefined' && options.id !== 'undefined') {
+            this.setData({
+                serviceEventId: Number(options.id)
+            })
         }
-        // 如果在订阅时加载模板列表，无法调用订阅(认为不是由tap触发的,不知道为啥)
-        this.setData({
-            tmplIDs: await getTemplateIDs()
+
+        if (this.data.serviceEventId == -1) {
+            /** 创建维修单 */
+            await this.createServiceEventAsync()
+        } else {
+            /** 读取维修单 */
+            await this.getServiceEventDetailAsync()
+        }
+        
+        /** 设置维修单权限 */
+        ensureUserInfo().then(() => {
+            this.updateComponentStates()
         })
     },
 

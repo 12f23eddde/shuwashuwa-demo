@@ -104,7 +104,9 @@ export interface ServiceQuery {
     /** 该次维修处于的状态 */
     status?: ServiceStatus,
     /** 接单的志愿者id */
-    volunteer?: number
+    volunteer?: number,
+    /** 活动时间段 */
+    timeSlot?: number
 }
 
 

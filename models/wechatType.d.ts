@@ -139,3 +139,16 @@ export interface UploadFileOption {
      * 最低基础库： `2.10.0` */
     timeout?: number
 }
+
+export type WechatEventType = {
+    detail: any,
+    currentTarget?: {
+        dataset: Record<string, any>
+        [key: string]: any
+    },
+    target?: {
+        dataset: Record<string, any>
+        [key: string]: any
+    },
+    [key: string]: any
+}

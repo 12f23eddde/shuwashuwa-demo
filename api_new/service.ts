@@ -49,14 +49,29 @@ export const cancelServiceEvent = (serviceId: number) => {
     return request<string>("/api/service/", "DELETE", { eventID: serviceId });
 }
 
+/**
+ * 提交维修单
+ * @param service 维修事件
+ * @returns Promise<string>
+ */
 export const submitServiceEvent = (service: ServiceForm) => {
-    return request<string>("/api/service/", "POST", service);
+    return request<string>("/api/service/commit", "POST", service);
 }
 
+/**
+ * 保存维修单草稿
+ * @param service 维修事件
+ * @returns Promise<string>
+ */
 export const submitServiceDraft = (service: ServiceForm) => {
     return request<string>("/api/service/draft", "PUT", service);
 }
 
+/**
+ * 用户对维修进行反馈
+ * @param feedback 维修反馈
+ * @returns Promise<string>
+ */
 export const feedbackServiceEvent = (feedback: ServiceFeedback) => {
     return request<string>("/api/service/feedback", "PUT", feedback);
 }
@@ -74,9 +89,9 @@ export const completeServiceEvent = (complete: ServiceComplete) => {
 }
 
 export const takeServiceEvent = (serviceId: number) => {
-    return request<string>("/api/service/work", "PUT", { eventID: serviceId });
+    return request<string>(`/api/service/work?eventID=${serviceId}`, "PUT");
 }
 
 export const returnServiceEvent = (serviceId: number) => {
-    return request<string>("/api/service/work", "DELETE", { eventID: serviceId });
+    return request<string>(`/api/service/work?eventID=${serviceId}`, "DELETE");
 }

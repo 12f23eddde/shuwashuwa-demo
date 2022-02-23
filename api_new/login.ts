@@ -23,7 +23,7 @@ export const login = async (): Promise<void> => {
     }
     try {
         const backendUrl = globalStore.backendUrl;
-        const resCode = await wx.login();
+        const resCode = await wx.login() as unknown as { code: string };
 
         let loginRes: WechatResponseType<LoginRes> | null = null;
         try {
@@ -34,7 +34,7 @@ export const login = async (): Promise<void> => {
                     'code': resCode.code
                 }
             });
-        } catch (e) {
+        } catch (e: any) {
             emitErrorToast(e);
             return;
         }

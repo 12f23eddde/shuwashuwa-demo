@@ -97,7 +97,8 @@
       <cover-image
         class='fixedIcon'
         id='addIconBtn'
-        bindtap="goToDetail"
+        bindtap="goToServiceDetail"
+        data-id="{{-1}}"
         src="{{ addIconSrc }}"
       />
     </movable-view>

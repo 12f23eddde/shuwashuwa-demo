@@ -2,7 +2,7 @@
 // Credit: https://www.jianshu.com/p/69307a720fa1
 // e.g. wx.Login -> wxp.Login
 
-import { promisifyAll, promisify } from 'miniprogram-api-promise';
+import { promisifyAll, promisify } from '../miniprogram_npm/miniprogram-api-promise/index';
 
 import type { WechatResponseType, RequestOption, UploadFileOption, WechatErrorType } from '../models/wechatType';
 

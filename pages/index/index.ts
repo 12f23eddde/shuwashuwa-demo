@@ -88,6 +88,7 @@ Page({
             const userId = userStore.user?.userid;
             const options: ServiceQuery = {
                 client: userId,
+                closed: false,
             }
             console.log('get my services', options)
             const myServices = await getServiceEventList(options)

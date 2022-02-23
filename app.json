@@ -33,6 +33,7 @@
   "usingComponents": {
     "tab-bar": "/custom-tab-bar/index",
     "towxml":"/components/towxml/towxml",
+    "help-popup": "/components/help-popup/index",
     "van-image": "@vant/weapp/image/index",
     "van-notify": "@vant/weapp/notify/index",
     "van-toast": "@vant/weapp/toast/index",

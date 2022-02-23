@@ -9,6 +9,7 @@ import { ActivityInfo } from '../../models/activity';
 import { getActivityList } from '../../api_new/activity';
 
 import { Document, Index } from 'flexsearch'
+import { WechatEventType } from '../../models/wechatType';
 
 type MenuOption = { text: string, value: number };
 
@@ -174,7 +175,7 @@ Page({
         })
     },
 
-    // 左滑删除
+    /** 左滑删除维修单 */
     onClose(event: any) {
         const { position, instance } = event.detail;
         switch (position) {
@@ -209,6 +210,7 @@ Page({
         }
     },
 
+    /** 建立索引 */
     buildSearchIndex: function () {
         const index = new Document({
             charset: 'utf-8',
@@ -252,7 +254,7 @@ Page({
         
         /* concat results*/
         const filteredServiceIds: Set<number> = new Set();
-        results.forEach(item => {
+        results.forEach((item: { result: any[]; }) => {
             item.result.forEach(i => {
                 filteredServiceIds.add(i);
             })
@@ -267,56 +269,7 @@ Page({
         })
     },
 
-    loadServicebyVal: async function (val) {
-        let option = {}
-        option.status = val
-        option.closed = 'false'
-        if (this.data.user) { option.client = app.globalData.userId }
-        if (val === 0) {
-            option.draft = 'true'
-            option.client = app.globalData.userId
-        }
-        else { option.draft = 'false' }
-        // 只是志愿者不是管理员，不能看到别人的维修单
-        if ((this.data.volunteer && !this.data.admin) && (val === 4 || val == 5)) {
-            option.volunteer = app.globalData.volunteerId
-        }
-        console.log('[loadservices] val=' + val + ' user=' + this.data.user + ' admin= ' + this.data.admin + ' volunteer=' + this.data.volunteer, option)
-        let res = await listServices(option)
-        let i = 0
-        for (i = 0; i < res.length; i++) {
-            let serviceEventId = res[i].serviceEventId
-            let r_ = await getService(serviceEventId)
-            let problemType = r_.serviceForms[r_.serviceForms.length - 1].problemType
-            res[i].problemType = problemType
-            if (res[i].status === 0) {
-                res[i].iconPath = '/pages/service-list/rejectedOrder.png'
-            }
-            else if (res[i].status === 1) {
-                res[i].iconPath = '/pages/service-list/verifyingOrder.png'
-            }
-            else {
-                res[i].iconPath = '/pages/service-list/comfirmedOrder.png'
-            }
-        }
-        return res
-    },
-
-    goToDetail: async function (event: any) {
-        this.setData({
-            addIconSrc: '/res/icons/addOrderTouched.png'
-        })
-        wx.vibrateShort({
-            type: 'medium',
-            success: (res) => { },
-        })
-        if (!await checkUserInfo()) return;
-        let id = event.currentTarget.dataset.id;
-        wx.navigateTo({
-            url: '/pages/service-detail/service-detail?id=' + id
-        })
-    },
-
+    /** 展开抽屉 */
     onChange(event: any) {
         this.setData({
           activeNames: event.detail,
@@ -402,8 +355,8 @@ Page({
 
     },
 
-    goToServiceDetail: function (e: any) {
-        const serviceId = e.currentTarget.dataset.id as number;
+    goToServiceDetail: function (e: WechatEventType) {
+        const serviceId = e.currentTarget?.dataset.id as number;
         wx.navigateTo({
             url: '/pages/service-detail/service-detail?id=' + serviceId,
         })

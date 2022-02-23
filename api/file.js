@@ -1,4 +1,5 @@
 import {wxp} from '../utils/wxp'
+import { login } from './user'
 import { requestWithToken } from './user'
 import towxml from '../components/towxml/index'
 

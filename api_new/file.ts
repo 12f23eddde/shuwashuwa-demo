@@ -7,6 +7,7 @@ import { emitErrorToast } from "../utils/ui";
 import { CommonResponse } from "../models/commonResponse";
 
 import { login } from "./login";
+import { request } from "./request";
 
 /**
  * 通过wx.uploadFile上传文件
@@ -30,12 +31,14 @@ export const uploadFile = async (url: string, fileName: string, filePath: string
             name: fileName,
             filePath: filePath
         })
-    } catch (e) {
+
+    } catch (e: any) {
         emitErrorToast(e);
         return;
     }
 
-    const resObj = JSON.parse(res.data) as CommonResponse;
+    const resObj = JSON.parse(res.data as string) as CommonResponse;
+    console.log('uploadImage', resObj);
 
     // token fails, try again
     if ([40005, 40006, 40007].includes(resObj.code)) {
@@ -43,8 +46,8 @@ export const uploadFile = async (url: string, fileName: string, filePath: string
 
         let retries = 3;
         while (!userStore.isLoggedIn && retries > 0) {
-            // delay 5s
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            // delay 2s
+            await new Promise(resolve => setTimeout(resolve, 2000));
             // try again
             retries--;
         }
@@ -65,7 +68,7 @@ export const uploadFile = async (url: string, fileName: string, filePath: string
                 filePath: filePath
             })
         } catch (e) {
-            emitErrorToast(new Error('上传失败'));
+            emitErrorToast('上传失败');
             return;
         }
     }
@@ -77,4 +80,38 @@ export const uploadFile = async (url: string, fileName: string, filePath: string
         // this is not what we expected, but works fine
         throw { errCode: resObj.code, errMsg: resObj.data } as WechatErrorType;
     }
+}
+
+/**
+ * 上传图片到服务器
+ * @param filePath 文件路径
+ * @returns 图片在服务器中的文件名（可以使用/img/xxx.png或/img/100_xxx.png访问）
+ */
+export const uploadImage = async (filePath: string) => {
+    return uploadFile('/api/image', 'file', filePath);
+}
+
+/**
+ * 删除服务器上的图片
+ * @param fileName 服务器中的文件名
+ * @returns 删除结果
+ */
+export const deleteImage = async (fileName: string) => {
+    return request<string>(`/api/image?fileName=${fileName}`, 'DELETE');
+}
+
+
+/**
+ * 通过微信API选择本地图片
+ * @param count 上传图片的数量
+ * @param compressed 是否压缩
+ * @returns string[] 图片的本地路径列表
+ */
+export const wxChooseImage = async (count: number, compressed?: boolean) => {
+    const images = await wx.chooseImage({
+        count: count,
+        sizeType: Array(count).fill(compressed ? 'compressed' : 'original'),
+    })
+    console.log('chooseImage', images);
+    return images.tempFilePaths
 }

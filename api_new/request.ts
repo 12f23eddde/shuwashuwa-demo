@@ -57,8 +57,8 @@ export const request = async <
 
         let retries = 3;
         while (!userStore.isLoggedIn && retries > 0) {
-            // delay 5s
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            // delay 2s
+            await new Promise(resolve => setTimeout(resolve, 2000));
             // try again
             retries--;
         }
@@ -78,7 +78,7 @@ export const request = async <
                     'token': userStore.token
                 }
             });
-        } catch (e) {
+        } catch (e: any) {
             emitErrorToast(e);
             return;
         }
