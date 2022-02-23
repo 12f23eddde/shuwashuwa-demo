@@ -5,6 +5,78 @@
 
 <tab-bar active="{{ 0 }}"></tab-bar>
 <view class="actvityPage">
+
+  <!--当前活动-->
+  <view class="maptitle">
+    <view wx-if="{{ activitiesLoading }}">
+      <van-loading/>
+    </view>
+    <view class="title" wx:if="{{ currentActivities.length }}">
+      当前活动
+    </view>
+    <view class="titleNa" wx:elif="{{ !currentActivities.length }}">
+      没有正在进行的活动
+    </view>
+  </view>
+  <view wx:if="{{ currentActivities.length }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell
+        wx:for="{{ currentActivities }}"
+        wx:key="id"
+        label="{{ item.status }}"
+        icon="/pages/service-list/comfirmedOrder.png"
+        bind:tap="goToActivityServiceList"
+        data-id="{{ item.id }}"
+      >
+        <view slot="title" class="viewTitle"> {{item.activityName}} </view>
+        <view slot="">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{item.location}}</span>
+          </div>
+          <div style="display:block;">å
+            <span style="display:block;">开始时间: {{item.startTime}}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{item.endTime}}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <!--未来活动-->
+  <view class="maptitle" wx:if="{{ incomingActivities.length }}">
+    <view wx-if="{{ activitiesLoading }}">
+      <van-loading/>
+    </view>
+    <view class="title">
+      未来活动
+    </view>
+  </view>
+  <view wx:if="{{ incomingActivities.length }}" class="mapbuttons">
+    <van-cell-group class="activityCell">
+      <van-cell
+        wx:for="{{ incomingActivities }}"
+        wx:key="id"
+        label="{{ item.statusString }}"
+        icon="/pages/service-list/verifyingOrder.png"
+      >
+        <view slot="title" class="viewTitle"> {{ item.activityName }} </view>
+        <view slot="" class="viewValue">
+          <div style="display:block;">
+            <span style="display:block;">地点: {{ item.location }}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">开始时间: {{ item.startTime }}</span>
+          </div>
+          <div style="display:block;">
+            <span style="display:block;">结束时间: {{ item.endTime }}</span>
+          </div>
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+  
   <!--我的维修单-->
   <view class="maptitle" wx:if="{{ activeServices.length > 0 }}">
     <view wx-if="{{ myServicesLoading }}">
@@ -19,17 +91,17 @@
       <van-cell
         wx:for="{{ activeServices }}"
         wx:key="serviceEventId"
-        title="{{ item.computerModel }}"
-        label="{{item.statusString}}"
+        title="{{ item.serviceEventId }}"
+        label="{{ item.statusString }}"
         data-id="{{ item.serviceEventId }}"
         bind:tap="goToServiceDetail"
       >
         <view>
           <div style="display:block;">
-            <span style="display:block;"> {{item.computerModel}}</span>
+            <span style="display:block;"> {{ item.activityName ? item.activityName : '未选择活动' }}</span>
           </div>
           <div style="display:block;">
-            <span style="display:block;"> {{item.statusText}}</span>
+            <span style="display:block;"> {{ item.statusText }}</span>
           </div>
         </view>
       </van-cell>
@@ -117,77 +189,6 @@
       <van-cell icon="/pages/service-list/rejectedOrder.png">
         <view slot="title" class="viewTitle">你有{{ inAuditApplicationCount }}份待审核志愿者申请 </view>
         <view slot="" class="viewValue"> 点击跳转 </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
-
-  <!--当前活动-->
-  <view class="maptitle">
-    <view wx-if="{{ activitiesLoading }}">
-      <van-loading/>
-    </view>
-    <view class="title" wx:if="{{ currentActivities.length }}">
-      当前活动
-    </view>
-    <view class="titleNa" wx:elif="{{ !currentActivities.length }}">
-      没有正在进行的活动
-    </view>
-  </view>
-  <view wx:if="{{ currentActivities.length }}" class="mapbuttons">
-    <van-cell-group class="activityCell">
-      <van-cell
-        wx:for="{{ currentActivities }}"
-        wx:key="id"
-        label="{{ item.status }}"
-        icon="/pages/service-list/comfirmedOrder.png"
-        bind:tap="goToActivityServiceList"
-        data-id="{{ item.id }}"
-      >
-        <view slot="title" class="viewTitle"> {{item.activityName}} </view>
-        <view slot="">
-          <div style="display:block;">
-            <span style="display:block;">地点: {{item.location}}</span>
-          </div>
-          <div style="display:block;">å
-            <span style="display:block;">开始时间: {{item.startTime}}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;">结束时间: {{item.endTime}}</span>
-          </div>
-        </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
-
-  <!--未来活动-->
-  <view class="maptitle" wx:if="{{ incomingActivities.length }}">
-    <view wx-if="{{ activitiesLoading }}">
-      <van-loading/>
-    </view>
-    <view class="title">
-      未来活动
-    </view>
-  </view>
-  <view wx:if="{{ incomingActivities.length }}" class="mapbuttons">
-    <van-cell-group class="activityCell">
-      <van-cell
-        wx:for="{{ incomingActivities }}"
-        wx:key="id"
-        label="{{ item.statusString }}"
-        icon="/pages/service-list/verifyingOrder.png"
-      >
-        <view slot="title" class="viewTitle"> {{ item.activityName }} </view>
-        <view slot="" class="viewValue">
-          <div style="display:block;">
-            <span style="display:block;">地点: {{ item.location }}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;">开始时间: {{ item.startTime }}</span>
-          </div>
-          <div style="display:block;">
-            <span style="display:block;">结束时间: {{ item.endTime }}</span>
-          </div>
-        </view>
       </van-cell>
     </van-cell-group>
   </view>

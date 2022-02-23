@@ -471,8 +471,8 @@ Page({
     onCancel: async function () {
         try {
             await Dialog.confirm({
-                title: "确定取消维修?",
-                message: "删除当前维修单后将无法恢复"
+                title: "取消维修",
+                message: "当前维修单将无法恢复，您确定要取消维修吗？"
             })
             await this.cancelServiceAsync()
             // 删除后返回上一页

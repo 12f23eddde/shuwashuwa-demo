@@ -1,22 +1,12 @@
-.user-container {
+.userPage{
   align-items: center;
   display: flex;
   flex-direction: column;
 }
 
-.userinfo-icon {
-  height: 120rpx;
-  width: 120rpx;
-  margin-left: 4%;
-  margin-right: 3%;
-}
-
 .userinfo-avatar {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 2rem;
+  height: 2rem;
+  margin: auto;
   border-radius: 50%;
 }
 
@@ -61,6 +51,12 @@
   overflow:hidden;
 }
 
+.userIcon {
+  height: 120rpx;
+  width: 120rpx;
+  margin-left: 4%;
+  margin-right: 3%;
+}
 
 .userotherinfo {
   text-align: right;

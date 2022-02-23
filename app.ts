@@ -19,6 +19,7 @@ App({
   },
 
   globalData: {
+    // API v1
     baseURL: "http://shuwashuwa.kinami.cc:8848",
     tmplID: 'DzU2gPVQgkKsknQ1dAXRjGoByDjphw252gBvltWir1Q',
     userToken: null,
@@ -26,6 +27,7 @@ App({
     userId: null,
     volunteerId: null,
     wechatUserInfo: null,
+    // API v2
     userStore: userStore,
     globalStore: globalStore
   }

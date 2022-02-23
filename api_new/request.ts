@@ -39,7 +39,7 @@ export const request = async <
                 'token': userStore.token
             }
         });
-    } catch (e) {
+    } catch (e: any) {
         emitErrorToast(e);
         return;
     }

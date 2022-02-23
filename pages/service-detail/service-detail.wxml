@@ -207,6 +207,7 @@
         readonly="{{ disableEdit }}"
       />
       <van-cell title="故障图片">
+        <!-- Uploader组件动态更改max-count可能会出错，因此固定为5 -->
         <van-uploader
           accept="image"
           sizeType="['compressed']"

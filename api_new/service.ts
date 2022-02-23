@@ -46,7 +46,7 @@ export const createServiceEvent = () => {
  * @returns Promise<void>
  */
 export const cancelServiceEvent = (serviceId: number) => {
-    return request<string>("/api/service/", "DELETE", { eventID: serviceId });
+    return request<string>(`/api/service?eventID=${serviceId}`, "DELETE");
 }
 
 /**

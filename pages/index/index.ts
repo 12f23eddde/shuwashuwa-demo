@@ -98,7 +98,8 @@ Page({
             }
             // active services
             const myActiveServices: (ServiceEvent & { statusText?: string })[] = 
-                myServices.filter(s => [1, 2, 3, 4].includes(s.status))
+                // 不显示被删除的维修单
+                myServices.filter(s => [0, 1, 2, 3, 4].includes(s.status))
             myActiveServices.forEach(s => {
                 s.statusText = serviceStatusText(s.status)
             })

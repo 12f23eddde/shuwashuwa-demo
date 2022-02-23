@@ -150,5 +150,6 @@ export type WechatEventType = {
         dataset: Record<string, any>
         [key: string]: any
     },
+    timeStamp: number,
     [key: string]: any
 }

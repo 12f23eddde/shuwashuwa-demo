@@ -4,7 +4,8 @@
     "pages/service-detail/service-detail",
     "pages/my-info/my-info",
     "pages/service-list/service-list",
-    "pages/application-list/application-list"
+    "pages/application-list/application-list",
+    "pages/debug/debug"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -35,6 +36,7 @@
     "towxml":"/components/towxml/towxml",
     "help-popup": "/components/help-popup/index",
     "van-image": "@vant/weapp/image/index",
+    "van-icon": "@vant/weapp/icon/index",
     "van-notify": "@vant/weapp/notify/index",
     "van-toast": "@vant/weapp/toast/index",
     "van-dialog": "@vant/weapp/dialog/index",

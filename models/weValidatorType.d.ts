@@ -74,7 +74,7 @@ type _WeValidatorOptionsPartial = {
     /** 是否校验多个字段 */
     multiCheck: true,
     /** 错误信息显示方式 */
-    onMessage?: (result: WeValidatorResult[]) => void,
+    onMessage?: (result: Record<string, WeValidatorResult>) => void,
 }
 
 export type WeValidatorResult = {
@@ -90,9 +90,9 @@ export type WeValidatorResult = {
 
 export type WeValidatorInstance = {
     /** 校验数据，会显示错误信息，校验所有字段规则 */
-    checkData: (data: Record<string, any>, onMessage?: (result: WeValidatorResult |  WeValidatorResult[]) => void) => boolean,
+    checkData: (data: Record<string, any>, onMessage?: (result: WeValidatorResult |  Record<string, WeValidatorResult>) => void) => boolean,
     /** 校验数据，会显示错误信息，只校验对应的字段 */
-    checkFields: (data: Record<string, any>, fields: string[], onMessage?: (result: WeValidatorResult |  WeValidatorResult[]) => void) => boolean,
+    checkFields: (data: Record<string, any>, fields: string[], onMessage?: (result: WeValidatorResult |  Record<string, WeValidatorResult>) => void) => boolean,
     /** 校验数据是否有效，不会提示错误信息 */
     isValid: (data: Record<string, any>, fields: string[]) => boolean,
     /** 动态添加字段校验 */
