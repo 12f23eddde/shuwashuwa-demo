@@ -1,16 +1,38 @@
-<view class="container">
+<view class="debug-container">
   <van-dialog id="van-dialog"></van-dialog>
   <van-toast id="van-toast"></van-toast>
-  <van-button type="default" bindtap="getResCode">获取res.code并复制</van-button>
-  <van-button type="default" bindtap="getToken">获取Token并复制</van-button>
-  <van-button type="default" bindtap="requestSub">授权订阅消息</van-button>
-  <van-button type="default" bindtap="uploadPic">上传一张图片</van-button>
-  <van-button type="default" bindtap="gotoURL">跳转到URL</van-button>
-  <van-button type="warning" bindtap="clearStorage">清除缓存并重启</van-button>
-  <van-button type="danger" bindtap="deleteUser">删除当前用户</van-button>
-  <van-field label="baseURL" bind:change="onChange" model:value="{{currURL}}" />
-  <van-field label="navigateURL" bind:change="onChange" model:value="{{navigateURL}}" />
-  <van-cell label="{{myRole}}" />
-  <van-checkbox model:value="{{ volunteer }}" bind:change="updateRole">志愿者</van-checkbox>
-  <van-checkbox model:value="{{ admin }}" bind:change="updateRole">管理员</van-checkbox>
+
+  <van-button type="default" bindtap="onCopyCode">获取resCode并复制</van-button>
+  <van-button type="default" bindtap="onCopyToken">获取Token并复制</van-button>
+  <van-button type="default" bindtap="onRequestSubscription">授权订阅消息</van-button>
+
+  <van-button type="warning" bindtap="onClearStorage">清除缓存并重启</van-button>
+
+  <van-field
+    label="baseURL"
+    bind:change="onChange"
+    model:value="{{ backendUrl}}"
+  />
+
+  <van-button bindtap="onSwitchEnv">切换环境</van-button>
+
+  <van-field
+    label="navigateURL"
+    bind:change="onChange"
+    model:value="{{ navigateURL }}"
+  />
+
+  <van-button bindtap="gotoURL">跳转到URL</van-button>
+
+  <view class="debug-cell-container">
+    <text style="color: #777"> 仅在测试环境中可用 </text>
+    <van-button type="danger" bindtap="onDeleteCurrentUser">删除当前用户</van-button>
+
+    <van-cell label="您当前是 {{myRole}}" />
+    <view style="display: flex; justify-content: center; gap: 20rpx;">
+      <van-checkbox model:value="{{ volunteer }}" bind:change="updateRoleAsync">志愿者</van-checkbox>
+      <van-checkbox model:value="{{ admin }}" bind:change="updateRoleAsync">管理员</van-checkbox>
+    </view>
+  </view>
 </view>
+

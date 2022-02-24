@@ -35,6 +35,7 @@
     "tab-bar": "/custom-tab-bar/index",
     "towxml":"/components/towxml/towxml",
     "help-popup": "/components/help-popup/index",
+    "van-divider": "@vant/weapp/divider/index",
     "van-image": "@vant/weapp/image/index",
     "van-icon": "@vant/weapp/icon/index",
     "van-notify": "@vant/weapp/notify/index",

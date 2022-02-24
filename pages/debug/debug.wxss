@@ -3,3 +3,27 @@
   margin-top: 20rpx;
   width:350rpx;
 }
+
+.debug-cell-container {
+  padding: 20rpx;
+  border-radius: 10rpx;
+  border: 1rpx solid #ccc;
+  /* shadow */
+  box-shadow: 0 0 5rpx #ccc;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40rpx;
+
+  width: 70%;
+}
+
+.debug-container {
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

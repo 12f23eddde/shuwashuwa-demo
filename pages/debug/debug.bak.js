@@ -1,11 +1,13 @@
-import { login } from '../../api_new/login'
-import { request } from '../../api_new/request'
-import { getTemplateIDs, requestSubscription } from '../../api_new/subscription'
-import { ensureUserInfo, whoAmI } from '../../utils/shuwashuwa'
+// pages/debug/debug.js
+
+import {login, deleteCurrentUser, requestWithToken} from '../../api/user'
+import {getTemplateIDs, requestSubscription} from '../../api/subscription'
+import {uploadWithToken, chooseImage} from '../../api/file'
+import {parseToken, whoAmI} from '../../utils/util'
 import Dialog from '@vant/weapp/dialog/dialog'
 import Toast from '@vant/weapp/toast/toast'
 
-// requestWithToken('/test/myself','DELETE')
+const app = getApp()
 
 Page({
   /**
