@@ -16,7 +16,7 @@ Page({
         currResCode: "复制res.code",
         currToken: "复制Token",
         currURL: "http://shuwashuwa.kinami.cc:8848",
-        navigateURL: "/pages/user/user",
+        navigateURL: "/pages/my-info/my-info",
         /** 后端URL */
         backendUrl: '',
         /** 是否设置为管理员 */
@@ -34,7 +34,8 @@ Page({
 
     /** 设置当前用户的权限（测试环境） */
     updateRoleAsync: async function () {
-        const url = `/test/auth?admin=${this.data.admin? 'true': 'false' }&volunteer=${this.data.volunteer? 'true': 'false' }`
+        const url = `/test/auth?admin=${this.data.admin? true : false} &volunteer=${this.data.volunteer? true : false}`
+        console.log(url)
         const res = await request<string>(url, "PUT")
         console.log('updateRoleAsync', url, res)
         this.setData({
@@ -187,8 +188,14 @@ Page({
     },
 
     gotoURL: async function () {
-        wx.navigateTo({
-            url: this.data.navigateURL,
-        })
+        try {
+            await wx.navigateTo({
+                url: this.data.navigateURL,
+            })
+        } catch (e: any) {
+            await wx.switchTab({
+                url: this.data.navigateURL
+            })
+        }
     }
 })

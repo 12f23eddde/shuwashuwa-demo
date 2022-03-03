@@ -121,3 +121,8 @@
   justify-content: space-around;
   align-items: center;
 }
+
+/* on top wechat's tabbar styles */
+.tabbar-popup .van-popup {
+  z-index:9999999 !important;
+}

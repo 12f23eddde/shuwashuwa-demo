@@ -268,11 +268,11 @@ Page({
 
         // 上传完毕后清空信息
         this.setData({
-            applicationShow: false,
             submitLoading: false,
             cardPicLocation: '',
             imagesToUpload: [],
-            reasonForApplication: ''
+            reasonForApplication: '',
+            showApplication: false
         })
     },
 

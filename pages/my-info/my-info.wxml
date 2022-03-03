@@ -157,8 +157,9 @@
 
   <van-popup
     show="{{ showApplication }}"
-    bind:close="applicationClose"
+    bind:close="onHideApplication"
     position="bottom"
+    class="tabbar-popup"
   >
     <view class="maptitle">
       <view class="title">
@@ -175,7 +176,7 @@
         error-message="{{ errMsg.reasonForApplication }}"
       />
       <van-cell
-        title="学生证照片"
+        title="学生证照片(可选)"
         label="我们承诺您的信息只用于发放志愿证明"
         title-style="{{ errMsg.cardPicLocation }}"
       >

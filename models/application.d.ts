@@ -35,5 +35,5 @@ export interface Application extends User {
     /** 申请表审核时间，以yyyy-MM-dd HH:mm:ss表示 */
     updatedTime?: string,
     /** 发起申请的用户的姓名 */
-    userId?: number,
+    userName: string
 }
