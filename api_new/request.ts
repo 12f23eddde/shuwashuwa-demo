@@ -55,10 +55,10 @@ export const request = async <
     if ([40005, 40006, 40007].includes(res.data.code)) {
         await login();
 
-        let retries = 3;
-        while (!userStore.isLoggedIn && retries > 0) {
+        let retries = 1;
+        while (!userStore.isLoggedIn && retries <= 3) {
             // delay 2s
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 1000 * retries));
             // try again
             retries--;
         }

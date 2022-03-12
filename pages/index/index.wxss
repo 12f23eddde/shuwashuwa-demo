@@ -1,5 +1,5 @@
 /* pages/activity/activity.wxss */
-.activityPage {
+.index-page-container {
   align-content: center;
 }
 
@@ -8,14 +8,14 @@
   width: 100%;
 }
 
-.activityCell {
+.cell-group {
   width: 95%;
   align-self: center;
   display: block;
   box-shadow: 5rpx 5rpx 10rpx rgba(0, 0, 0, 0.2);
 }
 
-.title {
+/* .title {
   width: 90%;
   font-size: x-large;
   font-weight: bold;
@@ -36,9 +36,9 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-}
+} */
 
-.mapbuttons {
+.cell-group-container {
   width: 100%;
   display: flex;
   justify-content: space-around;
@@ -80,4 +80,32 @@
 .activity-cell-info {
   display: flex;
   justify-content: space-between;
+}
+
+.link-cell > .van-cell {
+  display: flex;
+  align-items: center;
+}
+
+.link-cell-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 10rpx;
+}
+
+.cell-title {
+  margin-left: 5vw;
+  margin-top: 40rpx;
+  margin-bottom: 20rpx;
+  width: fit-content;
+}
+
+.empty-cell .van-cell {
+  justify-content: center;
+}
+
+.empty-cell .van-cell__title {
+  flex: none;
+  margin-left: 10rpx;
 }

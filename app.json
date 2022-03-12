@@ -40,6 +40,7 @@
     "service-cell": "/components/service-cell/index",
     "status-badge": "/components/status-badge/index",
     "help-popup": "/components/help-popup/index",
+    "typology": "/components/typology/index",
     "van-divider": "@vant/weapp/divider/index",
     "van-tag": "@vant/weapp/tag/index",
     "van-empty": "@vant/weapp/empty/index",

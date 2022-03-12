@@ -28,10 +28,10 @@
     <text style="color: #777"> 仅在测试环境中可用 </text>
     <van-button type="danger" bindtap="onDeleteCurrentUser">删除当前用户</van-button>
 
-    <van-cell label="您当前是 {{myRole}}" />
+    <van-cell label="您当前是 {{ admin? '管理员' : ''}}  {{ volunteer? '志愿者' : ''}} {{ !admin&&!volunteer? '用户': ''}}" />
     <view style="display: flex; justify-content: center; gap: 20rpx;">
-      <van-checkbox model:value="{{ volunteer }}" bind:change="updateRoleAsync">志愿者</van-checkbox>
-      <van-checkbox model:value="{{ admin }}" bind:change="updateRoleAsync">管理员</van-checkbox>
+      <van-checkbox model:value="{{ volunteer }}" bind:change="onChangeVolunteer">志愿者</van-checkbox>
+      <van-checkbox model:value="{{ admin }}" bind:change="onChangeAdmin">管理员</van-checkbox>
     </view>
   </view>
 </view>

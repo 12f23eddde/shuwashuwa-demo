@@ -1,15 +1,12 @@
 Component({
-    options: {
-        multipleSlots: true,
-    },
     properties: {
-        color: {
+        text: {
             type: String,
-            value: '#2d8cf0',
+            value: '加载中...'
         },
-        bar: {
+        loading: {
             type: Boolean,
-            value: true,
-        }
+            value: false
+        },
     },
 })

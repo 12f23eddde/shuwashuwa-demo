@@ -7,6 +7,8 @@ import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast'
 
 import { userStore } from '../../stores/user'
 import { globalStore } from '../../stores/global'
+import { WechatErrorType, WechatEventType } from '../../models/wechatType'
+import { getCurrentUserInfo } from '../../api_new/user'
 
 Page({
     /**
@@ -34,13 +36,38 @@ Page({
 
     /** 设置当前用户的权限（测试环境） */
     updateRoleAsync: async function () {
-        const url = `/test/auth?admin=${this.data.admin? true : false} &volunteer=${this.data.volunteer? true : false}`
+        const url = `/test/auth?admin=${this.data.admin?1:0}&volunteer=${this.data.volunteer?1:0}`
         console.log(url)
-        const res = await request<string>(url, "PUT")
-        console.log('updateRoleAsync', url, res)
+        try {
+            const res = await request<string>(url, 'PUT')
+            console.log('updateRoleAsync', url, res)
+        } catch (e) {
+            console.log(e)
+        }
+        
+        const userInfo = await getCurrentUserInfo()
+        console.log('updateRoleAsync', userInfo)
+        if(userInfo){
+            userStore.setUser(userInfo)
+        }
+        
         this.setData({
             myRole: await whoAmI()
         })
+    },
+
+    onChangeAdmin: function (e: WechatEventType) {
+        this.setData({
+            admin: e.detail
+        })
+        this.updateRoleAsync()
+    },
+
+    onChangeVolunteer: function (e: WechatEventType) {
+        this.setData({
+            volunteer: e.detail
+        })
+        this.updateRoleAsync()
     },
 
     /** 删除当前用户（测试环境） */
