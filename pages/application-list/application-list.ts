@@ -19,8 +19,6 @@ Page({
         application: [
 
         ],
-        activeNames: ['1'],
-
         pageLoading: false,
         feedBackShow: false,
         appDataSet: {
@@ -32,6 +30,8 @@ Page({
         applications: [] as (Application & {imageUrl: string})[],
         applicationsLoading: false,
         showFeedback: false,
+
+        activeNames: ['1'],
 
         /** 回复的管理员的姓名 */
         adminName: '',
@@ -53,14 +53,13 @@ Page({
 
     /** 载入志愿者申请 */
     getApplicationAsync: async function () {
-        if (userStore.user?.volunteer) {
-            return
-        }
         this.setData({
             applicationsLoading: true,
         })
         try {
-            const applications = await getApplicationList({})
+            const applications = await getApplicationList({
+                status: 0,
+            })
             // 同时不应有多个申请
             console.log('applications refreshed', applications)
             if (!applications) {
@@ -160,90 +159,12 @@ Page({
             });
     },
 
-    /*
-        以下两个函数都是弹出窗口用到的
-        有一个field可以输入反馈信息
-        弹出时设置全局变量，关闭弹窗时再把全局变量清空
-        保证appDataSet的有效声明周期与弹窗相同
-        否则反馈信息可能会附加到其他的申请单上
-     */
-    onFeedBack: function (event) {
-        console.log(event.currentTarget.dataset)
-        this.setData({
-            feedBackShow: true,
-            appDataSet: event.currentTarget.dataset
-        });
-    },
-
-    feedBackClose: function () {
-        let over_write = {
-            id: null,
-            status: "",
-            url: ""
-        }
-        this.setData({
-            feedBackShow: false,
-            appDataSet: over_write
-        });
-    },
-
-    //这个是vant的collapse展开需要的函数
-    onChange(event) {
-        this.setData({
-            activeNames: event.detail,
-        });
-    },
-
-    //大部分是pjy写的，改了一点不知道有没有bug
-    replyApplication: async function (event) {
-        let applicationId = event.currentTarget.dataset.id ? event.currentTarget.dataset.id : this.data.appDataSet.id;
-        let status = event.currentTarget.dataset.status ? event.currentTarget.dataset.status : this.data.appDataSet.status;
-        console.log(applicationId, status)
-        let form
-        for (let i of this.data.application) {
-            if (i.formId == applicationId) {
-                form = i
-            }
-        }
-        form.department = form.department ? form.department : ""
-        form.phoneNumber = form.phoneNumber ? form.phoneNumber : ""
-        form.identity = form.identity ? form.identity : ""
-        form.email = form.email ? form.email : ""
-        form.status = status - '0'
-        form.userName = form.userName ? form.userName : "";
-        //留言可能能用了
-        form.replyByAdmin = this.data.adminFeedBack
-        console.log(form)
-        await requestWithToken('/api/volunteer/application', 'PUT', form)
-        let data = { "status": 0 }
-        let applicationList = await requestWithToken('/api/volunteer/application', 'GET', data)
-        console.log(applicationList)
-        let over_write = {
-            id: null,
-            status: "",
-            url: ""
-        }
-        this.setData({
-            application: applicationList,
-            appDataSet: over_write
-        })
-    },
-
-    viewPic: async function (event) {
-        console.log(event.currentTarget.dataset)
-        wx.previewImage({
-            current: app.globalData.baseURL + '/img/' + event.currentTarget.dataset.picurl, // 当前显示图片的http链接
-            urls: [app.globalData.baseURL + '/img/' + event.currentTarget.dataset.picurl] // 需要预览的图片http链接列表
-        })
-    },
-
     /**
      * 生命周期函数--监听页面加载
      */
-     onLoad: function (options) {
+    onLoad: function (options) {
 
     },
-
 
     /**
      * 生命周期函数--监听页面显示
@@ -258,5 +179,11 @@ Page({
      */
     onHide: function () {
 
+    },
+
+    onPullDownRefresh: function () {
+        this.getApplicationAsync().then(
+            () => wx.stopPullDownRefresh()
+        )
     },
 })

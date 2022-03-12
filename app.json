@@ -1,9 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/service-detail/service-detail",
-    "pages/my-info/my-info",
     "pages/service-list/service-list",
+    "pages/my-info/my-info",
+    "pages/service-detail/service-detail",
     "pages/application-list/application-list",
     "pages/debug/debug"
   ],
@@ -16,6 +16,9 @@
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "custom": true,
+    "color": "#000000",
+    "selectedColor": "#000000",
+    "backgroundColor": "#000000",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -27,15 +30,19 @@
       },
       {
         "pagePath": "pages/my-info/my-info",
-        "text": "个人信息"
+        "text": "我的"
       }
     ]
   },
   "usingComponents": {
     "tab-bar": "/custom-tab-bar/index",
     "towxml":"/components/towxml/towxml",
+    "service-cell": "/components/service-cell/index",
+    "status-badge": "/components/status-badge/index",
     "help-popup": "/components/help-popup/index",
     "van-divider": "@vant/weapp/divider/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-empty": "@vant/weapp/empty/index",
     "van-image": "@vant/weapp/image/index",
     "van-icon": "@vant/weapp/icon/index",
     "van-notify": "@vant/weapp/notify/index",

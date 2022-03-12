@@ -1,0 +1,4 @@
+<view>
+  <van-tag plain type="{{ statusType }}"> {{ statusText }} </van-tag>
+</view>
+

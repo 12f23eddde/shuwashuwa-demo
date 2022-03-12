@@ -80,3 +80,22 @@ export const serviceStatusText = (status: number) => {
             return '状态未知';
     }
 }
+
+export const serviceStatusType = (status: number) => {
+    switch (status) {
+        case 0:
+            return 'primary';
+        case 1:
+            return 'primary';
+        case 2:
+            return 'warning';
+        case 3:
+            return 'warning';
+        case 4:
+            return 'success';
+        case 5:
+            return 'danger';
+        default:
+            return 'primary';
+    }
+}

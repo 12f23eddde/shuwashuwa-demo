@@ -58,8 +58,21 @@ export const submitServiceEvent = (service: ServiceForm) => {
     return request<string>("/api/service/commit", "POST", service);
 }
 
+/** 将维修单存储至本地 只保存最近的一份
+ * @param service 维修事件
+ * @returns Promise<void>
+ */
+export const saveServiceDraft = (service: ServiceForm) => {
+    wx.setStorageSync('draft', service);
+}
+
+/** 从本地加载维修单草稿 */
+export const getServiceDraft = () => {
+    return wx.getStorageSync('draft') as ServiceForm;
+}
+
 /**
- * 保存维修单草稿
+ * 保存维修单草稿到服务器
  * @param service 维修事件
  * @returns Promise<string>
  */

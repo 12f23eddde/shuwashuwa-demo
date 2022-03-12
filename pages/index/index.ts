@@ -1,5 +1,5 @@
 import { formatDate } from '../../utils/date'
-import { getApplicationList } from '../../api_new/volunteer'
+import { getApplicationList, getVolunteerId } from '../../api_new/volunteer'
 import { getServiceEventCount, getServiceEventList } from '../../api_new/service'
 import { getActivityList, attendActivity } from '../../api_new/activity'
 
@@ -13,6 +13,7 @@ import { ensureUserInfo } from '../../utils/shuwashuwa'
 import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast'
 
 import { serviceStatusText } from '../../utils/shuwashuwa'
+import { emitErrorToast } from '../../utils/ui'
 
 Page({
     /**
@@ -28,10 +29,12 @@ Page({
 
         // services
         /** 我发起的进行中维修单 */
-        activeServices: [] as (ServiceEvent & { statusText?: string })[],
+        activeServices: [] as ServiceEvent[],
         /** 我正在编辑的维修单数 */
         inEditServiceCount: -1,
         myServicesLoading: false,
+        /** 我接单的维修单 */
+        workingServices: [] as ServiceEvent[],
 
         /** 需要审核的维修单数 */
         inAuditServiceCount: -1,
@@ -97,12 +100,7 @@ Page({
                 throw new Error('获取维修单列表失败')
             }
             // active services
-            const myActiveServices: (ServiceEvent & { statusText?: string })[] = 
-                // 不显示被删除的维修单
-                myServices.filter(s => [0, 1, 2, 3, 4].includes(s.status))
-            myActiveServices.forEach(s => {
-                s.statusText = serviceStatusText(s.status)
-            })
+            const myActiveServices = myServices.filter(s => [0, 1, 2, 3, 4].includes(s.status)) // 不显示被删除的维修单
             this.setData({
                 activeServices: myActiveServices,
             })
@@ -113,6 +111,40 @@ Page({
             })
         } catch (e) {
             console.error(e)
+        } finally {
+            this.setData({
+                myServicesLoading: false
+            })
+        }
+    },
+
+    /** 我接单的维修单 */
+    getWorkingServicesAsync: async function () {
+        if (!userStore.user?.volunteer){
+            return
+        }
+        this.setData({
+            myServicesLoading: true
+        })
+        try {
+            const volunteerId = Number(await getVolunteerId())
+            const options: ServiceQuery = {
+                volunteer: volunteerId,
+                closed: false,
+                status: 4
+            }
+
+            const workingServices = await getServiceEventList(options)
+            console.log('working services refreshed', workingServices)
+            if (!workingServices) {
+                throw new Error('获取维修单列表失败')
+            }
+            this.setData({
+                workingServices,
+            })
+    
+        } catch (e: any) {
+            emitErrorToast(e)
         } finally {
             this.setData({
                 myServicesLoading: false
@@ -145,8 +177,8 @@ Page({
             this.setData({
                 inAuditServiceCount: count,
             })
-        } catch (e) {
-            console.error(e)
+        } catch (e: any) {
+            emitErrorToast(e)
         } finally {
             this.setData({
                 servicesLoading: false
@@ -304,6 +336,7 @@ Page({
             })
 
         this.getMyServicesAsync() // 加载我的维修单
+        this.getWorkingServicesAsync() // 加载接单维修单
         this.getMyApplicationAsync() // 加载我的志愿者申请
         this.getInAuditApplicationCountAsync() // 加载待审核的志愿者申请数
     },

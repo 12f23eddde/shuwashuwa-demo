@@ -3,12 +3,9 @@
   align-content: center;
 }
 
-.blank{ 
-  height: 46px;
-  clear:both; 
-  overflow:hidden; 
-  display:block; 
-  overflow:hidden;
+.tabbar-spacer { 
+  height: 60px;
+  width: 100%;
 }
 
 .activityCell {
@@ -57,9 +54,30 @@
 }
 
 .noActivity {
-  width: 750rpx;
-  height: 900rpx;
+  width: 100vw;
+  height: 80vh;
   text-align: center;
-  transform:translateY(50%);
+  margin: auto;
   color: gray;
+}
+
+.activity-cell-title {
+  font-size: large;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 2%;
+  margin-bottom: 3%;
+}
+
+.activity-cell .van-cell {
+  flex-direction: column;
+}
+
+.activity-cell-meta {
+  text-align: left;
+}
+
+.activity-cell-info {
+  display: flex;
+  justify-content: space-between;
 }

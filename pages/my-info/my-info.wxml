@@ -13,7 +13,7 @@
       <view class="userinfo-icon" bindtap="onMagicTap">
         <van-icon
           name="user-circle-o"
-          size="2rem"
+          size="40px"
           color="#777"
           class="userinfo-avatar"
         />
@@ -21,17 +21,18 @@
 
       <view class="usernickname">
         <view wx:if="{{ userName }}" class="nickName">{{ userName }}</view>
-        <open-data
-          wx:else
-          type="userNickName"
-          class='nickname'
-        ></open-data>
       </view>
 
       <view class="userotherinfo">
+        <van-tag
+          plain
+          size="large"
+          class="user-role-tag"
+        > {{ myRole }}
+        </van-tag>
         <view wx:if="{{ userId !== -1 }}" class="phone">{{ 'UID: ' + userid }}</view>
-        <view stutype> {{ myRole }}</view>
       </view>
+
     </view>
     <van-toast id="van-toast" />
     <van-notify id="van-notify" />
@@ -151,8 +152,8 @@
       </view>
     </view>
 
-    <view class="blank"></view>
-    <view class="blank"></view>
+    <view class="tabbar-spacer" />
+
   </view>
 
   <van-popup
@@ -204,7 +205,5 @@
       </view>
     </view>
   </van-popup>
-
-  <tab-bar active='2'></tab-bar>
 </view>
 

@@ -1,4 +1,7 @@
 <view>
+
+  <van-dialog id="van-dialog"></van-dialog>
+
   <!-- 选择菜单 -->
   <van-dropdown-menu class='dropdownOrder' active-color="#22ac38">
     <van-dropdown-item
@@ -11,82 +14,52 @@
       options="{{ statusOptions }}"
       bind:change="setStatus"
     />
+    <van-dropdown-item id="search-filter" title="筛选">
+      <!--搜索框-->
+      <van-search
+        model:value="{{ searchText }}"
+        placeholder="在结果中搜索"
+        show-action
+        bind:search="doSearch"
+        bind:cancel="doCancelSearch"
+        class="service-search"
+      />
+      <van-cell title="倒序查看维修单">
+        <van-switch
+          slot="right-icon"
+          size="24px"
+          style="height: 26px"
+          active-color="#07c160"
+          checked="{{ reversed }}"
+          bind:change="setOrder"
+        />
+      </van-cell>
+    </van-dropdown-item>
   </van-dropdown-menu>
 
   <view class="blank"></view>
 
-  <view wx-if="{{pageLoading}}" class="noService">
-    <van-loading vertical="true"> 正在加载维修单... </van-loading>
+  <view wx-if="{{ serviceListLoading }}" class="service-loading">
+    <van-loading size="24px"> 正在加载维修单... </van-loading>
   </view>
 
-  <!--搜索框-->
-  <van-search
-    model:value="{{ searchText }}"
-    placeholder="在结果中搜索"
-    show-action
-    bind:search="doSearch"
-    bind:cancel="doCancelSearch"
-    class="service-search"
-  />
-
-  <!-- 没有对应的维修单 -->
-  <view wx-if="{{!pageLoading && serviceList.length == 0}}" class="noService">
-    维修单空空如也...
-  </view>
   <movable-area class="addBtnArea">
-    <!-- 有对应的维修单 -->
-    <van-collapse
-      value="{{ activeNames }}"
-      wx:if="{{ serviceList.length > 0 }}"
-      bind:change="onChange"
-      class="orderCollapse"
-    >
-      <van-swipe-cell
-        wx:for="{{ filteredServiceList }}"
-        class="titileOrder"
-        right-width="{{ 80 }}"
-        async-close
-        bind:close="onClose"
-        data-id="{{item.serviceEventId}}"
-        disabled="{{ item.status != 0 }}"
-      >
-        <van-collapse-item icon="{{ item.iconPath }}">
-          <view slot="title" class="collTitle"> {{ item.serviceEventId }} </view>
-          <!-- 这里啥都不显示总感觉有点怪 -->
-          <view slot="value" class="dateView"> {{ (item.computerModel?item.computerModel:'未填写型号') }} </view>
-          <view slot="value" class="orderUser"> {{ (item.problemType?item.problemType:'未填写问题') }} </view>
-          <!-- 如果是我发起的维修单,显示志愿者的名字 否则显示发起者的名字 -->
-          <view slot="value" class="orderType"> {{ (item.userName==userName?(item.volunteerName?item.volunteerName:'未被志愿者接单'):item.userName) }} </view>
-          <view class='rejectedDetails' wx:if="{{item.status == 0}}"> 等待编辑 </view>
-          <view class='rejectedDetails' wx:if="{{item.status == 1}}"> 等待审核 </view>
-          <view class='comfirmedDetails' wx:if="{{item.status == 2}}"> 审核通过 </view>
-          <view class='orderDetails'> {{( item.problemSummary?item.problemSummary:'未填写问题') }} </view>
-          <view class="mapbuttons">
-            <!-- <view class="bottons">
-            <van-button 
-              icon="setting" 
-              type="orderBut" 
-              round 
-              size="large"
-              bindtap="onChangeURL"
-              data-id="{{ item.serviceEventId }}"
-              >修改</van-button>
-          </view> -->
-            <view class="bottons">
-              <van-button
-                icon="info"
-                round
-                size="large"
-                bindtap="goToServiceDetail"
-                data-id="{{item.serviceEventId}}"
-              >详情
-              </van-button>
-            </view>
-          </view>
-        </van-collapse-item>
-        <view slot="right" class="closeSlot">删除</view>
-      </van-swipe-cell>
-    </van-collapse>
+
+    <!-- 没有对应的维修单 -->
+    <view wx-if="{{!serviceListLoading && serviceList.length == 0}}" class="noService">
+      <van-empty description="维修单空空如也..." />
+    </view>
+
+    <view wx:if="{{ serviceList.length > 0 }}">
+      <van-cell-group class="activityCell">
+        <service-cell
+          wx:for="{{ filteredServiceList }}"
+          wx:key="serviceEventId"
+          service="{{ item }}"
+        >
+        </service-cell>
+      </van-cell-group>
+    </view>
 
     <movable-view
       x="{{btnx}}"
@@ -102,12 +75,7 @@
         src="{{ addIconSrc }}"
       />
     </movable-view>
+    <view class="tabbar-spacer" />
   </movable-area>
-
-  <view class="blank"></view>
-
-  <van-dialog id="van-dialog"></van-dialog>
-
-  <tab-bar active="{{1}}"></tab-bar>
 </view>
 

@@ -25,7 +25,7 @@ export const getActivityTimeSlots = async (activityid: number) => {
  * @returns Promise<number> 状态改变的维修单数量
  */
 export const attendActivity = async (activityid: number) => {
-    return request<string>("/api/activity/attend", "PUT", { activity: activityid });
+    return request<string>(`/api/activity/attend?activity=${activityid}`, "PUT");
 }
 
 /**
@@ -34,5 +34,5 @@ export const attendActivity = async (activityid: number) => {
  * @returns Promise<boolean>
  */
 export const hasAttendedActivity = async (activityid: number) => {
-    return request<string>("/api/activity/attend", "GET", { activity: activityid });
+    return request<string>(`/api/activity/attend?activity=${activityid}`, "GET");
 }

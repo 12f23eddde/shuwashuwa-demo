@@ -1,5 +1,6 @@
 import { getServiceEventList, cancelServiceEvent, createServiceEvent } from '../../api_new/service'
 import { checkUserInfo, ensureUserInfo } from '../../utils/shuwashuwa'
+import { serviceStatusText, serviceStatusType } from '../../utils/shuwashuwa'
 
 import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog'
 import type { ServiceEvent, ServiceQuery } from '../../models/service'
@@ -8,7 +9,7 @@ import { globalStore } from '../../stores/global';
 import { ActivityInfo } from '../../models/activity';
 import { getActivityList } from '../../api_new/activity';
 
-import { Document, Index } from 'flexsearch'
+import { Document } from 'flexsearch'
 import { WechatEventType } from '../../models/wechatType';
 
 type MenuOption = { text: string, value: number };
@@ -22,13 +23,15 @@ Page({
      * 3 待接单 all volunteer
      * 4 维修中 self volunteer
      * 5 已完成 all user
-     * 6 活动中 all user
+     * -1 全部 all user
      */
     data: {
         /** 活动查询参数 */
         query: { draft: false, closed: false } as ServiceQuery,
         serviceList: [] as ServiceEvent[],
         serviceListLoading: false,
+        reversed: false,
+        
         /** 搜索结果 */
         searchIndex: null as any,
         searchText: '' as string,
@@ -47,6 +50,7 @@ Page({
         activeNames: ['1'],
         pageLoading: false,
 
+        /** 添加维修单 */
         addIconSrc: '/res/icons/addOrder.png',
 
         btnx: wx.getSystemInfoSync().windowWidth * 0.75,
@@ -65,6 +69,11 @@ Page({
                 emitErrorToast('获取活动列表失败')
             }
             console.log('service list refreshed', serviceList)
+            
+            if(this.data.reversed){
+                serviceList?.reverse()
+            }
+
             this.setData({
                 serviceList,
             })
@@ -140,7 +149,7 @@ Page({
     },
 
     /** 更新维修单状态 */
-    setStatus: function (event: any) {
+    setStatus: function (event: WechatEventType) {
         const status = event.detail
         console.log('setStatus', status)
 
@@ -158,6 +167,16 @@ Page({
         this.getServiceListAsync()
     },
 
+    /** 维修单排序 */
+    setOrder: function (event: WechatEventType) {
+        const order = event.detail
+        console.log('setOrder', order)
+        this.setData({
+            reversed: order? true: false,
+        })
+        this.getServiceListAsync()
+    },
+
     /** 初始化状态选项 */
     initStatusOptions: function () {
         const statusOptions = [
@@ -171,7 +190,7 @@ Page({
         ]
         this.setData({
             statusOptions,
-            statusSelected: -1,
+            // statusSelected: -1,
         })
     },
 
@@ -338,7 +357,9 @@ Page({
      * 页面相关事件处理函数--监听用户下拉动作
      */
     onPullDownRefresh: function () {
-        this.getServiceListAsync()
+        this.getServiceListAsync().then(
+            () => wx.stopPullDownRefresh()
+        )
     },
 
     /**

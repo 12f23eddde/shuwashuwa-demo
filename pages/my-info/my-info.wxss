@@ -5,36 +5,32 @@
 }
 
 .userinfo-icon {
-  height: 120rpx;
-  width: 120rpx;
-  margin-left: 4%;
-  margin-right: 3%;
-}
-
-.userinfo-avatar {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 2rem;
-  border-radius: 50%;
-}
-
-.nickname {
-  align-self: center;
+  margin-left: 5vw;
 }
 
 .usernickname {
+  width: 300rpx;
+  margin-left: 4vw;
   font-size: x-large;
   font: bold;
-  color: rgb(103, 103, 103);
+  color: #777;
   width: 100%;
   text-align: left;
 }
 
+.user-role-tag {
+  margin-right: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .userotherinfo {
-  color: rgb(142, 142, 142);
+  color: #777;
   width: 100%;
+
+  display: flex;
+  align-items: center;
 }
 
 .userinfo {
@@ -52,15 +48,6 @@
   margin-top: 10%;
   width: 90%;
 }
-
-.blank{ 
-  height: 46px;
-  clear:both; 
-  overflow:hidden; 
-  display:block; 
-  overflow:hidden;
-}
-
 
 .userotherinfo {
   text-align: right;
@@ -125,4 +112,9 @@
 /* on top wechat's tabbar styles */
 .tabbar-popup .van-popup {
   z-index:9999999 !important;
+}
+
+.tabbar-spacer {
+  height: 50px;
+  width: 100%;
 }

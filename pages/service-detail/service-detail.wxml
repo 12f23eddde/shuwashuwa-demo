@@ -206,7 +206,7 @@
         required="{{! disableEdit }}"
         readonly="{{ disableEdit }}"
       />
-      <van-cell title="故障图片">
+      <van-cell title="故障图片" wx-if="{{ editable || imagesToUpload.length }}">
         <!-- Uploader组件动态更改max-count可能会出错，因此固定为5 -->
         <van-uploader
           accept="image"
@@ -248,7 +248,7 @@
     </van-cell-group>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ (workable && status == 4)||(volunteerMessage && (workable || auditable) &&status == 5) }}">
+  <view class="mapbuttons" wx-if="{{ (status == 4)|| volunteerMessage }}">
     <van-cell-group title="维修留言" class="serviceDetailCell_">
       <van-field
         model:value="{{ volunteerMessage }}"

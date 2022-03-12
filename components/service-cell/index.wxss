@@ -1,0 +1,23 @@
+.service-cell-title {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.service-cell-label {
+    margin-top: 0.4em;
+}
+
+.service-cell-col {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-bold {
+    font-weight: bold;
+    color: #333;
+}

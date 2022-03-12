@@ -1,4 +1,4 @@
-import { completeServiceEvent, feedbackServiceEvent, getServiceEventCount, getServiceEventDetail, submitServiceDraft, submitServiceEvent, createServiceEvent } from '../../api_new/service';
+import { completeServiceEvent, feedbackServiceEvent, getServiceEventCount, getServiceEventDetail, submitServiceEvent, createServiceEvent, saveServiceDraft, getServiceDraft } from '../../api_new/service';
 import { getActivityList, getActivityTimeSlots } from '../../api_new/activity'
 
 import { formatDate, formatTime } from '../../utils/date'
@@ -18,11 +18,12 @@ import type { WeValidatorInstance, WeValidatorOptions, WeValidatorResult } from 
 import type { WechatEventType } from '../../models/wechatType';
 import { deleteImage, uploadImage } from '../../api_new/file';
 import { globalStore } from '../../stores/global';
+import { getVolunteerId } from '../../api_new/volunteer';
 
 Page({
     data: {
         // 维修单详情
-        draft: false,
+        draft: true,
         activityId: 0,
         activityName: "",
         boughtTime: "",
@@ -273,21 +274,19 @@ Page({
     submitServiceAsync: async function () {
         this.setData({ submitLoading: true })
         try {
+            // 如果维修单不存在，先创建维修单
+            if (this.data.serviceEventId == -1) {
+                const newService = await createServiceEvent()
+                if (!newService) {
+                    emitErrorToast('创建维修单失败')
+                    return
+                }
+                this.setData({
+                    serviceEventId: newService.id,
+                })
+            }
             await submitServiceEvent(this.data as ServiceForm)
             console.log('submitServiceAsync', this.data)
-        } catch (e: any) {
-            console.error(e)
-            Notify({ type: 'danger', message: e.errMsg })
-        } finally {
-            this.setData({ submitLoading: false })
-        }
-    },
-
-    /** 保存维修单草稿 */
-    submitDraftAsync: async function () {
-        this.setData({ submitLoading: true })
-        try {
-            await submitServiceDraft(this.data as ServiceForm)
         } catch (e: any) {
             console.error(e)
             Notify({ type: 'danger', message: e.errMsg })
@@ -398,17 +397,23 @@ Page({
     },
 
     /** 更新按钮状态 */
-    updateComponentStates: function () {
+    updateComponentStates: async function () {
         const userId = userStore.user?.userid as number
         const isAdmin = userStore.user?.admin as boolean
         const isVolunteer = userStore.user?.volunteer as boolean
         this.setData({
             /** 没有签到前可编辑维修单 */
-            editable: this.data.userId === userId && [0, 1, 2].includes(this.data.status),
+            editable: (this.data.serviceEventId == -1) || (this.data.userId === userId && [0, 1, 2].includes(this.data.status)),
             /** 管理员可审核非自己发起的维修单 */
             auditable: this.data.status === 1 && isAdmin && this.data.userId != userId,
             /** 志愿者可接单 */
-            workable: this.data.status === 3 && isVolunteer
+            workable: this.data.status === 3 && isVolunteer,
+            /** 草稿维修单默认开启编辑 */
+            disableEdit: this.data.status !== 0,
+            /** 用户可反馈 */
+            canUserFeedback: userStore.user?.userid === this.data.userId && this.data.status === 5,
+            /** 志愿者可反馈 */
+            canVolunteerFeedback: Number(await getVolunteerId()) === this.data.volunteerId && this.data.status === 4
         })
         console.log('updateComponentStates', this.data)
     },
@@ -483,10 +488,10 @@ Page({
     },
 
     /** 保存编辑中的维修单草稿 */
-    onSave: async function () {
+    onSave: function () {
         // 如果维修单已经提交了，则不能保存草稿
         if (this.data.draft === false) return;
-        await this.submitDraftAsync()
+        saveServiceDraft(this.data)
     },
 
     /** 点击审核通过按钮 */
@@ -820,7 +825,19 @@ Page({
 
         if (this.data.serviceEventId == -1) {
             /** 创建维修单 */
-            await this.createServiceEventAsync()
+            try {
+                const draft = getServiceDraft()
+                if (draft) {
+                    console.log('draft:', draft)
+                    this.setData({
+                        ...draft
+                    })
+                } else {
+                    throw { "errCode": 40000, "errMsg": "draft is null" }
+                }
+            } catch (e) {
+                console.log(e)
+            }
         } else {
             /** 读取维修单 */
             await this.getServiceEventDetailAsync()

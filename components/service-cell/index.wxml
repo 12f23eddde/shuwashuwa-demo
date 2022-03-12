@@ -1,0 +1,44 @@
+<van-cell
+  class="service-cell"
+  bind:tap="goToServiceDetail"
+  use-label-slot
+  is-link
+  title-width="30vw"
+>
+
+  <view slot="title" class="service-cell-title">
+    {{ service.serviceEventId }}
+  </view>
+
+  <view slot="label" class="service-cell-label">
+    <van-tag
+      plain
+      type="{{ statusType }}"
+      class="service-cell-tag"
+    > {{ statusText }}
+    </van-tag>
+  </view>
+
+  <view>
+    <view class="service-cell-col van-ellipsis text-bold">
+      {{ service.computerModel ? service.computerModel : '未填写型号' }}
+    </view>
+    <view class="service-cell-col van-ellipsis text-bold">
+      {{ service.problemSummary? service.problemSummary : '未填写问题描述' }}
+    </view>
+    <view class="service-cell-col van-ellipsis">
+      {{ service.activityName ? service.activityName + ' ' + startTime : '未选择活动' }}
+    </view>
+    <view class="service-cell-col van-ellipsis">
+      <view>
+        {{ service.userName }}
+      </view>
+      <van-icon name="arrow" color="#ccc" />
+      <view>
+        {{ service.volunteerName ? service.volunteerName: '未接单' }}
+      </view>
+    </view>
+  </view>
+
+</van-cell>
+

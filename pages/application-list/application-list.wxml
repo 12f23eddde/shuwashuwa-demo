@@ -3,64 +3,52 @@
 
 <van-notify id="van-notify" />
 <van-toast id="van-toast" />
+<van-dialog id="van-dialog"></van-dialog>
 
 <view>
-  <view wx-if="{{applicationsLoading}}">
+  <!-- 加载中 -->
+  <view wx:if="{{ applicationsLoading }}">
     <van-loading> 正在加载申请表... </van-loading>
   </view>
 
   <!-- 没有未审核申请表 -->
   <view
     class="centerTitle"
-    wx-if="{{!pageLoading && application.length == 0}}"
+    wx:if="{{ applications.length === 0}}"
     class="noApplication"
   >
     没有未审核申请表
   </view>
-  <view class="maptitle" wx:if="{{ !pageLoading && application.length > 0}}">
-    <view wx-if="{{pageLoading}}">
-      <van-loading/>
-    </view>
+
+  <!-- 有未审核申请表 -->
+  <view class="maptitle" wx-else>
     <view class="title">
       待审核志愿者申请
     </view>
   </view>
-  <!-- 有未审核申请表 -->
+
   <view>
-    <van-collapse value="{{ activeNames }}" bind:change="onChange">
+    <van-collapse
+      value="{{ activeNames }}"
+      bind:change="onChange"
+      accordion
+    >
       <van-collapse-item wx:for="{{ applications }}" icon="/res/icons/verifyingOrder.png">
-        <view slot="title" class="viewTitle"> {{(item.userName?item.userName:'未填写姓名')}} </view>
-        <view slot="value" class="viewValue"> 学号: {{(item.studentId?item.studentId:'未填写学号')}} </view>
-        <view class="infoRow">
-          <view class="left">年级 </view>
-          <view class="right">{{(item.grade?item.grade:'未填写')}}</view>
-        </view>
-        <view class="infoRow">
-          <view class="left">邮箱 </view>
-          <view class="right">{{(item.email?item.email:'未填写')}}</view>
-        </view>
-        <view class="infoRow">
-          <view class="left">手机号 </view>
-          <view class="right">{{(item.phoneNumber?item.phoneNumber:'未填写')}}</view>
-        </view>
-        <view class="infoRow">
-          <view class="left">部门 </view>
-          <view class="right">{{(item.department?item.department:'未填写')}}</view>
-        </view>
-        <view class="infoRow">
-          <view class="left">申请原因 </view>
-          <view class="right">{{(item.reasonForApplication?item.reasonForApplication:'未填写')}}</view>
-        </view>
-        <view class="test">
-          <van-image
-            fit="cover"
-            src="{{item.imageURL}}"
-            width="100"
-            height="100"
-            bind:click="viewPic"
-            data-picurl="{{item.cardPicLocation}}"
-          />
-        </view>
+        <view slot="title" class="viewTitle"> {{ item.userName }} </view>
+        <view slot="value" class="viewValue"> 学号: {{(item.studentId ? item.studentId:'未填写学号')}} </view>
+
+        <van-cell title="年级"> {{ item.grade? item.grade: '未填写' }} </van-cell>
+        <van-cell title="学院"> {{ item.department? item.department: '未填写' }} </van-cell>
+        <van-cell title="手机号"> {{ item.phoneNumber? item.phoneNumber: '未填写' }} </van-cell>
+        <van-cell title="申请原因"> {{ item.reasonForApplication? item.reasonForApplication: '未填写' }} </van-cell>
+
+        <van-field
+          model:value="{{ replyByAdmin }}"
+          label="回复"
+          required
+          class="application-reply"
+        />
+
         <view class="mapbuttons">
           <view class="bottons">
             <van-button
@@ -115,7 +103,5 @@
   </van-popup>
 
   <view class="blank"></view>
-
-  <van-dialog id="van-dialog"></van-dialog>
 </view>
 
