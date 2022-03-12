@@ -43,38 +43,29 @@
     <van-loading size="24px"> 正在加载维修单... </van-loading>
   </view> -->
 
-  <movable-area class="addBtnArea">
-    <!-- 没有对应的维修单 -->
-    <view wx-if="{{!serviceListLoading && serviceList.length == 0}}" class="noService">
-      <van-empty description="维修单空空如也..." />
-    </view>
+  <!-- 没有对应的维修单 -->
+  <view wx-if="{{!serviceListLoading && serviceList.length == 0}}" class="noService">
+    <van-empty description="维修单空空如也..." />
+  </view>
 
-    <view wx:if="{{ serviceList.length > 0 }}">
-      <van-cell-group class="activityCell">
-        <service-cell
-          wx:for="{{ filteredServiceList }}"
-          wx:key="serviceEventId"
-          service="{{ item }}"
-        >
-        </service-cell>
-      </van-cell-group>
-    </view>
+  <view wx:if="{{ serviceList.length > 0 }}">
+    <van-cell-group class="activityCell">
+      <service-cell
+        wx:for="{{ filteredServiceList }}"
+        wx:key="serviceEventId"
+        service="{{ item }}"
+      >
+      </service-cell>
+    </van-cell-group>
+  </view>
 
-    <movable-view
-      x="{{btnx}}"
-      y="{{btny}}"
-      direction="all"
-      class='iconorder'
-    >
-      <cover-image
-        class='fixedIcon'
-        id='addIconBtn'
-        bindtap="goToServiceDetail"
-        data-id="{{-1}}"
-        src="{{ addIconSrc }}"
-      />
-    </movable-view>
-    <view class="tabbar-spacer" />
-  </movable-area>
+  <cover-image
+    class='fixedIcon'
+    id='addIconBtn'
+    bindtap="goToServiceDetail"
+    data-id="{{-1}}"
+    src="{{ addIconSrc }}"
+  />
+  <view class="tabbar-spacer" />
 </view>
 

@@ -8,7 +8,13 @@
   width: 115rpx;
   height: 115rpx;
   position: fixed;
+  top: 75vh;
+  left: 75vw;
   display: block;
+
+  /** shadows */
+  border-radius: 50%;
+  box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.5);
 }
 
 .addBtnArea {
