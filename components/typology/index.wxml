@@ -1,4 +1,12 @@
-<view>
-  <slot></slot>
+<view
+  class="loading"
+  wx:if="{{ loading }}"
+  data-loading-text="{{text}}"
+/>
+<view
+  wx:else
+  class="non-loading"
+>
+  {{ text }}
 </view>
 
