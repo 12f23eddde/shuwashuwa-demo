@@ -22,7 +22,7 @@
   margin-bottom: 3%;
 }
 
-.blank{ 
+.blank { 
   height: 46px;
   clear:both; 
   overflow:hidden; 

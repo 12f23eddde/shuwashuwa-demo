@@ -27,7 +27,7 @@ Page({
             url: ""
         },
 
-        applications: [] as (Application & {imageUrl: string})[],
+        applications: [] as (Application & {imageUrl?: string, previewUrl?: string})[],
         applicationsLoading: false,
         showFeedback: false,
 
@@ -69,7 +69,8 @@ Page({
             const _app = applications.map(a => {
                 return {
                     ...a,
-                    imageUrl: `${globalStore.backendUrl}/img/100_${a.cardPicLocation}`
+                    previewUrl: `${globalStore.backendUrl}/img/100_${a.cardPicLocation}`,
+                    imageUrl: `${globalStore.backendUrl}/img/${a.cardPicLocation}`
                 }
             })
             if (_app.length > 0) {
@@ -115,6 +116,24 @@ Page({
         this.setData({
             activeNames: event.detail,
         });
+    },
+
+    onShowPopup(event: WechatEventType) {
+        const application = event.currentTarget?.dataset.application
+        console.log(application)
+
+        this.setData({
+            ...application,
+            showFeedback: true,
+        })
+
+    },
+
+    onHidePopup(event: WechatEventType) {
+        this.setData({
+            replyByAdmin: '',
+            showFeedback: false,
+        })
     },
 
     /** 确认通过，没有什么特殊的操作，只是把event作为参数传过去 */

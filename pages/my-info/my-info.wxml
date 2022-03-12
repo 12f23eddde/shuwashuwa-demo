@@ -178,7 +178,7 @@
       />
       <van-cell
         title="学生证照片(可选)"
-        label="我们承诺您的信息只用于发放志愿证明"
+        label="我们承诺只用于验证您的个人信息是否属实"
         title-style="{{ errMsg.cardPicLocation }}"
       >
         <van-uploader

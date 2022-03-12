@@ -15,29 +15,6 @@
   box-shadow: 5rpx 5rpx 10rpx rgba(0, 0, 0, 0.2);
 }
 
-/* .title {
-  width: 90%;
-  font-size: x-large;
-  font-weight: bold;
-  text-align: left;
-  color: rgb(101, 101, 101);
-  margin-top: 2%;
-  margin-bottom: 3%;
-}
-
-.titleNa {
-  text-decoration-line: underline;
-  margin-top: 2%;
-}
-
-.maptitle {
-  width: 100%;
-  height: 120rpx;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-} */
-
 .cell-group-container {
   width: 100%;
   display: flex;

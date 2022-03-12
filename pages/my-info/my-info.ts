@@ -197,7 +197,7 @@ Page({
             Notify({ type: 'success', message: '提交成功' })
         } catch (e: any) {
             console.error(e)
-            Notify({ type: 'danger', message: '提交失败' })
+            Notify({ type: 'danger', message: e.errMsg? e.errMsg: '提交失败' })
         } finally {
             this.setData({
                 applicationLoading: false
@@ -308,6 +308,7 @@ Page({
     onMagicTap: function(e: WechatEventType){
         const currentTime = e.timeStamp
         const prevTime = this.data.tapTime
+        
         // 点击小于300ms
         if (currentTime - prevTime < 300 || prevTime === 0) {
             this.setData({
@@ -315,14 +316,15 @@ Page({
                 tapCount: this.data.tapCount + 1
             })
             console.log('tapCount', this.data.tapCount)
+        } else {
+            this.setData({
+                tapTime: 0,
+                tapCount: 0
+            })
         }
+
         // 连续点击5次 进入debug页面
         if (this.data.tapCount === 5) {
-            this.setData({
-                tapCount: 0,
-                tapTime: 0
-            })
-
             Dialog.confirm({
                 title: '进入调试页面',
                 message: '如果您不清楚这是什么，请点击取消',
@@ -333,6 +335,11 @@ Page({
                     })
                 })
                 .catch(()=>{})
+
+            this.setData({
+                    tapCount: 0,
+                    tapTime: 0
+            })
         }
     },
 

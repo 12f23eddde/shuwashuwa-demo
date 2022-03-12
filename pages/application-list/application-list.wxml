@@ -6,28 +6,12 @@
 <van-dialog id="van-dialog"></van-dialog>
 
 <view>
-  <!-- 加载中 -->
-  <view wx:if="{{ applicationsLoading }}">
-    <van-loading> 正在加载申请表... </van-loading>
+  <!--待审核志愿者申请-->
+  <view class="cell-title">
+    <typology loading="{{ applicationsLoading }}" text="待审核志愿者申请" />
   </view>
 
-  <!-- 没有未审核申请表 -->
-  <view
-    class="centerTitle"
-    wx:if="{{ applications.length === 0}}"
-    class="noApplication"
-  >
-    没有未审核申请表
-  </view>
-
-  <!-- 有未审核申请表 -->
-  <view class="maptitle" wx-else>
-    <view class="title">
-      待审核志愿者申请
-    </view>
-  </view>
-
-  <view>
+  <view wx:if="{{applications.length}}">
     <van-collapse
       value="{{ activeNames }}"
       bind:change="onChange"
@@ -81,24 +65,63 @@
     </van-collapse>
   </view>
 
+  <view wx:if="{{applications.length}}">
+    <van-cell-group>
+      <van-cell
+        wx:for="{{ applications }}"
+        wx:key="formId"
+        bindtap="onShowPopup"
+        data-application="{{ item }}"
+        is-link
+      >
+        <view slot="title" class="application-cell-title"> {{ item.userName }}</view>
+        <view class="application-cell-col"> 学号: {{ item.studentId? item.studentId: '未填写学号' }} </view>
+        <view class="application-cell-col"> {{ item.department? item.department: '未填写院系' }} {{ item.grade? item.grade: '未填写年级' }} </view>
+        <view class="application-cell-col"> {{ item.reasonForApplication}} </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <view wx:elif="{{!applicationsLoading}}" class="noApplication">
+    <van-empty description="没有待审核申请" />
+  </view>
+
   <van-popup
-    show="{{ feedBackShow }}"
-    bind:close="feedBackClose"
+    show="{{ showFeedback }}"
+    bind:close="onHidePopup"
     position="bottom"
   >
     <van-cell-group>
+      <van-cell title="年级"> {{ grade? grade: '未填写' }} </van-cell>
+      <van-cell title="学院"> {{ department? department: '未填写' }} </van-cell>
+      <van-cell title="手机号"> {{ phoneNumber? phoneNumber: '未填写' }} </van-cell>
+      <van-cell title="申请原因"> {{ reasonForApplication? reasonForApplication: '未填写' }} </van-cell>
       <van-field
         id="department"
         model:value="{{ adminFeedBack }}"
         label="反馈信息"
         placeholder="学生证照片不清晰"
       />
-      <van-button
-        type="danger"
-        size="large"
-        bindtap="onReject"
-      > 确认
-      </van-button>
+
+      <view class="botton-container">
+
+        <van-button
+          type="primary"
+          size="large"
+          class="application-button"
+          bindtap="onConfirm"
+        > 通过
+        </van-button>
+
+        <van-button
+          type="danger"
+          size="large"
+          class="application-button"
+          bindtap="onReject"
+        > 拒绝
+        </van-button>
+
+      </view>
     </van-cell-group>
   </van-popup>
 

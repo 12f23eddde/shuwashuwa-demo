@@ -104,8 +104,54 @@
 }
 
 .noApplication {
-  height: 900rpx;
-  text-align: center;
-  transform:translateY(50%);
+  height: 80vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: gray;
+}
+
+.cell-title {
+  margin-left: 5vw;
+  margin-top: 40rpx;
+  margin-bottom: 20rpx;
+  width: fit-content;
+}
+
+.application-cell-title {
+  font-size: large;
+  font-weight: bold;
+  margin-left: 10rpx;
+}
+
+.application-cell-label {
+  margin-top: 0.4em;
+}
+
+.application-cell-col {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-bold {
+  font-weight: bold;
+  color: #333;
+}
+
+.application-button .van-button {
+  width: 50vw;
+  margin: 0;
+  border-radius: 0;
+  padding: 0;
+  border: 0px;
+}
+
+.button-container {
+  display: flex;
 }
