@@ -288,13 +288,6 @@ Page({
         })
     },
 
-    /** 展开抽屉 */
-    onChange(event: any) {
-        this.setData({
-          activeNames: event.detail,
-        });
-      },
-
     /**
      * 生命周期函数--监听页面加载
      */
