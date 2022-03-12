@@ -39,12 +39,11 @@
 
   <view class="blank"></view>
 
-  <view wx-if="{{ serviceListLoading }}" class="service-loading">
+  <!-- <view wx-if="{{ serviceListLoading }}" class="service-loading">
     <van-loading size="24px"> 正在加载维修单... </van-loading>
-  </view>
+  </view> -->
 
   <movable-area class="addBtnArea">
-
     <!-- 没有对应的维修单 -->
     <view wx-if="{{!serviceListLoading && serviceList.length == 0}}" class="noService">
       <van-empty description="维修单空空如也..." />

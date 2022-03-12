@@ -274,6 +274,8 @@ Page({
             reasonForApplication: '',
             showApplication: false
         })
+
+        this.getMyApplicationAsync()
     },
 
     /** 点击上传图片 */

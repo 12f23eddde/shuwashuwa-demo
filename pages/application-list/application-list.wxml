@@ -12,60 +12,6 @@
   </view>
 
   <view wx:if="{{applications.length}}">
-    <van-collapse
-      value="{{ activeNames }}"
-      bind:change="onChange"
-      accordion
-    >
-      <van-collapse-item wx:for="{{ applications }}" icon="/res/icons/verifyingOrder.png">
-        <view slot="title" class="viewTitle"> {{ item.userName }} </view>
-        <view slot="value" class="viewValue"> 学号: {{(item.studentId ? item.studentId:'未填写学号')}} </view>
-
-        <van-cell title="年级"> {{ item.grade? item.grade: '未填写' }} </van-cell>
-        <van-cell title="学院"> {{ item.department? item.department: '未填写' }} </van-cell>
-        <van-cell title="手机号"> {{ item.phoneNumber? item.phoneNumber: '未填写' }} </van-cell>
-        <van-cell title="申请原因"> {{ item.reasonForApplication? item.reasonForApplication: '未填写' }} </van-cell>
-
-        <van-field
-          model:value="{{ replyByAdmin }}"
-          label="回复"
-          required
-          class="application-reply"
-        />
-
-        <view class="mapbuttons">
-          <view class="bottons">
-            <van-button
-              type="primary"
-              size="large"
-              plain
-              round
-              bindtap="onConfirm"
-              data-status='1'
-              data-id="{{item.formId}}"
-              data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}"
-            >通过
-            </van-button>
-          </view>
-          <view class="bottons">
-            <van-button
-              type="danger"
-              size="large"
-              plain
-              round
-              bindtap="onFeedBack"
-              data-status='2'
-              data-id="{{item.formId}}"
-              data-url="{{'/pages/service-detail/service-detail?id='+item.serviceEventId}}"
-            >拒绝
-            </van-button>
-          </view>
-        </view>
-      </van-collapse-item>
-    </van-collapse>
-  </view>
-
-  <view wx:if="{{applications.length}}">
     <van-cell-group>
       <van-cell
         wx:for="{{ applications }}"
@@ -92,19 +38,33 @@
     position="bottom"
   >
     <van-cell-group>
+      <van-cell title="姓名"> {{ userName? userName: '未填写' }} </van-cell>
       <van-cell title="年级"> {{ grade? grade: '未填写' }} </van-cell>
       <van-cell title="学院"> {{ department? department: '未填写' }} </van-cell>
       <van-cell title="手机号"> {{ phoneNumber? phoneNumber: '未填写' }} </van-cell>
+      <van-cell title="学号"> {{ studentId? studentId: '未填写' }} </van-cell>
       <van-cell title="申请原因"> {{ reasonForApplication? reasonForApplication: '未填写' }} </van-cell>
+
+      <van-cell title="学生证照片" wx:if="{{ cardPicLocation }}">
+        <van-uploader
+          disabled
+          deletable="{{false}}"
+          file-list="{{ imagesToUpload }}"
+          max-count="1"
+        />
+      </van-cell>
+
       <van-field
         id="department"
-        model:value="{{ adminFeedBack }}"
+        model:value="{{ replyByAdmin }}"
         label="反馈信息"
+        required
+        class="reply-field"
         placeholder="学生证照片不清晰"
-      />
+      >
+      </van-field>
 
-      <view class="botton-container">
-
+      <view class="botton-container" wx:if="{{ auditable }}">
         <van-button
           type="primary"
           size="large"

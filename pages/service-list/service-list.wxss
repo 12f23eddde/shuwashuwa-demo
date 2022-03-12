@@ -151,6 +151,6 @@
 }
 
 .tabbar-spacer { 
-  height: 50px;
+  height: 70px;
   width: 100%;
 }

@@ -16,22 +16,11 @@ Page({
      * 页面的初始数据
      */
     data: {
-        application: [
-
-        ],
-        pageLoading: false,
-        feedBackShow: false,
-        appDataSet: {
-            id: null,
-            status: "",
-            url: ""
-        },
-
-        applications: [] as (Application & {imageUrl?: string, previewUrl?: string})[],
+        applications: [] as Application[],
         applicationsLoading: false,
         showFeedback: false,
 
-        activeNames: ['1'],
+        imagesToUpload: [] as Record<string, string | boolean>[],
 
         /** 回复的管理员的姓名 */
         adminName: '',
@@ -48,7 +37,21 @@ Page({
         /** 发起申请的用户的姓名 */
         userId: -1,
 
+        /** 用户姓名 */
+        userName: '',
+        /** 用户手机号 */
+        phoneNumber: '',
+        /** 用户邮箱 */
+        email: '',
+        /** 用户身份 */
+        identity: '',
+        /** 用户院系 */
+        department: '',
+        /** 用户学号 */
+        studentId: '',
+
         submitLoading: false,
+        auditable: false,
     },
 
     /** 载入志愿者申请 */
@@ -65,17 +68,9 @@ Page({
             if (!applications) {
                 throw new Error('获取志愿者申请列表失败')
             }
-            // 生成图片URL
-            const _app = applications.map(a => {
-                return {
-                    ...a,
-                    previewUrl: `${globalStore.backendUrl}/img/100_${a.cardPicLocation}`,
-                    imageUrl: `${globalStore.backendUrl}/img/${a.cardPicLocation}`
-                }
-            })
-            if (_app.length > 0) {
+            if (applications.length > 0) {
                 this.setData({
-                    applications: _app
+                    applications
                 })
             }
         } catch (e) {
@@ -88,22 +83,23 @@ Page({
     },
 
     /** 审核志愿者申请 */
-    auditApplicationAsync: async function(){
+    auditApplicationAsync: async function () {
         this.setData({
             submitLoading: true,
         })
         try {
-            const appAudit = {
-                formId: this.data.formId,
-                status: this.data.status,
-                replyByAdmin: this.data.replyByAdmin
-            } as Application
-            const res = await auditApplication(appAudit)
-            if (!res) throw new Error('审核失败')
+            if (!this.data.replyByAdmin) {
+                Notify({ type: 'danger', message: '请填写反馈信息' })
+                return
+            }
+            // 补全空项
+            const appAudit: any = Object.fromEntries(Object.entries(this.data).map(([k, v]) => v? [k, v]: [k, '未填写']))
+            console.log('appAudit', appAudit)
+            await auditApplication(appAudit)
             Notify({ type: 'success', message: '审核成功' })
         } catch (e: any) {
-            Notify({ type: 'danger', message: '审核失败' })
             console.error(e)
+            Notify({ type: 'danger', message: '审核失败' })
         } finally {
             this.setData({
                 submitLoading: false,
@@ -125,6 +121,15 @@ Page({
         this.setData({
             ...application,
             showFeedback: true,
+            auditable: userStore.user?.admin,
+            imagesToUpload: [
+                {
+                    name: application.cardPicLocation,
+                    thumb: globalStore.backendUrl + '/img/100_' + application.cardPicLocation,
+                    url: globalStore.backendUrl + '/img/' + application.cardPicLocation,
+                    isImage: true
+                }
+            ]
         })
 
     },
@@ -138,51 +143,39 @@ Page({
 
     /** 确认通过，没有什么特殊的操作，只是把event作为参数传过去 */
     onConfirm: function (event: WechatEventType) {
-        Dialog.confirm({
-            title: '确认页面',
-            message: "确定要通过志愿者申请吗？",
+        this.setData({
+            status: 1,
         })
-            .then(() => {
-                this.setData({
-                    status: 1,
-                    showFeedback: false
-                })
-                this.auditApplicationAsync()
+        try {
+            this.auditApplicationAsync()
+            this.setData({
+                showFeedback: false
             })
-            .catch(() => {
-                // on cancel
-            });
+        } catch (e: any) {
+            Notify({ type: 'danger', message: e.message })
+        }
     },
 
-    /**
-        与onConfirm不同，onReject对应的是popup里面的那个按钮，所以event和onCorfirm的event有很大不同
-        也不能直接用wxfor的item的数据
-        因此虽然代码和onconfirm相似但是逻辑其实不一样
-        从这里调replyApplication的话，event的dataset是空的，因此三目运算符会选择data里的数据作为参数
-        数据是popup弹出时设置的
-    */
+    /** 不通过维修单 */
     onReject: function (event: WechatEventType) {
-        Dialog.confirm({
-            title: '确认页面',
-            message: "确定要拒绝志愿者申请吗？",
+        this.setData({
+            status: 2,
         })
-            .then(() => {
-                this.setData({
-                    status: 2,
-                    showFeedback: false
-                });
-                this.auditApplicationAsync()
+        try {
+            this.auditApplicationAsync()
+            this.setData({
+                showFeedback: false
             })
-            .catch(() => {
-                // on cancel
-            });
+        } catch (e: any) {
+            Notify({ type: 'danger', message: e.message })
+        }
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
-
+    onLoad: async function (options) {
+        await ensureUserInfo()
     },
 
     /**

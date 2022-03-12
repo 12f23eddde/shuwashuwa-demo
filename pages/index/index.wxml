@@ -101,10 +101,8 @@
   </view>
 
   <!-- 接单维修单 -->
-  <view class="maptitle" wx:if="{{ workingServices.length > 0 }}">
-    <view class="title">
-      接单维修单
-    </view>
+  <view class="cell-title" wx:if="{{ workingServices.length > 0 }}">
+    <typology loading="{{ myServicesLoading }}" text="接单维修单" />
   </view>
 
   <view class="cell-group-container" wx:if="{{ workingServices.length > 0 }}">
@@ -214,7 +212,11 @@
         </view>
         <view slot="title"> 志愿者申请正在审核 </view>
       </van-cell>
-      <van-cell wx:if="{{ myApplicationStatus == 1 }}" class="link-cell">
+      <van-cell
+        wx:if="{{ myApplication.status == 1 }}"
+        class="link-cell"
+        bind:tap="refreshUserInfoAsync"
+      >
         <view slot="icon" class="link-cell-icon">
           <van-icon
             name="passed"
@@ -223,8 +225,9 @@
           />
         </view>
         <view slot="title"> 志愿者申请已经通过 </view>
+        <view slot=""> 点击刷新 </view>
       </van-cell>
-      <van-cell wx:if="{{ myApplicationStatus == 2 }}" class="link-cell">
+      <van-cell wx:if="{{ myApplication.status == 2 }}" class="link-cell">
         <view slot="icon" class="link-cell-icon">
           <van-icon
             name="close"
@@ -233,7 +236,7 @@
           />
         </view>
         <view slot="title"> 志愿者申请被拒绝 </view>
-        <view slot=""> {{ myApplicationMessage }} </view>
+        <view slot=""> {{ myApplication.replyByAdmin }} </view>
       </van-cell>
     </van-cell-group>
   </view>

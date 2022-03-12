@@ -14,6 +14,7 @@ import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast'
 
 import { serviceStatusText } from '../../utils/shuwashuwa'
 import { emitErrorToast } from '../../utils/ui'
+import { getCurrentUserInfo } from '../../api_new/user'
 
 Page({
     /**
@@ -240,7 +241,7 @@ Page({
             }
             if (applications.length > 0) {
                 this.setData({
-                    myApplication: applications[0],
+                    myApplication: applications[applications.length - 1],
                 })
             }
         } catch (e) {
@@ -265,7 +266,7 @@ Page({
                 status: 0,
             }
             const applications = await getApplicationList(options);
-            console.log('applications refreshed', applications)
+            console.log('active applications refreshed', applications)
             if (!applications) {
                 throw new Error('获取志愿者申请列表失败')
             }
@@ -291,6 +292,26 @@ Page({
         } catch (e) {
             console.error(e)
             Toast.fail('签到失败')
+        }
+    },
+
+    /** 刷新用户信息 */
+    refreshUserInfoAsync: async function () {
+        try {
+            const user = await getCurrentUserInfo()
+            console.log('user refreshed', user)
+            if (!user) {
+                throw new Error('获取用户信息失败')
+            }
+            userStore.setUser(user)
+            /** 重新进入 */
+            if (user.volunteer) {
+                wx.reLaunch({
+                    url: '/pages/index/index',
+                })
+            }
+        } catch (e) {
+            console.error(e)
         }
     },
 

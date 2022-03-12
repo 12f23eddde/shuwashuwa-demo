@@ -173,7 +173,7 @@
         id="department"
         model:value="{{ reasonForApplication }}"
         label="申请理由"
-        placeholder="信息科学技术学院"
+        placeholder="想去电脑城找份工作（不是"
         error-message="{{ errMsg.reasonForApplication }}"
       />
       <van-cell
