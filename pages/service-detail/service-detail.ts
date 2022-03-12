@@ -762,8 +762,6 @@ Page({
                 boughtTime: { required: true },
                 brand: { required: true },
                 computerModel: { required: true },
-                cpuModel: { required: true },
-                graphicsModel: { required: true },
                 hasDiscreteGraphics: { required: true },
                 laptopType: { required: true },
                 problemDescription: { required: true },
@@ -777,8 +775,6 @@ Page({
                 boughtTime: { required: '请选择购买时间(不用很精确)' },
                 brand: { required: '请填写品牌' },
                 computerModel: { required: '请填写型号' },
-                cpuModel: { required: '请填写CPU型号' },
-                graphicsModel: { required: '请填写独立显卡型号' },
                 hasDiscreteGraphics: { required: 'Switch状态为null' },
                 laptopType: { required: '请选择电脑类型' },
                 problemDescription: { required: '请填写故障描述' },
@@ -829,6 +825,7 @@ Page({
                 const draft = getServiceDraft()
                 if (draft) {
                     console.log('draft:', draft)
+                    Notify({ type: 'success', message: '使用上次编辑的草稿' })
                     this.setData({
                         ...draft
                     })

@@ -107,14 +107,13 @@
       <van-field
         model:value="{{ cpuModel }}"
         clearable
-        required="{{! disableEdit }}"
         label="CPU型号"
         icon="question-o"
         placeholder="Intel i7-10710U / AMD Ryzen 7 4800U"
         bind:click-icon="onShowHelpPopup"
         readonly="{{ disableEdit }}"
       />
-      <van-cell title="有独立显卡" required="{{! disableEdit }}">
+      <van-cell title="有独立显卡">
         <van-switch
           checked="{{ hasDiscreteGraphics }}"
           size="35rpx"
@@ -125,7 +124,6 @@
       </van-cell>
       <van-field
         model:value="{{ graphicsModel }}"
-        required="{{! disableEdit }}"
         clearable
         label="独立显卡型号"
         icon="question-o"
