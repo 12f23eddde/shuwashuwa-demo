@@ -1,4 +1,0 @@
-/* custom-tab-bar/index.wxss */
-.tabbar {
-  display: block;
-}
