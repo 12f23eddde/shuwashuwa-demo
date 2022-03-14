@@ -1,6 +1,5 @@
 import { getServiceEventList, cancelServiceEvent, createServiceEvent } from '../../api_new/service'
 import { checkUserInfo, ensureUserInfo } from '../../utils/shuwashuwa'
-import { serviceStatusText, serviceStatusType } from '../../utils/shuwashuwa'
 
 import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog'
 import type { ServiceEvent, ServiceQuery } from '../../models/service'
@@ -31,7 +30,7 @@ Page({
         serviceList: [] as ServiceEvent[],
         serviceListLoading: false,
         reversed: false,
-        
+
         /** 搜索结果 */
         searchIndex: null as any,
         searchText: '' as string,
@@ -49,12 +48,6 @@ Page({
 
         activeNames: ['1'],
         pageLoading: false,
-
-        /** 添加维修单 */
-        addIconSrc: '/res/icons/addOrder.png',
-
-        btnx: wx.getSystemInfoSync().windowWidth * 0.75,
-        btny: wx.getSystemInfoSync().windowHeight - 90,
     },
 
     /** 获取维修单列表 */
@@ -69,8 +62,8 @@ Page({
                 emitErrorToast('获取活动列表失败')
             }
             console.log('service list refreshed', serviceList)
-            
-            if(this.data.reversed){
+
+            if (this.data.reversed) {
                 serviceList?.reverse()
             }
 
@@ -172,7 +165,7 @@ Page({
         const order = event.detail
         console.log('setOrder', order)
         this.setData({
-            reversed: order? true: false,
+            reversed: order ? true : false,
         })
         this.getServiceListAsync()
     },
@@ -270,7 +263,7 @@ Page({
         }
 
         const results = this.data.searchIndex.search(keyword)
-        
+
         /* concat results*/
         const filteredServiceIds: Set<number> = new Set();
         results.forEach((item: { result: any[]; }) => {
@@ -292,11 +285,6 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: async function (options: Record<string, string>) {
-        this.setData({  // 注意,这里的定义修改了
-            addIconSrc: '/res/icons/addOrder.png',
-            btnx: wx.getSystemInfoSync().windowWidth * 0.75,
-            btny: wx.getSystemInfoSync().windowHeight - 90,
-        })
         this.initStatusOptions()
     },
 
@@ -369,8 +357,12 @@ Page({
 
     },
 
-    goToServiceDetail: function (e: WechatEventType) {
-        const serviceId = e.currentTarget?.dataset.id as number;
+    goToServiceDetail: async function (e: WechatEventType) {
+        /** 没有填写用户名 */
+        if (!(await checkUserInfo())) {
+            return
+        }
+        const serviceId = e.currentTarget?.dataset.id as number
         wx.navigateTo({
             url: '/pages/service-detail/service-detail?id=' + serviceId,
         })

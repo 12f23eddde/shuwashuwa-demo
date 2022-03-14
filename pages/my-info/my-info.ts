@@ -353,7 +353,7 @@ Page({
         await ensureUserInfo()
         await this.getUserInfoAsync()
         // 未填写用户信息，开启编辑
-        if (this.data.userName == '') {
+        if (!this.data.userName) {
             this.setData({
                 disableEdit: false
             })
