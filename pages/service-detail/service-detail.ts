@@ -89,6 +89,8 @@ Page({
         editable: false,
         auditable: false,
         workable: false,
+        canUserFeedback: false,
+        canVolunteerFeedback: false,
 
         /** 模板ID */
         tmplIDs: [] as string[],
@@ -174,7 +176,8 @@ Page({
                     })
                 }
             }
-
+            // 更新按钮状态
+            this.updateComponentStates()
         } catch (e) {
             console.error(e)
         } finally {

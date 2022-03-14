@@ -228,28 +228,28 @@
     <van-cell-group title="审核结果" class="serviceDetailCell_">
       <van-field
         model:value="{{ problemSummary }}"
-        required="{{ (auditable && status == 1) }}"
+        required="{{ auditable }}"
         clearable
         label="故障概述"
         placeholder="更换电池"
-        readonly="{{ !(auditable && status == 1) }}"
+        readonly="{{ !auditable }}"
       />
       <van-field
         model:value="{{ descriptionAdvice }}"
         label="审核消息"
         type="textarea"
         placeholder="请您重新上传照片，看不清电池型号"
-        readonly="{{ !(auditable && status == 1) }}"
+        readonly="{{ auditable }}"
         autosize
-        required="{{ (auditable && status == 1) }}"
+        required="{{ !auditable }}"
       />
     </van-cell-group>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ (status == 4)|| volunteerMessage }}">
+  <view class="mapbuttons" wx-if="{{ canVolunteerFeedback || repairingResult }}">
     <van-cell-group title="维修留言" class="serviceDetailCell_">
       <van-field
-        model:value="{{ volunteerMessage }}"
+        model:value="{{ repairingResult }}"
         label="志愿者留言"
         type="textarea"
         placeholder="记得先拆键盘"
@@ -259,10 +259,10 @@
     </van-cell-group>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ (editable || userMessage) && status == 5 }}">
+  <view class="mapbuttons" wx-if="{{ canUserFeedback || feedback }}">
     <van-cell-group title="维修反馈" class="serviceDetailCell_">
       <van-field
-        model:value="{{ userMessage }}"
+        model:value="{{ feedback }}"
         label="反馈消息"
         type="textarea"
         placeholder="维修后暂时还没出什么问题"
@@ -318,7 +318,7 @@
     </view>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ editable && status == 5 }}">
+  <view class="mapbuttons" wx-if="{{ canUserFeedback }}">
     <view class="buttons">
       <van-button
         type="primary"
@@ -335,7 +335,7 @@
   </view>
 
   <!-- 管理员功能 -->
-  <view class="mapbuttons" wx-if="{{ auditable && status == 1}}">
+  <view class="mapbuttons" wx-if="{{ auditable }}">
     <view class="buttons_">
       <van-button
         type="primary"
@@ -365,7 +365,7 @@
   </view>
 
   <!-- 志愿者功能 -->
-  <view class="mapbuttons" wx-if="{{ workable && status==3 }}">
+  <view class="mapbuttons" wx-if="{{ workable }}">
     <view class="buttons">
       <van-button
         type="primary"
@@ -381,7 +381,7 @@
     </view>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ workable && status==4 }}">
+  <view class="mapbuttons" wx-if="{{ canVolunteerFeedback }}">
     <view class="buttons_">
       <van-button
         type="primary"
