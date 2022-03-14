@@ -304,12 +304,14 @@ Page({
         // 保证用户信息存在
         await ensureUserInfo()
 
-        // 读取参数
-        const params = globalStore.getAndUnsetTabParams() as ServiceQuery
+        // 读取参数 deepcopy
+        const params = Object.assign({ draft: false, closed: false }, globalStore.getAndUnsetTabParams()) as ServiceQuery
         console.log('[onShow] params=', params)
         if (params) { // tab参数不为空
             this.setData({
-                query: params
+                query: params,
+                activitySelected: params.activity,
+                statusSelected: -1
             })
         }
 
