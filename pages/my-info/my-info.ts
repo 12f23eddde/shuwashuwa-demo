@@ -354,6 +354,9 @@ Page({
         await this.getUserInfoAsync()
         // 未填写用户信息，开启编辑
         if (!this.data.userName) {
+            Dialog.alert({
+                message: '在提交维修单前请您先填写个人信息。您的个人信息仅供志愿活动记录使用，我们承诺不会用于其他用途。',
+            })
             this.setData({
                 disableEdit: false
             })

@@ -51,11 +51,7 @@ export const whoAmI = async function () {
 export const checkUserInfo = async function () {
     await ensureUserInfo();
     if (!userStore.user?.userName) {
-        Dialog.alert({
-            message: '请您先填写个人信息',
-        }).then(() => {
-            wx.switchTab({ url: '/pages/my-info/my-info' })
-        });
+        wx.switchTab({ url: '/pages/my-info/my-info' })
         return false;
     }
     return true;
