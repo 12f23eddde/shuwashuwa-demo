@@ -12,11 +12,13 @@ import WeValidator from '../../miniprogram_npm/we-validator/index'
 import type { WeValidatorInstance, WeValidatorOptions, WeValidatorResult } from '../../models/weValidatorType'
 import type { WechatEventType } from '../../models/wechatType'
 import { userStore } from '../../stores/user'
-import { updateCurrentUserInfo } from '../../api_new/user'
+import { getCurrentUserInfo, updateCurrentUserInfo } from '../../api_new/user'
 import { getApplicationList, submitApplication } from '../../api_new/volunteer'
 import type { User } from '../../models/user'
 import { deleteImage, uploadImage } from '../../api_new/file'
 import { globalStore } from '../../stores/global'
+import { emitErrorToast } from '../../utils/ui'
+import { parseToken } from '../../utils/token-parser'
 
 Page({
     data: {
@@ -124,6 +126,16 @@ Page({
             userInfoLoading: true
         })
         try {
+
+            const userInfo = await getCurrentUserInfo();
+            if (!userInfo) {
+                emitErrorToast('获取用户信息失败');
+                return;
+            }
+            // 解析userId
+            const userId = parseToken(userStore.token).userid;
+            userInfo.userid = userId;
+            userStore.setUser(userInfo);
             const myRole = await whoAmI()
             this.setData({
                 ...userStore.user,
@@ -144,6 +156,7 @@ Page({
             submitLoading: true
         })
         try {
+            console.log(this.data)
             await updateCurrentUserInfo(this.data as User)
             Notify({ type: 'success', message: '修改成功' })
         } catch (e: any) {
