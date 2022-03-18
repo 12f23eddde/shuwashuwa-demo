@@ -1,143 +1,190 @@
 <view>
   <van-notify id="van-notify" />
   <van-dialog id="van-dialog" />
-<view class="userPage">
-  <view class="userinfo-avatar">
+
+  <view class="user-container">
+
+    <!-- 看不了用户头像了捏 -->
+    <!-- <view class="userinfo-avatar">
     <open-data class="userPic" type="userAvatarUrl"></open-data>
-  </view>
-  <view class="userinfo">
-    <view class="userIcon">
-      <image src="icon-demo-1126.png" class="uIcon" mode="aspectFit" />
-    </view>
-    <view class="usernickname">
-      <view wx:if="{{ userName }}" class="nickName">{{ userName }}</view>
-      <open-data wx:else type="userNickName" class='nickname'></open-data>
-    </view>
-    <view class="userotherinfo">
-      <van-icon name="manager" />
-      <view wx:if="{{ userId !== -1 }}" class="phone">{{ 'UID: ' + userId }}</view>
-      <view stutype> {{ myRole }}</view>
-    </view>
-  </view>
-  <van-toast id="van-toast" />
-  <van-notify id="van-notify" />
-  <van-cell-group class="detailInfo">
-    <van-field 
-      id="userName" 
-      model:value="{{ userName }}" 
-      label="姓名" 
-      placeholder="小明" 
-      error-message="{{ errMsg.userName }}" 
-      required="{{ !disableEdit }}"
-      readonly="{{ disableEdit }}"
-    />
-    <van-field 
-      id="studentId" 
-      model:value="{{ studentId }}" 
-      label="学号" 
-      placeholder="18000XXXXX" 
-      error-message="{{ errMsg.studentId }}" 
-      required="{{ !disableEdit }}"
-      readonly="{{ disableEdit }}"
-    />
-    <van-field 
-      id="phoneNumber"
-      model:value="{{ phoneNumber }}" 
-      label="手机号"
-      placeholder="136XXXXXXXX" 
-      error-message="{{ errMsg.phoneNumber }}"
-      required="{{ !disableEdit }}"
-      readonly="{{ disableEdit }}"
-    />
-    <van-field 
-      id="identity" 
-      model:value="{{ identity }}" 
-      label="身份" 
-      placeholder="本科学生" 
-      readonly="{{ disableEdit }}"
-    />
-    <van-field 
-      id="grade" 
-      model:value="{{ grade }}" 
-      label="年级" 
-      placeholder="大三" 
-      readonly="{{ disableEdit }}"
-    />
-    <van-field 
-      id="email" 
-      model:value="{{ email }}" 
-      label="邮箱" 
-      placeholder="example@example.com" 
-      error-message="{{ errMsg.email }}" 
-      readonly="{{ disableEdit }}"
-    />
-    <van-field 
-      id="department" 
-      model:value="{{ department }}" 
-      label="部门" 
-      placeholder="信息科学技术学院"
-      readonly="{{ disableEdit }}"
-    />
-    <van-field 
-      id="comment" 
-      model:value="{{ comment }}" 
-      autosize label="备注" 
-      placeholder="啊这" 
-      readonly="{{ disableEdit }}"
-    />
-  </van-cell-group>
+  </view> -->
 
-  <view class="mapbuttons" wx-if="{{ !disableEdit }}">
-    <view class="buttons" >
-      <van-button type="primary" size="large" bindtap="onClickChange" id="onClickChange" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
-        提交
-      </van-button>
+    <view class="userinfo">
+      <view class="userinfo-icon" bindtap="onMagicTap">
+        <van-icon
+          name="user-circle-o"
+          size="40px"
+          color="#777"
+          class="userinfo-avatar"
+        />
+      </view>
+
+      <view class="usernickname">
+        <view wx:if="{{ userName }}" class="nickName">{{ userName }}</view>
+      </view>
+
+      <view class="userotherinfo">
+        <van-tag
+          plain
+          size="large"
+          class="user-role-tag"
+        > {{ myRole }}
+        </van-tag>
+        <view wx:if="{{ userId !== -1 }}" class="phone">{{ 'UID: ' + userid }}</view>
+      </view>
+
     </view>
+    <van-toast id="van-toast" />
+    <van-notify id="van-notify" />
+    <van-cell-group class="detailInfo">
+      <van-field
+        id="userName"
+        model:value="{{ userName }}"
+        label="姓名"
+        placeholder="小明"
+        error-message="{{ errMsg.userName }}"
+        required="{{ !disableEdit }}"
+        readonly="{{ disableEdit }}"
+      />
+      <van-field
+        id="studentId"
+        model:value="{{ studentId }}"
+        label="学号"
+        placeholder="18000XXXXX"
+        error-message="{{ errMsg.studentId }}"
+        required="{{ !disableEdit }}"
+        readonly="{{ disableEdit }}"
+      />
+      <van-field
+        id="phoneNumber"
+        model:value="{{ phoneNumber }}"
+        label="手机号"
+        placeholder="136XXXXXXXX"
+        error-message="{{ errMsg.phoneNumber }}"
+        required="{{ !disableEdit }}"
+        readonly="{{ disableEdit }}"
+      />
+      <van-field
+        id="identity"
+        model:value="{{ identity }}"
+        label="身份"
+        placeholder="本科学生"
+        readonly="{{ disableEdit }}"
+      />
+      <van-field
+        id="grade"
+        model:value="{{ grade }}"
+        label="年级"
+        placeholder="大三"
+        readonly="{{ disableEdit }}"
+      />
+      <van-field
+        id="email"
+        model:value="{{ email }}"
+        label="邮箱"
+        placeholder="example@example.com"
+        error-message="{{ errMsg.email }}"
+        readonly="{{ disableEdit }}"
+      />
+      <van-field
+        id="department"
+        model:value="{{ department }}"
+        label="部门"
+        placeholder="信息科学技术学院"
+        readonly="{{ disableEdit }}"
+      />
+      <van-field
+        id="comment"
+        model:value="{{ comment }}"
+        autosize
+        label="备注"
+        placeholder="啊这"
+        readonly="{{ disableEdit }}"
+      />
+    </van-cell-group>
+
+    <view class="mapbuttons" wx-if="{{ !disableEdit }}">
+      <view class="buttons">
+        <van-button
+          type="primary"
+          size="large"
+          bindtap="onEditUserInfo"
+          loading="{{submitLoading}}"
+          disabled="{{submitLoading}}"
+          round
+        >
+          提交
+        </van-button>
+      </view>
+    </view>
+
+    <view class="mapbuttons" wx-if="{{ disableEdit }}">
+      <!-- 对class做了一些小调整 -->
+      <view class="{{volunteer && !admin?'buttons':'buttons_'}}">
+        <van-button
+          type="primary"
+          size="large"
+          bindtap="onEditUserInfo"
+          round
+        >
+          修改个人信息
+        </van-button>
+      </view>
+      <view class="buttons_" wx:if="{{ !volunteer && status !== 0 }}">
+        <van-button
+          size="large"
+          id="buttonSubmit"
+          bindtap="onShowApplication"
+          round
+        >
+          申请成为志愿者
+        </van-button>
+      </view>
+      <view class="buttons_" wx:if="{{ (admin && volunteer) || status === 0 }}">
+        <van-button
+          size="large"
+          id="buttonSubmit"
+          bindtap="goToApplicationList"
+          round
+        >
+          {{ status === 0? '查看志愿者申请': '审核志愿者申请' }}
+        </van-button>
+      </view>
+    </view>
+
+    <view class="tabbar-spacer" />
+
   </view>
 
-  <view class="mapbuttons" wx-if="{{ disableEdit }}">
-    <!-- 对class做了一些小调整 -->
-    <view class="{{volunteer && !admin?'buttons':'buttons_'}}">
-      <van-button type="primary" size="large" bindtap="onClickChange" round>
-        修改个人信息
-      </van-button>
-    </view>
-    <view class="buttons_" wx:if="{{ !volunteer }}">
-      <van-button size="large" id="buttonSubmit" bindtap="applicationClick" round>
-        申请成为志愿者
-      </van-button>
-    </view>
-    <view class="buttons_" wx:if="{{ admin && volunteer }}">
-      <van-button size="large" id="buttonSubmit" bindtap="applicationAudit" round>
-        审核志愿者申请
-      </van-button>
-    </view>
-  </view>
-
-  <view class="blank"></view>
-  <view class="blank"></view>
-</view>
-    
-  <van-popup show="{{ applicationShow }}" bind:close="applicationClose" position="bottom">
+  <van-popup
+    show="{{ showApplication }}"
+    bind:close="onHideApplication"
+    position="bottom"
+    class="tabbar-popup"
+  >
     <view class="maptitle">
       <view class="title">
         申请成为志愿者
       </view>
     </view>
-    
+
     <van-cell-group>
-      <van-field 
-        id="department" 
-        model:value="{{ reasonForApplication }}" 
-        label="申请理由" 
-        placeholder="信息科学技术学院" 
-        error-message="{{ errMsg.reasonForApplication }}" 
+      <van-field
+        id="department"
+        model:value="{{ reasonForApplication }}"
+        label="申请理由"
+        placeholder="想去电脑城找份工作（不是"
+        error-message="{{ errMsg.reasonForApplication }}"
       />
-      <van-cell title="学生证照片" label="我们承诺您的信息只用于发放志愿证明" title-style="{{ errMsg.cardPicLocation }}">
+      <van-cell
+        title="学生证照片(可选)"
+        label="我们承诺只用于验证您的个人信息是否属实"
+        title-style="{{ errMsg.cardPicLocation }}"
+      >
         <van-uploader
-          sizeType="['compressed']" 
-          file-list="{{ imagesToUpload }}" 
-          max-count="1" 
+          sizeType="['compressed']"
+          file-list="{{ imagesToUpload }}"
+          max-count="1"
           bind:after-read="uploadConfirm"
           bind:delete="uploadCancel"
         />
@@ -145,11 +192,18 @@
       <!-- <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="暂无反馈"  autosize readonly/> -->
     </van-cell-group>
     <view class="mapbuttons">
-      <view class="buttons" >
-        <van-button type="primary" size="large" bindtap="applicationSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round> 提交 </van-button>
+      <view class="buttons">
+        <van-button
+          type="primary"
+          size="large"
+          bindtap="onSubmitApplication"
+          loading="{{submitLoading}}"
+          disabled="{{submitLoading}}"
+          round
+        > 提交
+        </van-button>
       </view>
     </view>
   </van-popup>
-
-  <tab-bar active='2'></tab-bar>
 </view>
+

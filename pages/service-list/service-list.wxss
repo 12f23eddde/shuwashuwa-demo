@@ -1,8 +1,20 @@
+.service-loading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .fixedIcon {
   width: 115rpx;
   height: 115rpx;
   position: fixed;
+  top: 75vh;
+  left: 75vw;
   display: block;
+
+  /** shadows */
+  border-radius: 50%;
+  box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.5);
 }
 
 .addBtnArea {
@@ -127,7 +139,7 @@
   height: 100%;
 }
 
-.blank{ 
+.blank { 
   height: 46px;
   clear:both; 
   overflow:hidden; 
@@ -136,8 +148,15 @@
 }
 
 .noService {
-  height: 900rpx;
-  text-align: center;
-  transform:translateY(50%);
+  height: 80vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: gray;
+}
+
+.tabbar-spacer { 
+  height: 70px;
+  width: 100%;
 }

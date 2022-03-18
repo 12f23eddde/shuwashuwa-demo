@@ -1,47 +1,21 @@
 /* pages/activity/activity.wxss */
-.activityPage {
+.index-page-container {
   align-content: center;
 }
 
-.blank{ 
-  height: 46px;
-  clear:both; 
-  overflow:hidden; 
-  display:block; 
-  overflow:hidden;
+.tabbar-spacer { 
+  height: 70px;
+  width: 100%;
 }
 
-.activityCell {
+.cell-group {
   width: 95%;
   align-self: center;
   display: block;
   box-shadow: 5rpx 5rpx 10rpx rgba(0, 0, 0, 0.2);
 }
 
-.title {
-  width: 90%;
-  font-size: x-large;
-  font-weight: bold;
-  text-align: left;
-  color: rgb(101, 101, 101);
-  margin-top: 2%;
-  margin-bottom: 3%;
-}
-
-.titleNa {
-  text-decoration-line: underline;
-  margin-top: 2%;
-}
-
-.maptitle {
-  width: 100%;
-  height: 120rpx;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.mapbuttons {
+.cell-group-container {
   width: 100%;
   display: flex;
   justify-content: space-around;
@@ -57,9 +31,58 @@
 }
 
 .noActivity {
-  width: 750rpx;
-  height: 900rpx;
+  width: 100vw;
+  height: 80vh;
   text-align: center;
-  transform:translateY(50%);
+  margin: auto;
   color: gray;
+}
+
+.activity-cell-title {
+  font-size: large;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 2%;
+  margin-bottom: 3%;
+}
+
+.activity-cell .van-cell {
+  flex-direction: column;
+}
+
+.activity-cell-meta {
+  text-align: left;
+}
+
+.activity-cell-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.link-cell > .van-cell {
+  display: flex;
+  align-items: center;
+}
+
+.link-cell-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 10rpx;
+}
+
+.cell-title {
+  margin-left: 5vw;
+  margin-top: 40rpx;
+  margin-bottom: 20rpx;
+  width: fit-content;
+}
+
+.empty-cell .van-cell {
+  justify-content: center;
+}
+
+.empty-cell .van-cell__title {
+  flex: none;
+  margin-left: 10rpx;
 }

@@ -2,202 +2,409 @@
 <!-- ?id={service-id} 如果指定id参数，则跳转到服务单详情 -->
 <!-- 若不指定，则创建新服务单 -->
 <view class="servDetailPage">
-
   <van-notify id="van-notify" />
-  <van-dialog id="van-dialog"/>
+  <van-dialog id="van-dialog" />
   <van-toast id="van-toast" />
 
-  <!-- 显示帮助信息 -->
-  <!-- 可以通过 custom-style="height: 20%" 控制弹出层尺寸 -->
-  <van-popup show="{{ helpShow }}" position="bottom">
-    <towxml nodes="{{ helpMessage }}"/>
-    <view class="mapbuttons">
-      <view class="buttonsUnder" >
-        <van-button type="primary" size="large" bindtap="helpClose" round> 确认 </van-button>
-      </view>
-    </view>
-  </van-popup>
+  <!-- 帮助信息 -->
+  <help-popup
+    show="{{ showHelp }}"
+    url="https://shuwashuwa.kinami.cc/help.md"
+    style="max-height: 90%"
+    bind:close="onHideHelpPopup"
+  />
 
-  <view class="maptitle" >
-    <view class="title"> {{(status==0?'填写维修单':'维修单详情')}} </view>
-  </view>
-  
-  <view class="mapbuttons" >
-  <van-cell-group title="维修时间" class="serviceDetailCell">
-    <van-cell title="活动" required="{{! disableEdit }}" value="{{ activityName }}" bind:click="activityClick" is-link />
-    <van-popup show="{{ activityShow }}" position="bottom">
-      <van-picker show-toolbar title="活动" columns="{{ activityNames }}" default-index="{{ 2 }}" loading="{{ activityLoading }}" bind:confirm="activityConfirm" bind:cancel="activityClose" />
-    </van-popup>
-    <van-cell title="时段" required="{{! disableEdit }}" value="{{ startTime? startTime + ' - ' + endTime : '' }}" bind:click="timeslotClick" is-link />
-    <van-popup show="{{ timeslotShow }}" position="bottom">
-      <van-picker show-toolbar title="活动" columns="{{ timeslotNames }}" default-index="{{ 2 }}" loading="{{ timeslotLoading }}" bind:confirm="timeslotConfirm" bind:cancel="timeslotClose" />
-    </van-popup>
-  </van-cell-group>
+  <!-- 活动弹窗 -->
+  <help-popup
+    show="{{ showNotice }}"
+    url="https://shuwashuwa.kinami.cc/notice.md"
+    style="max-height: 90%"
+    bind:close="onHideNoticePopup"
+  />
+
+  <view class=" maptitle">
+    <view class="title"> {{ status==0?'填写维修单':'维修单详情'}} </view>
   </view>
 
-  <view class="mapbuttons" >
-  <van-cell-group title="电脑信息" class="serviceDetailCell_">
-    <van-field model:value="{{ brand }}" required="{{! disableEdit }}" clearable label="品牌" placeholder="联想" readonly="{{ disableEdit }}" />
-    <van-field model:value="{{ computerModel }}" required="{{! disableEdit }}" clearable label="型号" icon="question-o" placeholder="小新 Pro 13 2020" bind:click-icon="helpClick" readonly="{{ disableEdit }}" />
-    <van-cell title="电脑类型" required="{{! disableEdit }}" model:value="{{ laptopType }}" bind:click="typeClick" is-link />
-    <van-popup show="{{ typeShow }}" position="bottom">
-      <van-picker show-toolbar title="电脑类型" columns="{{ pcTypes }}" default-index="{{ 2 }}" bind:confirm="typeConfirm" bind:cancel="typeClose" />
-    </van-popup>
-    <van-field model:value="{{ cpuModel }}" clearable required="{{! disableEdit }}" label="CPU型号" icon="question-o" placeholder="Intel i7-10710U / AMD Ryzen 7 4800U" bind:click-icon="helpClick" readonly="{{ disableEdit }}" />
-    <van-cell title="有独立显卡" required="{{! disableEdit }}">
-      <van-switch checked="{{ hasDiscreteGraphics }}" size="35rpx" bind:change="gpuSwitch" disabled="{{ disableEdit }}" active-color="#22ac38"/>
-    </van-cell>
-    <van-field model:value="{{ graphicsModel }}" required="{{! disableEdit }}" clearable label="独立显卡型号" icon="question-o" disabled="{{ !hasDiscreteGraphics }}" placeholder="Nvidia MX350" bind:click-icon="helpClick" readonly="{{ disableEdit }}" />
-   
-    <van-popup show="{{ calenderShow }}" position="bottom">
-      <van-datetime-picker
-      type="year-month"
-      value="{{ calenderCurrDate }}"
-      min-date="{{ calenderMinDate }}"
-      max-date="{{ calenderMaxDate }}"
-      bind:cancel="calenderClose" 
-      bind:confirm="calenderConfirm"
+  <view class="mapbuttons">
+    <van-cell-group title="维修时间" class="serviceDetailCell">
+      <van-cell
+        title="活动"
+        required="{{!disableEdit }}"
+        value="{{ activityName }}"
+        bind:click="activityClick"
+        is-link
       />
-    </van-popup>
-    
-    <!-- 微信不支持在数据标签内进行join和split, 微信爬 -->
-    <van-cell title="购买年月" required="{{! disableEdit }}" value="{{ boughtMonth }}" bind:click="calenderClick" is-link />
-    <van-popup show="{{ calenderShow }}" position="bottom">
-      <van-datetime-picker
-      title="购买年月"
-      type="year-month"
-      value="{{ calenderCurrDate }}"
-      min-date="{{ calenderMinDate }}"
-      max-date="{{ calenderMaxDate }}"
-      bind:cancel="calenderClose" 
-      bind:confirm="calenderConfirm"
+      <van-popup show="{{ activityShow }}" position="bottom">
+        <van-picker
+          show-toolbar
+          title="活动"
+          columns="{{ activityNames }}"
+          default-index="{{ 2 }}"
+          loading="{{ activityLoading }}"
+          bind:confirm="activityConfirm"
+          bind:cancel="activityClose"
+        />
+      </van-popup>
+      <van-cell
+        title="时段"
+        required="{{! disableEdit }}"
+        value="{{ startTime? startTime + ' - ' + endTime : '' }}"
+        bind:click="timeslotClick"
+        is-link
       />
-    </van-popup>
-    
-    <van-cell title="在保修期内" required="{{! disableEdit }}">
-      <van-switch checked="{{ underWarranty }}" size="35rpx" bind:change="warrantySwitch" disabled="{{ disableEdit }}" active-color="#22ac38"/>
-    </van-cell>
-    <!-- boughtTime: "1919-08-10",
-    brand: "string",
-    computerModel: "string",
-    cpuModel: "string",
-    graphicsModel: "string",
-    hasDiscreteGraphics: true,
-    imageList: [],
-    laptopType: "string",
-    problemDescription: "string",
-    problemType: "string",
-    serviceEventId: 0,
-    timeSlot: 0,
-    underWarranty: true -->
-  </van-cell-group>
+      <van-popup show="{{ timeslotShow }}" position="bottom">
+        <van-picker
+          show-toolbar
+          title="活动"
+          columns="{{ timeslotNames }}"
+          default-index="{{ 2 }}"
+          loading="{{ timeslotLoading }}"
+          bind:confirm="timeslotConfirm"
+          bind:cancel="timeslotClose"
+        />
+      </van-popup>
+    </van-cell-group>
   </view>
 
-  <view class="mapbuttons" >
-  <van-cell-group title="故障信息" class="serviceDetailCell_">
-    <van-cell title="故障类型" required="{{! disableEdit }}" model:value="{{ problemType }}" bind:click="problemClick" is-link />
-    <van-popup show="{{ problemShow }}" position="bottom">
-      <van-picker show-toolbar title="故障类型" columns="{{ problemTypes }}" default-index="{{ 2 }}" bind:cancel="problemClose" bind:confirm="problemConfirm" />
-    </van-popup>
-    <van-field model:value="{{ problemDescription }}" label="故障描述" type="textarea" placeholder="" autosize required="{{! disableEdit }}" readonly="{{ disableEdit }}" />
-    <van-cell title="故障图片">
-      <van-uploader accept="image" 
-        sizeType="['compressed']" 
-        file-list="{{ imagesToUpload }}" 
-        max-count="{{ disableEdit? imageList.length : 5}}" 
-        multiple 
-        max-size="3072000"
-        disabled="{{ disableEdit }}" 
-        deletable="{{ !disableEdit }}"
-        preview-size="120rpx" 
-        bind:after-read="uploadConfirm"
-        bind:delete="uploadCancel"
-        bind:oversize="uploadOversize"
-       />
-    </van-cell>
-  </van-cell-group>
-</view>
+  <view class="mapbuttons">
+    <van-cell-group title="电脑信息" class="serviceDetailCell_">
+      <van-field
+        model:value="{{ brand }}"
+        required="{{! disableEdit }}"
+        clearable
+        label="品牌"
+        placeholder="联想"
+        readonly="{{ disableEdit }}"
+      />
+      <van-field
+        model:value="{{ computerModel }}"
+        required="{{! disableEdit }}"
+        clearable
+        label="型号"
+        icon="question-o"
+        placeholder="小新 Pro 13 2020"
+        bind:click-icon="onShowHelpPopup"
+        readonly="{{ disableEdit }}"
+      />
+      <van-cell
+        title="电脑类型"
+        required="{{! disableEdit }}"
+        model:value="{{ laptopType }}"
+        bind:click="typeClick"
+        is-link
+      />
+      <van-popup show="{{ typeShow }}" position="bottom">
+        <van-picker
+          show-toolbar
+          title="电脑类型"
+          columns="{{ pcTypes }}"
+          default-index="{{ 2 }}"
+          bind:confirm="typeConfirm"
+          bind:cancel="typeClose"
+        />
+      </van-popup>
+      <van-field
+        model:value="{{ cpuModel }}"
+        clearable
+        label="CPU型号"
+        icon="question-o"
+        placeholder="Intel i7-10710U / AMD Ryzen 7 4800U"
+        bind:click-icon="onShowHelpPopup"
+        readonly="{{ disableEdit }}"
+      />
+      <van-cell title="有独立显卡">
+        <van-switch
+          checked="{{ hasDiscreteGraphics }}"
+          size="35rpx"
+          bind:change="gpuSwitch"
+          disabled="{{ disableEdit }}"
+          active-color="#22ac38"
+        />
+      </van-cell>
+      <van-field
+        model:value="{{ graphicsModel }}"
+        clearable
+        label="独立显卡型号"
+        icon="question-o"
+        disabled="{{ !hasDiscreteGraphics }}"
+        placeholder="Nvidia MX350"
+        bind:click-icon="onShowHelpPopup"
+        readonly="{{ disableEdit }}"
+      />
+
+      <van-popup show="{{ calenderShow }}" position="bottom">
+        <van-datetime-picker
+          type="year-month"
+          value="{{ calenderCurrDate }}"
+          min-date="{{ calenderMinDate }}"
+          max-date="{{ calenderMaxDate }}"
+          bind:cancel="calenderClose"
+          bind:confirm="calenderConfirm"
+        />
+      </van-popup>
+
+      <!-- 微信不支持在数据标签内进行join和split, 微信爬 -->
+      <van-cell
+        title="购买年月"
+        required="{{! disableEdit }}"
+        value="{{ boughtMonth }}"
+        bind:click="calenderClick"
+        is-link
+      />
+      <van-popup show="{{ calenderShow }}" position="bottom">
+        <van-datetime-picker
+          title="购买年月"
+          type="year-month"
+          value="{{ calenderCurrDate }}"
+          min-date="{{ calenderMinDate }}"
+          max-date="{{ calenderMaxDate }}"
+          bind:cancel="calenderClose"
+          bind:confirm="calenderConfirm"
+        />
+      </van-popup>
+
+      <van-cell title="在保修期内" required="{{! disableEdit }}">
+        <van-switch
+          checked="{{ underWarranty }}"
+          size="35rpx"
+          bind:change="warrantySwitch"
+          disabled="{{ disableEdit }}"
+          active-color="#22ac38"
+        />
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <view class="mapbuttons">
+    <van-cell-group title="故障信息" class="serviceDetailCell_">
+      <van-cell
+        title="故障类型"
+        required="{{! disableEdit }}"
+        model:value="{{ problemType }}"
+        bind:click="problemClick"
+        is-link
+      />
+      <van-popup show="{{ problemShow }}" position="bottom">
+        <van-picker
+          show-toolbar
+          title="故障类型"
+          columns="{{ problemTypes }}"
+          default-index="{{ 2 }}"
+          bind:cancel="problemClose"
+          bind:confirm="problemConfirm"
+        />
+      </van-popup>
+      <van-field
+        model:value="{{ problemDescription }}"
+        label="故障描述"
+        type="textarea"
+        placeholder=""
+        autosize
+        required="{{! disableEdit }}"
+        readonly="{{ disableEdit }}"
+      />
+      <van-cell title="故障图片" wx-if="{{ editable || imagesToUpload.length }}">
+        <!-- Uploader组件动态更改max-count可能会出错，因此固定为5 -->
+        <van-uploader
+          accept="image"
+          sizeType="['compressed']"
+          file-list="{{ imagesToUpload }}"
+          max-count="{{ 5 }}"
+          multiple
+          max-size="3072000"
+          deletable="{{ !disableEdit }}"
+          disabled="{{ disableEdit }}"
+          preview-size="120rpx"
+          bind:after-read="uploadConfirm"
+          bind:delete="uploadCancel"
+          bind:oversize="uploadOversize"
+        />
+      </van-cell>
+    </van-cell-group>
+  </view>
 
   <view class="mapbuttons" wx-if="{{ problemSummary || auditable }}">
     <van-cell-group title="审核结果" class="serviceDetailCell_">
-      <van-field model:value="{{ problemSummary }}" required="{{ (auditable && status == 1) }}" clearable label="故障概述" placeholder="更换电池" readonly="{{ !(auditable && status == 1) }}" />
-      <van-field model:value="{{ descriptionAdvice }}" label="审核消息" type="textarea" placeholder="请您重新上传照片，看不清电池型号" readonly="{{ !(auditable && status == 1) }}" autosize required="{{ (auditable && status == 1) }}" />
+      <van-field
+        model:value="{{ problemSummary }}"
+        required="{{ auditable }}"
+        clearable
+        label="故障概述"
+        placeholder="更换电池"
+        readonly="{{ !auditable }}"
+      />
+      <van-field
+        model:value="{{ descriptionAdvice }}"
+        label="审核消息"
+        type="textarea"
+        placeholder="请您重新上传照片，看不清电池型号"
+        readonly="{{ auditable }}"
+        autosize
+        required="{{ !auditable }}"
+      />
     </van-cell-group>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ (workable && status == 4)||(volunteerMessage && (workable || auditable) &&status == 5) }}">
+  <view class="mapbuttons" wx-if="{{ canVolunteerFeedback || repairingResult }}">
     <van-cell-group title="维修留言" class="serviceDetailCell_">
-      <van-field model:value="{{ volunteerMessage }}" label="志愿者留言" type="textarea" placeholder="记得先拆键盘"  autosize required />
+      <van-field
+        model:value="{{ repairingResult }}"
+        label="志愿者留言"
+        type="textarea"
+        placeholder="记得先拆键盘"
+        autosize
+        required
+      />
     </van-cell-group>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ (editable || userMessage) && status == 5 }}">
+  <view class="mapbuttons" wx-if="{{ canUserFeedback || feedback }}">
     <van-cell-group title="维修反馈" class="serviceDetailCell_">
-      <van-field model:value="{{ userMessage }}" label="反馈消息" type="textarea" placeholder="维修后暂时还没出什么问题"  autosize required />
+      <van-field
+        model:value="{{ feedback }}"
+        label="反馈消息"
+        type="textarea"
+        placeholder="维修后暂时还没出什么问题"
+        autosize
+        required
+      />
     </van-cell-group>
   </view>
 
-<!-- 用户功能 -->
-  <view class="mapbuttons" wx-if="{{ editable && !disableEdit && status <= 2}}">
-    <view class="buttons" >
-      <van-button type="primary" size="large" bind:click="onSubmit" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+  <!-- 用户功能 -->
+  <view class="mapbuttons" wx-if="{{ editable && !disableEdit }}">
+    <view class="buttons">
+      <van-button
+        type="primary"
+        size="large"
+        bind:click="onSubmit"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         提交
       </van-button>
     </view>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ editable && disableEdit && status <= 2}}">
+  <view class="mapbuttons" wx-if="{{ editable && disableEdit }}">
     <view class="buttons_">
-      <van-button type="primary" size="large" bind:click="onEdit" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button
+        type="primary"
+        size="large"
+        bind:click="onEditClick"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         修改
       </van-button>
     </view>
     <view class="buttons_">
-      <van-button type="danger" size="large" bind:click="onCancel" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button
+        type="danger"
+        size="large"
+        bind:click="onCancel"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         删除
       </van-button>
     </view>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ editable && status == 5 }}">
-    <view class="buttons" >
-      <van-button type="primary" size="large" bind:click="onFeedBack" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+  <view class="mapbuttons" wx-if="{{ canUserFeedback }}">
+    <view class="buttons">
+      <van-button
+        type="primary"
+        size="large"
+        bind:click="onFeedBack"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         反馈
       </van-button>
     </view>
   </view>
 
-<!-- 管理员功能 -->
-  <view class="mapbuttons" wx-if="{{ auditable && status == 1}}">
+  <!-- 管理员功能 -->
+  <view class="mapbuttons" wx-if="{{ auditable }}">
     <view class="buttons_">
-      <van-button type="primary" size="large" bind:click="onAuditPass" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button
+        type="primary"
+        size="large"
+        bind:click="onAuditPass"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         审核通过
       </van-button>
     </view>
     <view class="buttons_">
-      <van-button type="danger" size="large" bind:click="onAuditFail" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button
+        type="danger"
+        size="large"
+        bind:click="onAuditFail"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         审核不通过
       </van-button>
     </view>
   </view>
 
-<!-- 志愿者功能 -->
-  <view class="mapbuttons" wx-if="{{ workable && status==3 }}">
-    <view class="buttons" >
-      <van-button type="primary" size="large" bind:click="onWork" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+  <!-- 志愿者功能 -->
+  <view class="mapbuttons" wx-if="{{ workable }}">
+    <view class="buttons">
+      <van-button
+        type="primary"
+        size="large"
+        bind:click="onTake"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         接单
       </van-button>
     </view>
   </view>
 
-  <view class="mapbuttons" wx-if="{{ workable && status==4 }}">
+  <view class="mapbuttons" wx-if="{{ canVolunteerFeedback }}">
     <view class="buttons_">
-      <van-button type="primary" size="large" bind:click="onComplete" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button
+        type="primary"
+        size="large"
+        bind:click="onComplete"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         完成
       </van-button>
     </view>
     <view class="buttons_">
-      <van-button type="danger" size="large" bind:click="onCancelWork" id="buttonSubmit" loading="{{submitLoading}}" disabled="{{submitLoading}}" round>
+      <van-button
+        type="danger"
+        size="large"
+        bind:click="onReturn"
+        id="buttonSubmit"
+        loading="{{submitLoading}}"
+        disabled="{{submitLoading}}"
+        round
+      >
         取消
       </van-button>
     </view>
@@ -205,3 +412,4 @@
 
 </view>
 <view class="blank"></view>
+

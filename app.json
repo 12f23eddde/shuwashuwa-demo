@@ -1,10 +1,11 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/service-detail/service-detail",
-    "pages/my-info/my-info",
     "pages/service-list/service-list",
-    "pages/application-list/application-list"
+    "pages/my-info/my-info",
+    "pages/service-detail/service-detail",
+    "pages/application-list/application-list",
+    "pages/debug/debug"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -15,6 +16,9 @@
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "custom": true,
+    "color": "#000000",
+    "selectedColor": "#000000",
+    "backgroundColor": "#000000",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -26,14 +30,20 @@
       },
       {
         "pagePath": "pages/my-info/my-info",
-        "text": "个人信息"
+        "text": "我的"
       }
     ]
   },
   "usingComponents": {
-    "tab-bar": "/components/tab-bar/tab-bar",
     "towxml":"/components/towxml/towxml",
+    "service-cell": "/components/service-cell/index",
+    "help-popup": "/components/help-popup/index",
+    "typology": "/components/typology/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-empty": "@vant/weapp/empty/index",
     "van-image": "@vant/weapp/image/index",
+    "van-icon": "@vant/weapp/icon/index",
     "van-notify": "@vant/weapp/notify/index",
     "van-toast": "@vant/weapp/toast/index",
     "van-dialog": "@vant/weapp/dialog/index",
@@ -55,7 +65,8 @@
     "van-uploader": "@vant/weapp/uploader/index",
     "van-loading": "@vant/weapp/loading/index",
     "van-checkbox": "@vant/weapp/checkbox/index",
-    "van-checkbox-group": "@vant/weapp/checkbox-group/index"
+    "van-checkbox-group": "@vant/weapp/checkbox-group/index",
+    "van-search": "@vant/weapp/search/index"
   },
   "networkTimeout": {
     "request": 3000

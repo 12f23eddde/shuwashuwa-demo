@@ -1,0 +1,19 @@
+<van-popup
+  show="{{ show }}"
+  position="bottom"
+  custom-style="{{ style }}"
+  bind:close="onClose"
+>
+  <towxml nodes="{{ helpMessage }}" />
+  <view class="mapbuttons">
+    <view class="buttonsUnder">
+      <van-button
+        type="primary"
+        size="large"
+        bindtap="onClose"
+      > 确认
+      </van-button>
+    </view>
+  </view>
+</van-popup>
+

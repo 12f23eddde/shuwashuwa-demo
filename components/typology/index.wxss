@@ -1,0 +1,50 @@
+.non-loading {
+  color: #666;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.loading {
+  font-size: x-large;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+}
+
+.loading:before {
+  color: #aaa;
+  content: attr(data-loading-text);
+}
+
+.loading:after {
+  top: 0;
+  left: 0;
+  width: 0;
+  opacity: 1;
+  color: #666;
+  overflow: hidden;
+  position: absolute;
+  content: attr(data-loading-text);
+  /* make it work for characters */
+  word-break: keep-all;
+  -webkit-animation: loading 5s infinite;
+          animation: loading 5s infinite;
+}
+
+@-webkit-keyframes loading {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}

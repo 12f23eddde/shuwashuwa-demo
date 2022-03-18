@@ -1,0 +1,18 @@
+<!--custom-tab-bar/index.wxml-->
+<!--显然您可以对prop做数据绑定-->
+<van-tabbar
+  active-color="#07c160"
+  active="{{ active }}"
+  bind:change="onChange"
+  class="tabbar"
+  z-index="99"
+>
+  <van-tabbar-item
+    wx:for="{{ list }}"
+    wx:key="index"
+    icon="{{ item.iconPath }}"
+  >
+    {{ item.name }}
+  </van-tabbar-item>
+</van-tabbar>
+
