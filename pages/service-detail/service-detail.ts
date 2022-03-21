@@ -194,7 +194,9 @@ Page({
             const query: ActivityQuery = {
                 endLower: formatDate(new Date()),
             }
+            console.log('here!!!!!')
             const res = await getActivityList(query)
+            console.log('there!!!!!')
             if (!res) {
                 emitErrorToast('获取活动列表失败')
                 return
@@ -416,7 +418,7 @@ Page({
             /** 用户可反馈 */
             canUserFeedback: userStore.user?.userid === this.data.userId && this.data.status === 5,
             /** 志愿者可反馈 */
-            canVolunteerFeedback: Number(await getVolunteerId()) === this.data.volunteerId && this.data.status === 4
+            canVolunteerFeedback: isVolunteer && Number(await getVolunteerId()) === this.data.volunteerId && this.data.status === 4
         })
         console.log('updateComponentStates', this.data)
     },
