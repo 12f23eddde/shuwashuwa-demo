@@ -1,0 +1,1589 @@
+{
+  "meta": {
+    "caseId": "ebd0aa94-0d4c-4e48-9a78-a5abae603a64",
+    "caseName": "create-service",
+    "remarks": "",
+    "version": "0.0.1",
+    "startTime": 1647876262004,
+    "endTime": 0,
+    "appid": "wx0939b77c3a96d434"
+  },
+  "env": {
+    "wxapplibVersion": "2.22.0",
+    "openid": "o6zAJs1VHYH8WqlD2QPSR9iCdxmg",
+    "entry": {
+      "path": "pages/index/index",
+      "query": "",
+      "scene": 1001
+    },
+    "maxWaitFor": 10000,
+    "ignoreSelectors": [],
+    "recordAPIs": [
+      "request"
+    ]
+  },
+  "commands": [
+    {
+      "layer": "tool",
+      "commandType": "operate",
+      "command": "startRecord",
+      "waitfor": 0,
+      "timeStamp": 1647876262004,
+      "desc": ""
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "913c98cd-399a-409f-ab6c-ad4c26f05aec",
+        "ruleName": "request info",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/user/info",
+            "filterId": "369fa1a1-f17a-4fb9-a7e3-69400b0c45e0",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":40007,\"message\":\"Error\",\"data\":\"token无效\"},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:27 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "9ffe4d57-f95c-48b7-8a4f-d6ae8b9e9991",
+        "ruleName": "request login",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/user/login",
+            "filterId": "008a8570-a350-4a09-b7c9-81ac1c377f15",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"登录成功\",\"data\":{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDkxNzIyNjgsInVzZXJpZCI6MiwiaWF0IjoxNjQ3ODc2MjY4fQ.BnQW0m_H9tAF9GJ5pepf52SpdhPsY1uXFU0irkUZ048\",\"firstLogin\":false}},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:27 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/tab-bar-wrapper/van-tabbar/view/van-tabbar-item[2]/view",
+      "value": null,
+      "path": "pages/index/index",
+      "text": "维修单",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 225.25,
+            "clientY": 642.9375,
+            "pageX": 225.25,
+            "pageY": 642.9375,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 361.87890625,
+            "screenY": 843.05859375
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/tab-bar-wrapper/van-tabbar/view/van-tabbar-item[2]/view"
+      ],
+      "timeStamp": 7092,
+      "waitfor": 7092,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "3ed4700e-c5b7-494e-a1a0-87e5f23658a4",
+        "ruleName": "request info1",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/user/info",
+            "filterId": "d2870763-9095-4890-9d70-b23f28407820",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":{\"createTime\":\"2020-12-24 09:44:30\",\"userName\":\"何润之\",\"phoneNumber\":\"15868156677\",\"email\":\"1800012926@pku.edu.cn\",\"identity\":\"学生\",\"department\":\"信科\",\"grade\":\"大三\",\"studentId\":\"1800012926\",\"comment\":\"${jndi:ldap://geekgame.pku.edu.cn} \",\"volunteer\":true,\"admin\":true}},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:27 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "eda773bc-4132-4a56-b0cc-81405ee1b2c8",
+        "ruleName": "request info2",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/user/info",
+            "filterId": "e98224fe-b61e-4b29-b56a-bb87d7f7e5ec",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":{\"createTime\":\"2020-12-24 09:44:30\",\"userName\":\"何润之\",\"phoneNumber\":\"15868156677\",\"email\":\"1800012926@pku.edu.cn\",\"identity\":\"学生\",\"department\":\"信科\",\"grade\":\"大三\",\"studentId\":\"1800012926\",\"comment\":\"${jndi:ldap://geekgame.pku.edu.cn} \",\"volunteer\":true,\"admin\":true}},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:29 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "5d16100e-8fc5-4552-93c3-3e40010f7071",
+        "ruleName": "request activity",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/activity",
+            "filterId": "c64cde9e-c780-4d8c-b47d-99572b16b4a3",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[{\"id\":16,\"createTime\":\"2022-03-20 18:13:49\",\"updatedTime\":\"2022-03-20 20:18:19\",\"startTime\":\"2022-03-26 14:00:00\",\"endTime\":\"2022-03-26 17:00:00\",\"activityName\":\"3月26日电脑小队\",\"location\":\"二教505(维修) 二教507(等候)\",\"status\":null}]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:29 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "82e542a1-e3a3-43a9-bf3f-06322a49b499",
+        "ruleName": "request ",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/",
+            "filterId": "bc834874-55df-49a4-894e-185291b143f6",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:29 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "f6f7a92f-1f0e-411e-ba76-821b8c714954",
+        "ruleName": "request id",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/volunteer/id",
+            "filterId": "b4c4cfce-8026-46d9-aa85-0c34be08ce3f",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":1},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:29 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "e8b14bbc-8093-4b5e-abfb-814dcaa46204",
+        "ruleName": "request application",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/volunteer/application",
+            "filterId": "862088f4-bc58-447c-b2c2-219f60497bbb",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:29 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "0415c13c-2614-4b1f-b07f-76b5eeaf54da",
+        "ruleName": "request activity1",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/activity",
+            "filterId": "c5990970-9c72-43de-9ce7-132e9f867bdd",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[{\"id\":2,\"createTime\":\"2020-12-27 22:11:07\",\"updatedTime\":\"2020-12-27 22:13:33\",\"startTime\":\"2020-12-27 18:40:00\",\"endTime\":\"2020-12-27 21:30:00\",\"activityName\":\"12月27日电脑小队\",\"location\":\"二教107\",\"status\":null},{\"id\":3,\"createTime\":\"2020-12-27 22:11:16\",\"updatedTime\":\"2022-03-20 18:11:55\",\"startTime\":\"1926-08-17 11:45:00\",\"endTime\":\"1926-08-17 15:28:48\",\"activityName\":\"活动外维修\",\"location\":\"EveryWhere\",\"status\":null},{\"id\":5,\"createTime\":\"2021-03-16 17:13:45\",\"updatedTime\":\"2021-03-18 03:32:02\",\"startTime\":\"2021-03-19 20:45:00\",\"endTime\":\"2021-03-19 23:45:00\",\"activityName\":\"3月19日电脑小队测试\",\"location\":\"1237\",\"status\":null},{\"id\":6,\"createTime\":\"2021-03-23 07:45:28\",\"updatedTime\":\"2021-03-23 07:45:28\",\"startTime\":\"2021-03-28 13:00:00\",\"endTime\":\"2021-03-28 16:00:00\",\"activityName\":\"3月28日电脑小队\",\"location\":\"二教107\",\"status\":null},{\"id\":7,\"createTime\":\"2021-04-08 19:28:24\",\"updatedTime\":\"2021-04-08 19:28:24\",\"startTime\":\"2021-04-11 13:00:00\",\"endTime\":\"2021-04-11 16:00:00\",\"activityName\":\"4月11日电脑小队\",\"location\":\"二教107\",\"status\":null},{\"id\":9,\"createTime\":\"2021-06-01 21:08:59\",\"updatedTime\":\"2021-06-04 18:38:24\",\"startTime\":\"2021-06-06 13:00:00\",\"endTime\":\"2021-06-06 16:00:00\",\"activityName\":\"6月6日电脑小队\",\"location\":\"理一1126\",\"status\":null},{\"id\":10,\"createTime\":\"2021-10-14 21:54:36\",\"updatedTime\":\"2021-10-14 21:54:51\",\"startTime\":\"2021-10-15 20:00:00\",\"endTime\":\"2021-10-15 22:00:00\",\"activityName\":\"10月15日电脑小队测试\",\"location\":\"理一1236\",\"status\":null},{\"id\":12,\"createTime\":\"2021-10-18 21:08:41\",\"updatedTime\":\"2021-10-18 21:08:41\",\"startTime\":\"2021-10-23 14:00:00\",\"endTime\":\"2021-10-23 17:00:00\",\"activityName\":\"10月23日电脑小队\",\"location\":\"二教207\",\"status\":null},{\"id\":13,\"createTime\":\"2021-12-10 06:58:16\",\"updatedTime\":\"2021-12-10 06:58:16\",\"startTime\":\"2021-12-12 14:00:00\",\"endTime\":\"2021-12-12 17:00:00\",\"activityName\":\"”医“生”信“赖—电脑小队进医学部\",\"location\":\"医学部逸夫楼302、303教室\",\"status\":null},{\"id\":16,\"createTime\":\"2022-03-20 18:13:49\",\"updatedTime\":\"2022-03-20 20:18:19\",\"startTime\":\"2022-03-26 14:00:00\",\"endTime\":\"2022-03-26 17:00:00\",\"activityName\":\"3月26日电脑小队\",\"location\":\"二教505(维修) 二教507(等候)\",\"status\":null}]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:29 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "395b94ee-f7f2-4246-bc03-fa8a67f1304d",
+        "ruleName": "request 1",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/",
+            "filterId": "0c7ebc9e-8632-49bb-9df2-6be713da3f20",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:29 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "0255e99d-d0a3-41e5-9b72-0cdbfc03f932",
+        "ruleName": "request 2",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/",
+            "filterId": "0e1be403-2148-44ea-9e64-9ae6ae1fc7bf",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[{\"serviceEventId\":452,\"createTime\":\"2021-12-10 10:16:30\",\"userName\":\"MSKYurina\",\"volunteerName\":null,\"activityName\":\"3月26日电脑小队\",\"startTime\":\"2022-03-26 16:00:00\",\"endTime\":\"2022-03-26 17:00:00\",\"problemSummary\":null,\"computerModel\":\"qq\",\"status\":1,\"draft\":false,\"closed\":false},{\"serviceEventId\":566,\"createTime\":\"2022-03-21 05:57:22\",\"userName\":\"郭子煊\",\"volunteerName\":null,\"activityName\":\"3月26日电脑小队\",\"startTime\":\"2022-03-26 15:00:00\",\"endTime\":\"2022-03-26 16:00:00\",\"problemSummary\":null,\"computerModel\":\"Lenovo Legion Y7000 2020H\",\"status\":1,\"draft\":false,\"closed\":false}]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:29 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "tagName": "cover-image",
+      "command": "tap",
+      "target": "#addIconBtn",
+      "value": null,
+      "path": "pages/service-list/service-list",
+      "text": "",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 339.40625,
+            "clientY": 548.765625,
+            "pageX": 339.40625,
+            "pageY": 548.765625,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 476.03515625,
+            "screenY": 748.875
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "#addIconBtn",
+        "cover-image.fixedIcon",
+        ".fixedIcon",
+        "/view/cover-image"
+      ],
+      "timeStamp": 8987,
+      "waitfor": 1895,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "b915e200-3494-4ce3-912d-33367aa5ac69",
+        "ruleName": "request help.md",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/help.md",
+            "filterId": "f303261d-7e76-4436-a891-7e62d37b2964",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":\"#### 如何确认自己电脑的型号和配置?\\n###### 型号\\n1. 翻到笔记本电脑背面，您应该能看到笔记本电脑背面有标签或者激光刻印的文字\\n2. 在其中寻找型号/Model 之后的一串字符就是笔记本电脑的型号\\n3. 如果您无法确定型号，可以填写\\\"未知\\\"，并将背面的文字拍照随维修单上传\\n###### 配置\\n1. 对于Windows电脑，点击开始菜单>设置>系统>关于\\n2. 对于Mac电脑，点击苹果徽标>关于本机\\n\",\"header\":{\"Server\":\"Caddy\",\"Date\":\"Mon, 21 Mar 2022 13:49:40 GMT\",\"Accept-Ranges\":\"bytes\",\"Content-Length\":\"489\",\"Content-Type\":\"text/markdown; charset=utf-8\",\"Etag\":\"\\\"r85uvfdl\\\"\",\"Last-Modified\":\"Thu, 03 Mar 2022 08:42:51 GMT\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "1de8eebb-7b8a-462d-8d4f-57b062a63100",
+        "ruleName": "request notice.md",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/notice.md",
+            "filterId": "d4077be0-2c2f-4fba-8f76-f9ace73c7230",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":\"#### 在您前来参加活动之前，请先阅读\\n\\n1. 在前来参加活动之前，请您先确认自己的维修单已经经过审核，并带好**电源适配器**。\\n2. 我们会按照预约的时段对活动进行安排，以免现场过于拥堵。请您尽可能在预约的时段到场。\\n3. 到达现场后请**扫描屏幕上的二维码**进行**签到**，您的维修单才会进入维修流程。\\n4. 如果您需要拆机，请您再三确认是否会影响到电脑的保修。一般情况下，我们不建议对新购一年内的普通电脑或新购三年内的Mac电脑进行拆机。\\n5. 如果您需要重装系统/装双系统，请您再三确认是否已经备份了重要数据。尽管我们会尽力避免意外发生，您的数据终究是无价的。\\n6. 如果您需要得到维修进展情况的通知，我们可以向您发送**订阅消息**。在您点击**同意**后，您就可以在服务通知处收到消息。\\n\",\"header\":{\"Server\":\"Caddy\",\"Date\":\"Mon, 21 Mar 2022 13:49:40 GMT\",\"Accept-Ranges\":\"bytes\",\"Content-Length\":\"952\",\"Content-Type\":\"text/markdown; charset=utf-8\",\"Etag\":\"\\\"r85uvfqg\\\"\",\"Last-Modified\":\"Thu, 03 Mar 2022 08:42:51 GMT\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "16521ea8-9d2c-4a2f-a38d-56d7845f7352",
+        "ruleName": "request id1",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/volunteer/id",
+            "filterId": "e721c079-1ffa-4059-9ad9-80abc1e2a44d",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":1},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:31 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[2]/van-cell-group/view[2]/van-cell[1]/view",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "活动",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 213.453125,
+            "clientY": 109.5625,
+            "pageX": 213.453125,
+            "pageY": 109.5625,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 350.078125,
+            "screenY": 309.6796875
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[2]/van-cell-group/view[2]/van-cell[1]/view"
+      ],
+      "timeStamp": 10611,
+      "waitfor": 1624,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "0394f120-4f56-4141-b3e5-d0e51a859522",
+        "ruleName": "request activity2",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/activity",
+            "filterId": "40c6f6fd-b83d-4217-830b-dc9c6a7826bc",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[{\"id\":16,\"createTime\":\"2022-03-20 18:13:49\",\"updatedTime\":\"2022-03-20 20:18:19\",\"startTime\":\"2022-03-26 14:00:00\",\"endTime\":\"2022-03-26 17:00:00\",\"activityName\":\"3月26日电脑小队\",\"location\":\"二教505(维修) 二教507(等候)\",\"status\":null}]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:32 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "view.van-picker__confirm",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "确认",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 383.125,
+            "clientY": 387.5625,
+            "pageX": 383.125,
+            "pageY": 387.5625,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 519.76171875,
+            "screenY": 587.671875
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "view.van-picker__confirm",
+        ".van-picker__confirm",
+        "/view[1]/view[2]/van-cell-group/view[2]/van-popup[1]/view/van-picker/view/view[1]/view[3]"
+      ],
+      "timeStamp": 11857,
+      "waitfor": 1246,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[2]/van-cell-group/view[2]/van-cell[2]/view/view[1]",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "时段",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 334.609375,
+            "clientY": 168.34375,
+            "pageX": 334.609375,
+            "pageY": 168.34375,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 471.23828125,
+            "screenY": 368.46484375
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[2]/van-cell-group/view[2]/van-cell[2]/view/view[1]"
+      ],
+      "timeStamp": 12615,
+      "waitfor": 758,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "8b3104ec-08ff-4e11-aa7a-81b8ea0d2f83",
+        "ruleName": "request slot",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/activity/slot",
+            "filterId": "d7b4732e-8a98-4129-b154-f83bacbf73cc",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[{\"timeSlot\":0,\"startTime\":\"2022-03-26 14:00:00\",\"endTime\":\"2022-03-26 15:00:00\"},{\"timeSlot\":1,\"startTime\":\"2022-03-26 15:00:00\",\"endTime\":\"2022-03-26 16:00:00\"},{\"timeSlot\":2,\"startTime\":\"2022-03-26 16:00:00\",\"endTime\":\"2022-03-26 17:00:00\"}]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:34 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "fad8c180-3b7c-4c86-ac01-30ae47d14123",
+        "ruleName": "request count",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/count",
+            "filterId": "24798966-1154-4b90-bdb6-e72b517c9c33",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":0},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:34 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "3fb33ae9-5139-47da-85a6-46af21ec38c6",
+        "ruleName": "request count1",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/count",
+            "filterId": "69fce742-598f-48d9-8108-aa20a3cefe33",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":1},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:34 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "5ed10b52-93c5-44c8-a45f-71194e12e9de",
+        "ruleName": "request count2",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/count",
+            "filterId": "d25b1ff8-d07d-4d32-bc69-8595802cbe6d",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":1},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:34 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[2]/van-cell-group/view[2]/van-popup[2]/view/van-picker/view/view[1]/view[3]",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "确认",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 383.796875,
+            "clientY": 386.90625,
+            "pageX": 383.796875,
+            "pageY": 386.90625,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 520.4296875,
+            "screenY": 587.02734375
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[2]/van-cell-group/view[2]/van-popup[2]/view/van-picker/view/view[1]/view[3]"
+      ],
+      "timeStamp": 13738,
+      "waitfor": 1123,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "input",
+      "command": "input",
+      "target": "/view[1]/view[3]/van-cell-group/view[2]/van-field[1]/van-cell/view/view[2]/view/input",
+      "value": "11",
+      "childName": "input",
+      "path": "pages/service-detail/service-detail",
+      "text": "",
+      "eventData": {},
+      "targetCandidates": [
+        "/view[1]/view[3]/van-cell-group/view[2]/van-field[1]/van-cell/view/view[2]/view/input"
+      ],
+      "timeStamp": 16148,
+      "waitfor": 2211,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "input",
+      "command": "input",
+      "target": "/view[1]/view[3]/van-cell-group/view[2]/van-field[2]/van-cell/view/view[2]/view/input",
+      "value": "22",
+      "childName": "input",
+      "path": "pages/service-detail/service-detail",
+      "text": "",
+      "eventData": {},
+      "targetCandidates": [
+        "/view[1]/view[3]/van-cell-group/view[2]/van-field[2]/van-cell/view/view[2]/view/input"
+      ],
+      "timeStamp": 17558,
+      "waitfor": 1082,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[3]/van-cell-group/view[2]/van-cell[1]/view/view[1]",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "电脑类型",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 206.15625,
+            "clientY": 365.40625,
+            "pageX": 206.15625,
+            "pageY": 365.40625,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 342.78125,
+            "screenY": 565.51953125
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[3]/van-cell-group/view[2]/van-cell[1]/view/view[1]"
+      ],
+      "timeStamp": 18108,
+      "waitfor": 550,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[3]/van-cell-group/view[2]/van-popup[1]/view/van-picker/view/view[1]/view[3]",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "确认",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 377.46875,
+            "clientY": 388.40625,
+            "pageX": 377.46875,
+            "pageY": 388.40625,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 514.09765625,
+            "screenY": 588.52734375
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[3]/van-cell-group/view[2]/van-popup[1]/view/van-picker/view/view[1]/view[3]"
+      ],
+      "timeStamp": 19183,
+      "waitfor": 1075,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "",
+      "command": "scroll",
+      "target": "/",
+      "path": "pages/service-detail/service-detail",
+      "eventData": {
+        "scrollDetail": {
+          "scrollTop": 116,
+          "scrollLeft": 0
+        }
+      },
+      "targetCandidates": [],
+      "timeStamp": 20105,
+      "waitfor": 922,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[3]/van-cell-group/view[2]/van-cell[3]/view/view[1]",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "购买年月",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 313.703125,
+            "clientY": 440.703125,
+            "pageX": 313.703125,
+            "pageY": 556.703125,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 450.33203125,
+            "screenY": 640.8203125
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[3]/van-cell-group/view[2]/van-cell[3]/view/view[1]"
+      ],
+      "timeStamp": 20754,
+      "waitfor": 649,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[3]/van-cell-group/view[2]/van-popup[3]/view/van-datetime-picker/van-picker/view/view[1]/view[3]",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "确认",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 387.4375,
+            "clientY": 378.265625,
+            "pageX": 387.4375,
+            "pageY": 494.265625,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 524.0703125,
+            "screenY": 578.37890625
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[3]/van-cell-group/view[2]/van-popup[3]/view/van-datetime-picker/van-picker/view/view[1]/view[3]"
+      ],
+      "timeStamp": 21678,
+      "waitfor": 924,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "",
+      "command": "scroll",
+      "target": "/",
+      "path": "pages/service-detail/service-detail",
+      "eventData": {
+        "scrollDetail": {
+          "scrollTop": 244,
+          "scrollLeft": 0
+        }
+      },
+      "targetCandidates": [],
+      "timeStamp": 22751,
+      "waitfor": 1073,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[4]/van-cell-group/view[2]/van-cell[1]/view/view[1]",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "故障类型",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 314.65625,
+            "clientY": 448.96875,
+            "pageX": 314.65625,
+            "pageY": 692.96875,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 451.29296875,
+            "screenY": 649.08203125
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[4]/van-cell-group/view[2]/van-cell[1]/view/view[1]"
+      ],
+      "timeStamp": 23310,
+      "waitfor": 559,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "view",
+      "command": "tap",
+      "target": "/view[1]/view[4]/van-cell-group/view[2]/van-popup/view/van-picker/view/view[1]/view[3]",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "确认",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 382.65625,
+            "clientY": 384.5,
+            "pageX": 382.65625,
+            "pageY": 628.5,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 519.28515625,
+            "screenY": 584.6171875
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[4]/van-cell-group/view[2]/van-popup/view/van-picker/view/view[1]/view[3]"
+      ],
+      "timeStamp": 24340,
+      "waitfor": 1030,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "",
+      "command": "scroll",
+      "target": "/",
+      "path": "pages/service-detail/service-detail",
+      "eventData": {
+        "scrollDetail": {
+          "scrollTop": 294,
+          "scrollLeft": 0
+        }
+      },
+      "targetCandidates": [],
+      "timeStamp": 25170,
+      "waitfor": 830,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "textarea",
+      "command": "input",
+      "target": "/view[1]/view[4]/van-cell-group/view[2]/van-field/van-cell/view/view[2]/view/textarea",
+      "value": "aa",
+      "childName": "textarea",
+      "path": "pages/service-detail/service-detail",
+      "text": "aa",
+      "eventData": {},
+      "targetCandidates": [
+        "/view[1]/view[4]/van-cell-group/view[2]/van-field/van-cell/view/view[2]/view/textarea"
+      ],
+      "timeStamp": 26661,
+      "waitfor": 1290,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "button",
+      "command": "tap",
+      "target": "/view[1]/view[5]/view/van-button/button",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "提交",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 248.3125,
+            "clientY": 609.859375,
+            "pageX": 248.3125,
+            "pageY": 903.859375,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 384.94140625,
+            "screenY": 809.98046875
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[5]/view/van-button/button"
+      ],
+      "timeStamp": 28849,
+      "waitfor": 2188,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "f9c2f6eb-880e-4c0d-858e-f2c95486ebe6",
+        "ruleName": "request 3",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/",
+            "filterId": "0d27bff0-ee6e-4ba0-938a-8078bc54645d",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":{\"id\":567,\"createTime\":null,\"userId\":2,\"userName\":\"何润之\",\"volunteerId\":null,\"volunteerName\":null,\"volunteerPhoneNumber\":null,\"volunteerEmail\":null,\"serviceForms\":[{\"formID\":652,\"brand\":null,\"computerModel\":null,\"cpuModel\":null,\"hasDiscreteGraphics\":null,\"graphicsModel\":null,\"laptopType\":null,\"boughtTime\":null,\"underWarranty\":false,\"problemDescription\":null,\"problemType\":null,\"imageList\":[],\"replyAdminId\":null,\"descriptionAdvice\":null,\"activityId\":null,\"timeSlot\":null}],\"repairingResult\":null,\"feedback\":null,\"activityId\":null,\"activityName\":null,\"timeSlot\":null,\"startTime\":null,\"endTime\":null,\"problemSummary\":null,\"status\":0,\"draft\":true,\"closed\":false}},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:50 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "17b4fc9f-66f4-44b6-a3f6-a20678a994f2",
+        "ruleName": "request commit",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/commit",
+            "filterId": "3eddf9d8-e5b1-4da3-8244-e6e352216f01",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":\"success\"},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:50 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "4cab18f8-5de2-4ad8-a1c1-1497a4e8b8db",
+        "ruleName": "request detail",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/detail",
+            "filterId": "61c4e826-ffef-49db-a7f5-2af3fab79712",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":{\"id\":567,\"createTime\":null,\"userId\":2,\"userName\":\"何润之\",\"volunteerId\":null,\"volunteerName\":null,\"volunteerPhoneNumber\":null,\"volunteerEmail\":null,\"serviceForms\":[{\"formID\":652,\"brand\":\"11\",\"computerModel\":\"22\",\"cpuModel\":\"\",\"hasDiscreteGraphics\":false,\"graphicsModel\":\"\",\"laptopType\":\"游戏本\",\"boughtTime\":\"2012-03-23\",\"underWarranty\":true,\"problemDescription\":\"aa\",\"problemType\":\"我不清楚\",\"imageList\":[],\"replyAdminId\":null,\"descriptionAdvice\":null,\"activityId\":16,\"timeSlot\":2}],\"repairingResult\":null,\"feedback\":null,\"activityId\":16,\"activityName\":\"3月26日电脑小队\",\"timeSlot\":2,\"startTime\":\"2022-03-26 16:00:00\",\"endTime\":\"2022-03-26 17:00:00\",\"problemSummary\":null,\"status\":1,\"draft\":false,\"closed\":false}},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:50 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "83d0d055-fb92-4b5a-93a5-80406869ed63",
+        "ruleName": "request id2",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/volunteer/id",
+            "filterId": "f4068901-7cb6-47e9-b1bf-96166f38e2cf",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":1},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:50 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "tagName": "view",
+      "command": "scroll",
+      "target": "/view[1]/help-popup[2]/van-popup/view",
+      "path": "pages/service-detail/service-detail",
+      "text": "在您前来参加活动之前，请先阅读\n在前来参加活动之前，请您先确认自己的维修单已经经过审核，并带好电源适配器。\n我们会按照预约的时段对活动进行安排，以免现场过于拥堵。请您尽可能在预约的时段到场。\n到达现场后请扫描屏幕上的二维码进行签到，您的维修单才会进入维修流程。\n如果您需要拆机，请您再三确认是否会影响到电脑的保修。一般情况下，我们不建议对新购一年内的普通电脑或新购三年内的Mac电脑进行拆机。\n如果您需要重装系统/装双系统，请您再三确认是否已经备份了重要数据。尽管我们会尽力避免意外发生，您的数据终究是无价的。\n如果您需要得到维修进展情况的通知，我们可以向您发送订阅消息。在您点击同意后，您就可以在服务通知处收到消息。\n确认",
+      "eventData": {
+        "scrollDetail": {
+          "scrollTop": 41,
+          "scrollLeft": 0
+        }
+      },
+      "targetCandidates": [
+        "/view[1]/help-popup[2]/van-popup/view"
+      ],
+      "timeStamp": 29938,
+      "waitfor": 1089,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "button",
+      "command": "tap",
+      "target": "/view[1]/help-popup[2]/van-popup/view/view/view/van-button/button",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "确认",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 207.84375,
+            "clientY": 641.96875,
+            "pageX": 207.84375,
+            "pageY": 935.96875,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 344.4765625,
+            "screenY": 842.078125
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/help-popup[2]/van-popup/view/view/view/van-button/button"
+      ],
+      "timeStamp": 30492,
+      "waitfor": 554,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "e282c08f-651f-4a04-b14c-cfe4e1bfdcd3",
+        "ruleName": "request notice",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/user/notice",
+            "filterId": "ecec6b85-5859-440e-95e2-ed90e7fbb6f4",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"获取成功\",\"data\":[\"DzU2gPVQgkKsknQ1dAXRjEqc-xX9TpeBbkP9LtYwU6Q\",\"Ua2MAP-UdHLHx9i_cnWf33nXwON2RgRt0XEOhzK3DNI\",\"FEqSM3NFRt8t6fEoZot2UUoF8CW75K_mr7MMvX1Czs8\"]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:52 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "timeStamp": 31729,
+      "waitfor": 1237,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "native",
+      "command": "confirmModal",
+      "text": "允许"
+    },
+    {
+      "tagName": "button",
+      "command": "tap",
+      "target": "/view[1]/view[5]/view[2]/van-button/button",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "删除",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 318.109375,
+            "clientY": 620.28125,
+            "pageX": 318.109375,
+            "pageY": 914.28125,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 454.7421875,
+            "screenY": 820.3984375
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/view[5]/view[2]/van-button/button"
+      ],
+      "timeStamp": 32995,
+      "waitfor": 1266,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "tagName": "button",
+      "command": "tap",
+      "target": "/view[1]/van-dialog/van-popup/view/view[3]/van-button[2]/button",
+      "value": null,
+      "path": "pages/service-detail/service-detail",
+      "text": "确认",
+      "eventData": {
+        "detail": {},
+        "changedTouches": [
+          {
+            "clientX": 293.53125,
+            "clientY": 363.046875,
+            "pageX": 293.53125,
+            "pageY": 657.046875,
+            "radiusX": 11.5,
+            "radiusY": 11.5,
+            "screenX": 430.16015625,
+            "screenY": 563.15625
+          }
+        ],
+        "touches": []
+      },
+      "targetCandidates": [
+        "/view[1]/van-dialog/van-popup/view/view[3]/van-button[2]/button"
+      ],
+      "timeStamp": 34333,
+      "waitfor": 1338,
+      "desc": "",
+      "commandType": "operate",
+      "layer": "pageframe"
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "8c5ba84b-6fe4-4404-b874-b007647ed7d7",
+        "ruleName": "request service?eventID=567",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service?eventID=567",
+            "filterId": "44976d2a-952c-4d94-bb6f-860553cbbe0f",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":\"success\"},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:56 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "f2bd4b44-3511-44f3-bda9-a0cd2c99ed04",
+        "ruleName": "request activity3",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/activity",
+            "filterId": "430d0363-90f6-47b0-87ff-a2042287d1dd",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[{\"id\":2,\"createTime\":\"2020-12-27 22:11:07\",\"updatedTime\":\"2020-12-27 22:13:33\",\"startTime\":\"2020-12-27 18:40:00\",\"endTime\":\"2020-12-27 21:30:00\",\"activityName\":\"12月27日电脑小队\",\"location\":\"二教107\",\"status\":null},{\"id\":3,\"createTime\":\"2020-12-27 22:11:16\",\"updatedTime\":\"2022-03-20 18:11:55\",\"startTime\":\"1926-08-17 11:45:00\",\"endTime\":\"1926-08-17 15:28:48\",\"activityName\":\"活动外维修\",\"location\":\"EveryWhere\",\"status\":null},{\"id\":5,\"createTime\":\"2021-03-16 17:13:45\",\"updatedTime\":\"2021-03-18 03:32:02\",\"startTime\":\"2021-03-19 20:45:00\",\"endTime\":\"2021-03-19 23:45:00\",\"activityName\":\"3月19日电脑小队测试\",\"location\":\"1237\",\"status\":null},{\"id\":6,\"createTime\":\"2021-03-23 07:45:28\",\"updatedTime\":\"2021-03-23 07:45:28\",\"startTime\":\"2021-03-28 13:00:00\",\"endTime\":\"2021-03-28 16:00:00\",\"activityName\":\"3月28日电脑小队\",\"location\":\"二教107\",\"status\":null},{\"id\":7,\"createTime\":\"2021-04-08 19:28:24\",\"updatedTime\":\"2021-04-08 19:28:24\",\"startTime\":\"2021-04-11 13:00:00\",\"endTime\":\"2021-04-11 16:00:00\",\"activityName\":\"4月11日电脑小队\",\"location\":\"二教107\",\"status\":null},{\"id\":9,\"createTime\":\"2021-06-01 21:08:59\",\"updatedTime\":\"2021-06-04 18:38:24\",\"startTime\":\"2021-06-06 13:00:00\",\"endTime\":\"2021-06-06 16:00:00\",\"activityName\":\"6月6日电脑小队\",\"location\":\"理一1126\",\"status\":null},{\"id\":10,\"createTime\":\"2021-10-14 21:54:36\",\"updatedTime\":\"2021-10-14 21:54:51\",\"startTime\":\"2021-10-15 20:00:00\",\"endTime\":\"2021-10-15 22:00:00\",\"activityName\":\"10月15日电脑小队测试\",\"location\":\"理一1236\",\"status\":null},{\"id\":12,\"createTime\":\"2021-10-18 21:08:41\",\"updatedTime\":\"2021-10-18 21:08:41\",\"startTime\":\"2021-10-23 14:00:00\",\"endTime\":\"2021-10-23 17:00:00\",\"activityName\":\"10月23日电脑小队\",\"location\":\"二教207\",\"status\":null},{\"id\":13,\"createTime\":\"2021-12-10 06:58:16\",\"updatedTime\":\"2021-12-10 06:58:16\",\"startTime\":\"2021-12-12 14:00:00\",\"endTime\":\"2021-12-12 17:00:00\",\"activityName\":\"”医“生”信“赖—电脑小队进医学部\",\"location\":\"医学部逸夫楼302、303教室\",\"status\":null},{\"id\":16,\"createTime\":\"2022-03-20 18:13:49\",\"updatedTime\":\"2022-03-20 20:18:19\",\"startTime\":\"2022-03-26 14:00:00\",\"endTime\":\"2022-03-26 17:00:00\",\"activityName\":\"3月26日电脑小队\",\"location\":\"二教505(维修) 二教507(等候)\",\"status\":null}]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:56 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "layer": "appservice",
+      "command": "mock",
+      "rule": {
+        "ruleId": "aec4f503-21e4-4fd3-9d03-d1c88a1c2353",
+        "ruleName": "request 4",
+        "apiName": "request",
+        "enable": true,
+        "verifyFail": false,
+        "isOneTime": true,
+        "filterList": [
+          {
+            "propName": "url",
+            "propRegString": "https://shuwashuwa.kinami.cc/api/service/",
+            "filterId": "44958012-be4f-4599-8b99-3f45439e0ff9",
+            "matchType": "string",
+            "matchTypeLabel": "全匹配"
+          }
+        ],
+        "returnConfig": {
+          "returnType": "succ",
+          "generateType": "manual",
+          "manual": {
+            "succ": {
+              "resStr": "{\"data\":{\"code\":200,\"message\":\"请求成功\",\"data\":[{\"serviceEventId\":452,\"createTime\":\"2021-12-10 10:16:30\",\"userName\":\"MSKYurina\",\"volunteerName\":null,\"activityName\":\"3月26日电脑小队\",\"startTime\":\"2022-03-26 16:00:00\",\"endTime\":\"2022-03-26 17:00:00\",\"problemSummary\":null,\"computerModel\":\"qq\",\"status\":1,\"draft\":false,\"closed\":false},{\"serviceEventId\":566,\"createTime\":\"2022-03-21 05:57:22\",\"userName\":\"郭子煊\",\"volunteerName\":null,\"activityName\":\"3月26日电脑小队\",\"startTime\":\"2022-03-26 15:00:00\",\"endTime\":\"2022-03-26 16:00:00\",\"problemSummary\":null,\"computerModel\":\"Lenovo Legion Y7000 2020H\",\"status\":1,\"draft\":false,\"closed\":false}]},\"header\":{\"Content-Type\":\"application/json\",\"Date\":\"Mon, 21 Mar 2022 15:24:56 GMT\",\"Server\":\"Caddy\",\"Transfer-Encoding\":\"chunked\"},\"statusCode\":200,\"cookies\":[],\"errMsg\":\"request:ok\"}"
+            },
+            "fail": {
+              "resStr": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "timeStamp": 36382,
+      "waitfor": 2049,
+      "desc": "",
+      "layer": "tool",
+      "commandType": "operate",
+      "command": "stopRecord"
+    }
+  ]
+}
