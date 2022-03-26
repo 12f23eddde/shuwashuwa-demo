@@ -239,9 +239,9 @@
         label="审核消息"
         type="textarea"
         placeholder="请您重新上传照片，看不清电池型号"
-        readonly="{{ auditable }}"
+        readonly="{{ !auditable }}"
         autosize
-        required="{{ !auditable }}"
+        required="{{ auditable }}"
       />
     </van-cell-group>
   </view>
