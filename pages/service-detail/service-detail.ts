@@ -102,6 +102,9 @@ Page({
         showHelp: false,
         /** 显示须知 */
         showNotice: false,
+
+        /* 我的志愿者ID */
+        myVolunteerId: -1,
     },
 
     /** 表单验证 */
@@ -194,9 +197,7 @@ Page({
             const query: ActivityQuery = {
                 endLower: formatDate(new Date()),
             }
-            console.log('here!!!!!')
             const res = await getActivityList(query)
-            console.log('there!!!!!')
             if (!res) {
                 emitErrorToast('获取活动列表失败')
                 return
@@ -406,6 +407,18 @@ Page({
         const userId = userStore.user?.userid as number
         const isAdmin = userStore.user?.admin as boolean
         const isVolunteer = userStore.user?.volunteer as boolean
+
+        /* 获取管理员ID */
+        if (isVolunteer && this.data.myVolunteerId === -1) {
+            try {
+                this.setData({
+                    myVolunteerId: Number(await getVolunteerId())
+                })
+            } catch (e) {
+                emitErrorToast(e)
+            }
+        }
+
         this.setData({
             /** 没有签到前可编辑维修单 */
             editable: (this.data.serviceEventId == -1) || (this.data.userId === userId && [0, 1, 2].includes(this.data.status)),
@@ -418,7 +431,7 @@ Page({
             /** 用户可反馈 */
             canUserFeedback: userStore.user?.userid === this.data.userId && this.data.status === 5,
             /** 志愿者可反馈 */
-            canVolunteerFeedback: isVolunteer && Number(await getVolunteerId()) === this.data.volunteerId && this.data.status === 4
+            canVolunteerFeedback: isVolunteer && this.data.myVolunteerId === this.data.volunteerId && this.data.status === 4
         })
         console.log('updateComponentStates', this.data)
     },
@@ -848,7 +861,7 @@ Page({
         /** 设置维修单权限 */
         ensureUserInfo().then(() => {
             this.updateComponentStates()
-        })
+        }) 
     },
 
     /**
