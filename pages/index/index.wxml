@@ -4,264 +4,176 @@
 <van-toast id="van-toast" />
 
 <view class="index-page-container">
-  <!--当前活动-->
-  <view class="cell-title">
-    <typology loading="{{ activitiesLoading }}" text="当前活动" />
-  </view>
+  <van-tabs class="main-tabs" active="{{ activityTabActive }}" swipeable="{{ true }}" animated="true" color="#07c160">
+    <van-tab title="当前活动">
+      <view wx:if="{{ currentActivities.length > 0 }}" class="cell-group-container cell-group-container--alter-top">
+        <van-cell-group class="cell-group">
+          <van-cell wx:for="{{ currentActivities }}" wx:key="id" label="{{ item.status }}" bind:tap="goToActivityServiceList" data-id="{{ item.id }}" class="activity-cell">
+            <view slot="title" class="activity-cell-title">
+              <van-icon name="label" class="icon" color="#07c160" />
+              {{item.activityName}}
+            </view>
+            <view class="activity-cell-info">
+              <view class="activity-cell-meta">
+                <view>地点：{{item.location}}</view>
+                <view>开始时间：{{item.startTime}}</view>
+                <view>结束时间：{{item.endTime}}</view>
+              </view>
+              <van-icon name="arrow" size="medium" />
+            </view>
+          </van-cell>
+        </van-cell-group>
+      </view>
 
-  <view wx:if="{{ currentActivities.length > 0 }}" class="cell-group-container">
-    <van-cell-group class="cell-group">
-      <van-cell
-        wx:for="{{ currentActivities }}"
-        wx:key="id"
-        label="{{ item.status }}"
-        bind:tap="goToActivityServiceList"
-        data-id="{{ item.id }}"
-        class="activity-cell"
-      >
-        <view slot="title" class="activity-cell-title">
-          <van-icon
-            name="label"
-            class="icon"
-            color="#07c160"
-          />
-          {{item.activityName}}
-        </view>
-        <view class="activity-cell-info">
-          <view class="activity-cell-meta">
-            <view>地点：{{item.location}}</view>
-            <view>开始时间：{{item.startTime}}</view>
-            <view>结束时间：{{item.endTime}}</view>
+      <view wx:elif="{{ !activitiesLoading }}" class="cell-group-container cell-group-container--alter">
+        <van-cell-group class="cell-group">
+          <van-cell center class="empty-cell">
+            <view slot="icon" class="link-cell-icon">
+              <van-icon name="tosend" size="1.2em" />
+            </view>
+            <view slot="title">
+              没有正在进行的活动
+            </view>
+          </van-cell>
+        </van-cell-group>
+      </view>
+    </van-tab>
+
+    <van-tab title="未来活动">
+      <view wx:if="{{ incomingActivities.length }}" class="cell-group-container cell-group-container--alter-top">
+        <van-cell-group class="cell-group">
+          <van-cell wx:for="{{ incomingActivities }}" wx:key="id" label="{{ item.status }}" bind:tap="goToActivityServiceList" data-id="{{ item.id }}" class="activity-cell">
+            <view slot="title" class="activity-cell-title">
+              <van-icon name="label" class="icon" color="#1989fa" />
+              {{item.activityName}}
+            </view>
+            <view class="activity-cell-info">
+              <view class="activity-cell-meta">
+                <view>地点：{{item.location}}</view>
+                <view>开始时间：{{item.startTime}}</view>
+                <view>结束时间：{{item.endTime}}</view>
+              </view>
+              <van-icon name="arrow" size="medium" />
+            </view>
+          </van-cell>
+        </van-cell-group>
+      </view>
+
+      <view wx:elif="{{ !activitiesLoading }}" class="cell-group-container cell-group-container--alter">
+        <van-cell-group class="cell-group">
+          <van-cell center class="empty-cell" border="false">
+            <view slot="icon" class="link-cell-icon">
+              <van-icon name="tosend" size="1.2em" />
+            </view>
+            <view slot="title">
+              没有即将举行的活动
+            </view>
+          </van-cell>
+        </van-cell-group>
+      </view>
+    </van-tab>
+
+    <van-tab title="维修单">
+
+      <!--我的维修单-->
+      <van-tabs class="sub-tabs" active="{{ serviceTabActive }}" swipeable="{{ true }}" color="#07c160" animated="true">
+        <van-tab title="我的维修单">
+          <view wx:if="{{ activeServices.length > 0 }}" class="cell-group-container cell-group-container--alter-top">
+            <van-cell-group class="cell-group">
+              <service-cell wx:for="{{ activeServices }}" wx:key="serviceEventId" service="{{ item }}">
+              </service-cell>
+            </van-cell-group>
           </view>
-          <van-icon name="arrow" size="medium" />
-        </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
 
-  <view wx:elif="{{ !activitiesLoading }}" class="cell-group-container">
-    <van-cell-group class="cell-group">
-      <van-cell center class="empty-cell">
-        <view slot="icon" class="link-cell-icon">
-          <van-icon name="tosend" size="1.2em" />
-        </view>
-        <view slot="title">
-          没有正在进行的活动
-        </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
-
-  <!--未来活动-->
-  <view class="cell-title">
-    <typology loading="{{ activitiesLoading }}" text="未来活动" />
-  </view>
-
-  <view wx:if="{{ incomingActivities.length }}" class="cell-group-container">
-    <van-cell-group class="cell-group">
-      <van-cell
-        wx:for="{{ incomingActivities }}"
-        wx:key="id"
-        label="{{ item.status }}"
-        bind:tap="goToActivityServiceList"
-        data-id="{{ item.id }}"
-        class="activity-cell"
-      >
-        <view slot="title" class="activity-cell-title">
-          <van-icon
-            name="label"
-            class="icon"
-            color="#1989fa"
-          />
-          {{item.activityName}}
-        </view>
-        <view class="activity-cell-info">
-          <view class="activity-cell-meta">
-            <view>地点：{{item.location}}</view>
-            <view>开始时间：{{item.startTime}}</view>
-            <view>结束时间：{{item.endTime}}</view>
+          <view wx:elif="{{ !myServicesLoading }}" class="cell-group-container cell-group-container--alter">
+            <van-cell-group class="cell-group">
+              <van-cell center class="empty-cell">
+                <view slot="icon" class="link-cell-icon">
+                  <van-icon name="tosend" size="1.2em" />
+                </view>
+                <view slot="title">
+                  您还没有维修单
+                </view>
+              </van-cell>
+            </van-cell-group>
           </view>
-          <van-icon name="arrow" size="medium" />
-        </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
+        </van-tab>
 
-  <view wx:elif="{{ !activitiesLoading }}" class="cell-group-container">
-    <van-cell-group class="cell-group">
-      <van-cell center class="empty-cell">
-        <view slot="icon" class="link-cell-icon">
-          <van-icon name="tosend" size="1.2em" />
-        </view>
-        <view slot="title">
-          没有即将举行的活动
-        </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
+        <!--待填维修单-->
+        <van-tab title="待填维修单" wx:if="{{ inEditServiceCount > 0 }}">
+          <view class="cell-group-container cell-group-container--alter-top" wx:if="{{ inEditServiceCount > 0 }}">
+            <van-cell-group class="cell-group" data-status="{{ 0 }}" bindtap="goToStatusServiceList">
+              <van-cell class="link-cell">
+                <view slot="icon" class="link-cell-icon">
+                  <van-icon name="clock-o" color="#ff976a" size="1.2em" />
+                </view>
+                <view slot="title">你有{{ inEditServiceCount }}张待填写维修单 </view>
+                <view slot=""> 点击跳转 </view>
+              </van-cell>
+            </van-cell-group>
+          </view>
+        </van-tab>
 
-  <!-- 接单维修单 -->
-  <view class="cell-title" wx:if="{{ workingServices.length > 0 }}">
-    <typology loading="{{ myServicesLoading }}" text="接单维修单" />
-  </view>
+        <!--待审核维修单-->
+        <van-tab title="待审核维修单" wx:if="{{ inAuditServiceCount > 0 }}">
+          <view class="cell-group-container cell-group-container--alter-top" wx:if="{{ inAuditServiceCount > 0  && !inAuditServiceCountLoading }}">
+            <van-cell-group class="cell-group" bindtap="goToStatusServiceList" data-status="{{ 1 }}">
+              <van-cell class="link-cell">
+                <view slot="icon" class="link-cell-icon">
+                  <van-icon name="clock-o" color="#ff976a" size="1.2em" />
+                </view>
+                <view slot="title"> 你有{{inAuditServiceCount}}张待审核维修单 </view>
+                <view slot=""> 点击跳转 </view>
+              </van-cell>
+            </van-cell-group>
+          </view>
+        </van-tab>
 
-  <view class="cell-group-container" wx:if="{{ workingServices.length > 0 }}">
-    <van-cell-group class="cell-group">
-      <service-cell
-        wx:for="{{ workingServices }}"
-        wx:key="serviceEventId"
-        service="{{ item }}"
-      >
-      </service-cell>
-    </van-cell-group>
-  </view>
+        <!--接单维修单-->
+        <van-tab title="接单维修单" disabled="{{ workingServices.length <= 0 }}">
+          <view class="cell-group-container cell-group-container--alter-top" wx:if="{{ workingServices.length > 0 }}">
+            <van-cell-group class="cell-group">
+              <service-cell wx:for="{{ workingServices }}" wx:key="serviceEventId" service="{{ item }}">
+              </service-cell>
+            </van-cell-group>
+          </view>
+        </van-tab>
+      </van-tabs>
 
-  <!--我的维修单-->
-  <view class="cell-title">
-    <typology loading="{{ myServicesLoading }}" text="我的维修单" />
-  </view>
+    </van-tab>
 
-  <view wx:if="{{ activeServices.length > 0 }}" class="cell-group-container">
-    <van-cell-group class="cell-group">
-      <service-cell
-        wx:for="{{ activeServices }}"
-        wx:key="serviceEventId"
-        service="{{ item }}"
-      >
-      </service-cell>
-    </van-cell-group>
-  </view>
+    <van-tab wx:if="{{ myApplication }}" title="志愿者申请">
+      <!--待审核志愿者申请-->
+      <view class="cell-title" wx:if="{{ myApplication }}">
+        <typology loading="{{ applicationsLoading }}" text="我的志愿者申请" />
+      </view>
 
-  <view wx:elif="{{ !myServicesLoading }}" class="cell-group-container">
-    <van-cell-group class="cell-group">
-      <van-cell center class="empty-cell">
-        <view slot="icon" class="link-cell-icon">
-          <van-icon name="tosend" size="1.2em" />
-        </view>
-        <view slot="title">
-          您还没有维修单
-        </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
-
-  <!--待填维修单-->
-  <view class="cell-title" wx:if="{{ inEditServiceCount > 0 }}">
-    <typology loading="{{ myServicesLoading }}" text="待填写维修单" />
-  </view>
-
-  <view class="cell-group-container" wx:if="{{ inEditServiceCount > 0 }}">
-    <van-cell-group
-      class="cell-group"
-      data-status="{{ 0 }}"
-      bindtap="goToStatusServiceList"
-    >
-      <van-cell class="link-cell">
-        <view slot="icon" class="link-cell-icon">
-          <van-icon
-            name="clock-o"
-            color="#ff976a"
-            size="1.2em"
-          />
-        </view>
-        <view slot="title">你有{{ inEditServiceCount }}张待填写维修单 </view>
-        <view slot=""> 点击跳转 </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
-
-  <!--待审核维修单-->
-  <view class="cell-title" wx:if="{{ inAuditServiceCount > 0 }}">
-    <typology loading="{{ inAuditServiceCountLoading }}" text="待审核维修单" />
-  </view>
-
-  <view class="cell-group-container" wx:if="{{ inAuditServiceCount > 0  && !inAuditServiceCountLoading }}">
-    <van-cell-group
-      class="cell-group"
-      bindtap="goToStatusServiceList"
-      data-status="{{ 1 }}"
-    >
-      <van-cell class="link-cell">
-        <view slot="icon" class="link-cell-icon">
-          <van-icon
-            name="clock-o"
-            color="#ff976a"
-            size="1.2em"
-          />
-        </view>
-        <view slot="title"> 你有{{inAuditServiceCount}}张待审核维修单 </view>
-        <view slot=""> 点击跳转 </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
-
-  <!--待审核志愿者申请-->
-  <view class="cell-title" wx:if="{{ myApplication }}">
-    <typology loading="{{ applicationsLoading }}" text="我的志愿者申请" />
-  </view>
-
-  <view class="cell-group-container" wx:if="{{ myApplication && !applicationsLoading}}">
-    <van-cell-group class="cell-group">
-      <van-cell wx:if="{{ myApplication.status == 0 }}" class="link-cell">
-        <view slot="icon" class="link-cell-icon">
-          <van-icon
-            name="clock-o"
-            color="#ff976a"
-            size="1.2em"
-          />
-        </view>
-        <view slot="title"> 志愿者申请正在审核 </view>
-      </van-cell>
-      <van-cell
-        wx:if="{{ myApplication.status == 1 }}"
-        class="link-cell"
-        bind:tap="refreshUserInfoAsync"
-      >
-        <view slot="icon" class="link-cell-icon">
-          <van-icon
-            name="passed"
-            color="#07c160"
-            size="1.2em"
-          />
-        </view>
-        <view slot="title"> 志愿者申请已经通过 </view>
-        <view slot=""> 点击刷新 </view>
-      </van-cell>
-      <van-cell wx:if="{{ myApplication.status == 2 }}" class="link-cell">
-        <view slot="icon" class="link-cell-icon">
-          <van-icon
-            name="close"
-            color="#ee0a24"
-            size="1.2em"
-          />
-        </view>
-        <view slot="title"> 志愿者申请被拒绝 </view>
-        <view slot=""> {{ myApplication.replyByAdmin }} </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
-
-  <!--待审核志愿者申请-->
-  <view class="cell-title" wx:if="{{ inAuditApplicationCount > 0 }}">
-    <typology text="待审核志愿者申请" />
-  </view>
-
-  <view class="cell-group-container" wx:if="{{ inAuditApplicationCount > 0 && !inAuditApplicationCountLoading }}">
-    <van-cell-group class="cell-group" bindtap="goToApplicationList">
-      <van-cell>
-        <view slot="icon" class="link-cell-icon">
-          <van-icon
-            name="clock-o"
-            color="#ff976a"
-            size="1.2em"
-          />
-        </view>
-        <view slot="title" class="viewTitle">你有{{ inAuditApplicationCount }}份待审核志愿者申请 </view>
-        <view slot="" class="viewValue"> 点击跳转 </view>
-      </van-cell>
-    </van-cell-group>
-  </view>
-
-  <view class="tabbar-spacer" size="24px"></view>
+      <view class="cell-group-container cell-group-container--alter-top" wx:if="{{ myApplication && !applicationsLoading}}">
+        <van-cell-group class="cell-group">
+          <van-cell wx:if="{{ myApplication.status == 0 }}" class="link-cell">
+            <view slot="icon" class="link-cell-icon">
+              <van-icon name="clock-o" color="#ff976a" size="1.2em" />
+            </view>
+            <view slot="title"> 志愿者申请正在审核 </view>
+          </van-cell>
+          <van-cell wx:if="{{ myApplication.status == 1 }}" class="link-cell" bind:tap="refreshUserInfoAsync">
+            <view slot="icon" class="link-cell-icon">
+              <van-icon name="passed" color="#07c160" size="1.2em" />
+            </view>
+            <view slot="title"> 志愿者申请已经通过 </view>
+            <view slot=""> 点击刷新 </view>
+          </van-cell>
+          <van-cell wx:if="{{ myApplication.status == 2 }}" class="link-cell">
+            <view slot="icon" class="link-cell-icon">
+              <van-icon name="close" color="#ee0a24" size="1.2em" />
+            </view>
+            <view slot="title"> 志愿者申请被拒绝 </view>
+            <view slot=""> {{ myApplication.replyByAdmin }} </view>
+          </van-cell>
+        </van-cell-group>
+      </view>
+    </van-tab>
+  </van-tabs>
 </view>
 
+<view class="tabbar-spacer" />
