@@ -53,6 +53,8 @@ Page({
         inAuditApplicationCount: -1,
         inAuditApplicationCountLoading: false,
 
+        activityTabActive: 0,
+        serviceTabActive: 0,
     },
 
     /** 载入进行中的活动 */
