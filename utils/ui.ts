@@ -1,3 +1,4 @@
+import Notify from "../miniprogram_npm/@vant/weapp/notify/notify";
 import type { WechatErrorType } from "../models/wechatType";
 import { userStore } from "../stores/user";
 
@@ -45,10 +46,15 @@ export const emitErrorToast = (error: WechatErrorType | Error | string)  => {
 
     uploadLogMsg(message, 'error')
 
-    wx.showToast({
-        title: message,
-        icon: 'none'
-    })
+    try {
+        Notify({ type: 'danger', message });
+    } catch (error) {
+        console.error('notify failed', error);
+        wx.showToast({
+            title: message,
+            icon: 'none'
+        })
+    }
 }
 
 /** 

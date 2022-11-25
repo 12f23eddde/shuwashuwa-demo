@@ -41,7 +41,7 @@ Page({
         startTime: "",
         endTime: "",
         underWarranty: true,
-        serviceFormId: 0,
+        formID: 0,
         status: 0,
         userId: -1,
         volunteerId: -1,
@@ -249,7 +249,7 @@ Page({
                 [`timeslotServiceCount.${timeSlot}`]: count,
             })
         } catch (e) {
-            console.error(e)
+            emitErrorToast(e)
         } finally {
             this.setData({ timeslotLoading: false })
         }
@@ -294,8 +294,7 @@ Page({
             await submitServiceEvent(this.data as ServiceForm)
             console.log('submitServiceAsync', this.data)
         } catch (e: any) {
-            console.error(e)
-            Notify({ type: 'danger', message: e.errMsg })
+            emitErrorToast(e)
         } finally {
             this.setData({ submitLoading: false })
         }
@@ -307,8 +306,7 @@ Page({
         try {
             await cancelServiceEvent(this.data.serviceEventId)
         } catch (e: any) {
-            console.error(e)
-            Notify({ type: 'danger', message: e.errMsg })
+            emitErrorToast(e)
         } finally {
             this.setData({ submitLoading: false })
         }
@@ -322,13 +320,13 @@ Page({
                 message: this.data.descriptionAdvice,
                 problemSummary: this.data.problemSummary,
                 result: result,
-                serviceFormId: this.data.serviceFormId,
+                serviceFormId: this.data.formID,
                 serviceEventId: this.data.serviceEventId
             }
+            console.log(audit)
             await auditServiceEvent(audit)
         } catch (e: any) {
-            console.error(e)
-            Notify({ type: 'danger', message: e.errMsg })
+            emitErrorToast(e)
         } finally {
             this.setData({ submitLoading: false })
         }
@@ -340,8 +338,7 @@ Page({
         try {
             await takeServiceEvent(this.data.serviceEventId)
         } catch (e: any) {
-            console.error(e)
-            Notify({ type: 'danger', message: e.errMsg })
+            emitErrorToast(e)
         } finally {
             this.setData({ submitLoading: false })
         }
@@ -353,8 +350,7 @@ Page({
         try {
             await returnServiceEvent(this.data.serviceEventId)
         } catch (e: any) {
-            console.error(e)
-            Notify({ type: 'danger', message: e.errMsg })
+            emitErrorToast(e)
         } finally {
             this.setData({ submitLoading: false })
         }
@@ -372,8 +368,7 @@ Page({
             }
             await completeServiceEvent(complete)
         } catch (e: any) {
-            console.error(e)
-            Notify({ type: 'danger', message: e.errMsg })
+            emitErrorToast(e)
         } finally {
             this.setData({
                 submitLoading: false
@@ -393,8 +388,7 @@ Page({
             }
             await feedbackServiceEvent(complete)
         } catch (e: any) {
-            console.error(e)
-            Notify({ type: 'danger', message: e.errMsg })
+            emitErrorToast(e)
         } finally {
             this.setData({
                 submitLoading: false
@@ -516,6 +510,7 @@ Page({
     onAuditPass: async function () {
         if (!this.auditValidator?.checkData(this.data)) return;
         await this.auditServiceAsync(true)
+        Notify({type: 'success', message: '审核成功'})
         this.getServiceEventDetailAsync() // 刷新维修单
     },
 
@@ -523,6 +518,7 @@ Page({
     onAuditFail: async function () {
         if (!this.auditValidator?.checkData(this.data)) return;
         await this.auditServiceAsync(false)
+        Notify({type: 'success', message: '审核成功'})
         this.getServiceEventDetailAsync() // 刷新维修单
     },
 
@@ -778,11 +774,13 @@ Page({
             rules: {
                 activityId: { required: true },
                 boughtTime: { required: true },
-                brand: { required: true },
-                computerModel: { required: true },
+                brand: { required: true, maxlength: 15 },
+                computerModel: { required: true, maxlength: 30 },
+                cpuModel: { maxlength: 30 },
                 hasDiscreteGraphics: { required: true },
+                graphicsModel: { maxlength: 30 },
                 laptopType: { required: true },
-                problemDescription: { required: true },
+                problemDescription: { required: true, maxlength: 200 },
                 problemType: { required: true },
                 serviceEventId: { required: true },
                 timeSlot: { required: true },
@@ -791,11 +789,13 @@ Page({
             messages: {
                 activityId: { required: '请选择活动' },
                 boughtTime: { required: '请选择购买时间(不用很精确)' },
-                brand: { required: '请填写品牌' },
-                computerModel: { required: '请填写型号' },
+                brand: { required: '请填写品牌' , maxlength: '品牌不能超过15字'},
+                computerModel: { required: '请填写型号' , maxlength: '型号不能超过30字'},
+                cpuModel: { maxlength: 'CPU型号不能超过30字'},
                 hasDiscreteGraphics: { required: 'Switch状态为null' },
+                graphicsModel: { maxlength: '显卡型号不能超过30字'},
                 laptopType: { required: '请选择电脑类型' },
-                problemDescription: { required: '请填写故障描述' },
+                problemDescription: { required: '请填写故障描述' , maxlength: '故障描述不能超过200字'},
                 problemType: { required: '请选择故障类型' },
                 serviceEventId: { required: 'serviceEventIdError' },
                 timeSlot: { required: '请选择时段' },
