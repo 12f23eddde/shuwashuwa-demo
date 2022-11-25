@@ -9,7 +9,7 @@
 }
 
 .usernickname {
-  width: 300rpx;
+  width: 280rpx;
   margin-left: 4vw;
   font-size: x-large;
   font: bold;
@@ -19,7 +19,7 @@
 }
 
 .user-role-tag {
-  margin-right: 20rpx;
+  margin-right: 10rpx;
   display: flex;
   flex-direction: column;
   justify-content: center;
