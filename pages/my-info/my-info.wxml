@@ -9,6 +9,14 @@
     <open-data class="userPic" type="userAvatarUrl"></open-data>
   </view> -->
 
+    <!-- 用户协议 -->
+    <help-popup
+      show="{{ showLicense }}"
+      url="https://shuwashuwa.kinami.cc/license.md"
+      style="max-height: 90%"
+      bind:close="onHidePopup"
+    />
+
     <view class="userinfo">
       <view class="userinfo-icon" bindtap="onMagicTap">
         <van-icon

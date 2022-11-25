@@ -74,6 +74,9 @@ Page({
         // magic tap
         tapCount: 0,
         tapTime: 0,
+
+        // license
+        showLicense: false,
     },
 
     // validator
@@ -358,6 +361,13 @@ Page({
         }
     },
 
+    /** 隐藏用户协议 */
+    onHidePopup: function () {
+        this.setData({
+            showLicense: false
+        })
+    },
+
     onLoad: async function () {
         this.initValidator()
     },
@@ -367,9 +377,18 @@ Page({
         await this.getUserInfoAsync()
         // 未填写用户信息，开启编辑
         if (!this.data.userName) {
-            Dialog.alert({
-                message: '在提交维修单前请您先填写个人信息。您的个人信息仅供志愿活动记录使用，我们承诺不会用于其他用途。',
+            Dialog.confirm({
+                message: '在提交维修单前请您先填写个人信息。您的个人信息仅供志愿活动记录使用，不会用于其他用途。注册视为您同意我们的用户协议和隐私政策。',
+                cancelButtonText: '查看协议',
+                confirmButtonText: '继续注册'
             })
+                .then(() => {
+                })
+                .catch(() => {
+                    this.setData({
+                        showLicense: true
+                    })
+                })
             this.setData({
                 disableEdit: false
             })
