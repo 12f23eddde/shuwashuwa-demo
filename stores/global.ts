@@ -47,6 +47,7 @@ class GlobalStore {
 interface GlobalStoreGuarded {
     readonly loginMutex: boolean;
     readonly backendUrl: string;
+    readonly tabParams: IAnyObject | null;
     setBackendUrl(url: string): void;
     acquireLoginMutex(): boolean;
     releaseLoginMutex(): boolean;

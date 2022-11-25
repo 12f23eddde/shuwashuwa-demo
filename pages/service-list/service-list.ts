@@ -311,7 +311,7 @@ Page({
             this.setData({
                 query: params,
                 activitySelected: params.activity,
-                statusSelected: -1
+                statusSelected: params.status? params.status : -1,
             })
         }
 
@@ -326,7 +326,8 @@ Page({
      * 生命周期函数--监听页面隐藏
      */
     onHide: function () {
-
+        // keep params in global store
+        globalStore.setTabParams(this.data.query)
     },
 
     /**
