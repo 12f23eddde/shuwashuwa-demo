@@ -659,7 +659,7 @@ Page({
     /** 有无独立显卡 */
     gpuSwitch: function (event: WechatEventType) {
         this.setData({
-            hasDiscreteGraphics: event.detail,
+            hasDiscreteGraphics: Boolean(event.detail),
         })
         if (event.detail) {
             this.setData({
@@ -675,7 +675,7 @@ Page({
     /** 是否在保修期内 */
     warrantySwitch: function (event: WechatEventType) {
         this.setData({
-            underWarranty: event.detail,
+            underWarranty: Boolean(event.detail),
         })
     },
 
