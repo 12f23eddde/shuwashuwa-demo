@@ -9,6 +9,7 @@ import { userStore } from '../../stores/user'
 import { globalStore } from '../../stores/global'
 import { WechatErrorType, WechatEventType } from '../../models/wechatType'
 import { getCurrentUserInfo } from '../../api_new/user'
+import { reportData } from '../../utils/ui' 
 
 Page({
     /**
@@ -54,6 +55,11 @@ Page({
         this.setData({
             myRole: await whoAmI()
         })
+    },
+
+    onReportData: async function () {
+        reportData()
+        Toast.success('上报成功')
     },
 
     onChangeAdmin: function (e: WechatEventType) {
