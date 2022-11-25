@@ -24,7 +24,7 @@
       {{ service.computerModel ? service.computerModel : '未填写型号' }}
     </view>
     <view class="service-cell-col van-ellipsis text-bold">
-      {{ service.problemSummary? service.problemSummary : '未填写问题描述' }}
+      {{ service.problemSummary? service.problemSummary : '未审核通过' }}
     </view>
     <view class="service-cell-col van-ellipsis">
       {{ service.activityName ? service.activityName + ' ' + startTime : '未选择活动' }}
