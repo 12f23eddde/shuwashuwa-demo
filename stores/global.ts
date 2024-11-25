@@ -13,7 +13,7 @@ class GlobalStore {
         this.loginMutex = false;
         // 默认后端地址
         // 设置为http://shuwashuwa.kinami.cc会导致图片上传失败
-        this.backendUrl = "https://shuwashuwa.kinami.cc";
+        this.backendUrl = "https://shuwashuwa.7nm.ltd";
         this.tabParams = null;
     }
 

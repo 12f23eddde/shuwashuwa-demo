@@ -142,15 +142,15 @@ Page({
 
     /** 切换环境 */
     onSwitchEnv: function () {
-        if (this.data.backendUrl === 'http://shuwashuwa.kinami.cc:8848') {
+        if (this.data.backendUrl === 'https://dev.shuwashuwa.7nm.ltd') {
             this.setData({
-                backendUrl: 'https://shuwashuwa.kinami.cc'
+                backendUrl: 'https://shuwashuwa.7nm.ltd'
             })
             globalStore.setBackendUrl(this.data.backendUrl)
             Toast.success('线上环境')
         } else {
             this.setData({
-                backendUrl: 'http://shuwashuwa.kinami.cc:8848'
+                backendUrl: 'https://dev.shuwashuwa.7nm.ltd'
             })
             globalStore.setBackendUrl(this.data.backendUrl)
             Toast.success('测试环境')
